@@ -1,37 +1,64 @@
-from db_init import *
-import numpy as np
+import wx
 
-Tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Auth", "Editors", "Srs-Edit"]
+""" Copied for m http://wiki.wxpython.org/Simple%20wx.Notebook%20Example """
 
-def add(table_name: str, vector: list) :
-    cursor.execute(f"SELECT * FROM `{table_name}`;")
-    table = cursor.fetchall()
-    if tuple(vector) in table :
-        return False
-    
-    for i in range(len(vector)) :
-        if type(vector[i]) == str :
-            vector[i] = "'" + vector[i] + "'"
-        elif type(vector[i]) == bool :
-            vector[i] = ["FALSE", "TRUE"][vector[i]]
-        else :
-            vector[i] = str(vector[i])
-    
-    cursor.execute(f"INSERT INTO `{table_name}` VALUES ({', '.join(vector)});")
-    db.commit()
-    return True
 
-add("Series", ["BRSRK", "Berserk", "manga", 1])
-add("Books", ["01BRSRK00201", "Berserk Vol2", "BRSRK", 2, 1, True, 10, "2022-10-04", ""])
-add("Books", ["01BRSRK00301", "Berserk Vol3", "BRSRK", 3, 1, True, 10, "2022-10-04", ""])
-add("Books", ["01BRSRK00401", "Berserk Vol4", "BRSRK", 4, 1, True, 10, "2022-10-04", ""])
+class PageOne(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        wx.StaticText(self, -1, "This is a PageOne object", (20,20))
 
-for table_name in Tables :
-    print("Table", table_name, ":")
-    cursor.execute(f"SELECT * FROM `{table_name}`")
-    print(np.array(cursor.fetchall()))
-    print()
 
-db.commit()
+class PageTwo(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        wx.StaticText(self, -1, "This is a PageTwo object", (40, 40))
 
-db.close()
+
+class PageThree(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        wx.StaticText(self, -1, "This is a PageThree object", (60, 60))
+
+
+class PageDynamic(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        wx.StaticText(self, -1, "This is a Dynamic object", (60, 60))
+
+
+class MainFrame(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, None, title="Simple Notebook Example")
+
+        # Here we create a panel and a notebook on the panel
+        p = wx.Panel(self)
+        self.nb = wx.Notebook(p)
+
+        # create the page windows as children of the notebook
+        page1 = PageOne(self.nb)
+        page2 = PageTwo(self.nb)
+        page3 = PageThree(self.nb)
+
+        # add the pages to the notebook with the label to show on the tab
+        self.nb.AddPage(page1, "Page 1")
+        self.nb.AddPage(page2, "Page 2")
+        self.nb.AddPage(page3, "Page 3")
+
+        # finally, put the notebook in a sizer for the panel to manage
+        # the layout
+        sizer = wx.BoxSizer()
+        sizer.Add(self.nb, 1, wx.EXPAND)
+        p.SetSizer(sizer)
+
+        page3.Bind(wx.EVT_LEFT_DCLICK, self.dynamic_tab)
+
+    def dynamic_tab(self, event):
+        print('dynamic_tab()')
+        dynamic_page = PageDynamic(self.nb)
+        self.nb.AddPage(dynamic_page, "Page Dynamic")
+
+if __name__ == "__main__":
+    app = wx.App()
+    MainFrame().Show()
+    app.MainLoop()
