@@ -18,7 +18,7 @@ import wx.dataview
 class MainWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BDManga", pos = wx.DefaultPosition, size = wx.Size( 720,526 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BDManga", pos = wx.DefaultPosition, size = wx.Size( 861,675 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -31,7 +31,7 @@ class MainWindow ( wx.Frame ):
 		book_top_h_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.book_add = wx.Button( self.books, wx.ID_ANY, u"Ajouter un livre", wx.DefaultPosition, wx.DefaultSize, 0 )
-		book_top_h_sizer.Add( self.book_add, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
+		book_top_h_sizer.Add( self.book_add, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline0 = wx.StaticLine( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		book_top_h_sizer.Add( self.m_staticline0, 0, wx.EXPAND |wx.ALL, 5 )
@@ -41,7 +41,7 @@ class MainWindow ( wx.Frame ):
 
 		book_top_h_sizer.Add( self.m_staticText10, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.book_search_val = wx.TextCtrl( self.books, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.book_search_val = wx.TextCtrl( self.books, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
 		book_top_h_sizer.Add( self.book_search_val, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.m_staticText20 = wx.StaticText( self.books, wx.ID_ANY, u"dans :", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -55,23 +55,31 @@ class MainWindow ( wx.Frame ):
 		book_top_h_sizer.Add( self.book_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		book_v_sizer.Add( book_top_h_sizer, 0, wx.EXPAND, 5 )
+		book_v_sizer.Add( book_top_h_sizer, 0, 0, 5 )
 
 		self.book_display = wx.dataview.DataViewListCtrl( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.book_col_0 = self.book_display.AppendTextColumn( u"Cotation", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_2 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_3 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaire", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
 		book_v_sizer.Add( self.book_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", False )
+		self.notebook.AddPage( self.books, u"Livres", True )
 		self.users = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		user_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
 		user_top_h_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
 		self.user_add = wx.Button( self.users, wx.ID_ANY, u"Ajouter un utilisateur", wx.DefaultPosition, wx.DefaultSize, 0 )
-		user_top_h_sizer.Add( self.user_add, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
+		user_top_h_sizer.Add( self.user_add, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline1 = wx.StaticLine( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		user_top_h_sizer.Add( self.m_staticline1, 0, wx.EXPAND |wx.ALL, 5 )
@@ -81,7 +89,7 @@ class MainWindow ( wx.Frame ):
 
 		user_top_h_sizer.Add( self.m_staticText11, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.user_search_val = wx.TextCtrl( self.users, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.user_search_val = wx.TextCtrl( self.users, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
 		user_top_h_sizer.Add( self.user_search_val, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.m_staticText21 = wx.StaticText( self.users, wx.ID_ANY, u"dans :", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -95,7 +103,7 @@ class MainWindow ( wx.Frame ):
 		user_top_h_sizer.Add( self.user_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		user_v_sizer.Add( user_top_h_sizer, 0, wx.EXPAND, 5 )
+		user_v_sizer.Add( user_top_h_sizer, 0, 0, 5 )
 
 		self.user_display = wx.dataview.DataViewListCtrl( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		user_v_sizer.Add( self.user_display, 1, wx.ALL|wx.EXPAND, 5 )
@@ -110,18 +118,24 @@ class MainWindow ( wx.Frame ):
 
 		loan_top_h_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.loan_add = wx.Button( self.loans, wx.ID_ANY, u"Ajouter un utilisateur", wx.DefaultPosition, wx.DefaultSize, 0 )
-		loan_top_h_sizer.Add( self.loan_add, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL|wx.EXPAND, 5 )
+		self.loan_add = wx.Button( self.loans, wx.ID_ANY, u"Nouvel emprunt", wx.DefaultPosition, wx.DefaultSize, 0 )
+		loan_top_h_sizer.Add( self.loan_add, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline2 = wx.StaticLine( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		loan_top_h_sizer.Add( self.m_staticline2, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.loan_end = wx.Button( self.loans, wx.ID_ANY, u"Fin emprunt", wx.DefaultPosition, wx.DefaultSize, 0 )
+		loan_top_h_sizer.Add( self.loan_end, 0, wx.ALL, 5 )
+
+		self.m_staticline5 = wx.StaticLine( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		loan_top_h_sizer.Add( self.m_staticline5, 0, wx.EXPAND |wx.ALL, 5 )
 
 		self.m_staticText12 = wx.StaticText( self.loans, wx.ID_ANY, u"Rechercher :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText12.Wrap( -1 )
 
 		loan_top_h_sizer.Add( self.m_staticText12, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.loan_search_val = wx.TextCtrl( self.loans, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.loan_search_val = wx.TextCtrl( self.loans, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
 		loan_top_h_sizer.Add( self.loan_search_val, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.m_staticText22 = wx.StaticText( self.loans, wx.ID_ANY, u"dans :", wx.DefaultPosition, wx.DefaultSize, 0 )
@@ -135,7 +149,7 @@ class MainWindow ( wx.Frame ):
 		loan_top_h_sizer.Add( self.loan_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
-		loan_v_sizer.Add( loan_top_h_sizer, 0, wx.EXPAND, 5 )
+		loan_v_sizer.Add( loan_top_h_sizer, 0, 0, 5 )
 
 		self.loan_display = wx.dataview.DataViewListCtrl( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
 		loan_v_sizer.Add( self.loan_display, 1, wx.ALL|wx.EXPAND, 5 )
@@ -151,7 +165,7 @@ class MainWindow ( wx.Frame ):
 		self.query_run = wx.Button( self.queries, wx.ID_ANY, u"Run query", wx.DefaultPosition, wx.DefaultSize, 0 )
 		query_v_sizer.Add( self.query_run, 0, wx.ALL, 5 )
 
-		self.query_text = wx.TextCtrl( self.queries, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_PROCESS_ENTER|wx.TE_PROCESS_TAB )
+		self.query_text = wx.TextCtrl( self.queries, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_PROCESS_TAB )
 		query_v_sizer.Add( self.query_text, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline9 = wx.StaticLine( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
@@ -164,7 +178,7 @@ class MainWindow ( wx.Frame ):
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
 
 		top_sizer.Add( self.notebook, 1, wx.EXPAND |wx.ALL, 5 )
 
