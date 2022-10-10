@@ -68,6 +68,8 @@ tables = {
         loan_length INTEGER,    -- Maximum loan duration in days
         bail FLOAT,             -- Caution (€)
         last_loan DATE,         -- Last loan taken or returned
+        status_BDM VARCHAR(64),
+        status_ALIR VARCHAR(64),
         archived BOOLEAN DEFAULT FALSE,
         comment VARCHAR(1024),
         PRIMARY KEY (user_id),

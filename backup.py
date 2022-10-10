@@ -9,6 +9,7 @@ def backup_db(db_name: str, backup_name: str = None) :
             backup_name = db_name + "_backup_" + str_date
         else :
             backup_name = db_name[:suffix_start] + "_backup_" + str_date
-    copyfile(db_name + ".sql", backup_name + ".sql")
+    copyfile(db_name + ".sql", "backups\\" + backup_name + ".sql")
 
-backup_db("temp")
+if __name__ == "__main__" :
+    backup_db("temp")
