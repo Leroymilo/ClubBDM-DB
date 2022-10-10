@@ -1,4 +1,7 @@
 from db_init import *
+from backup import backup_db
+
+backup_db(db_name)
 
 tables = {
 "Categories" : """
