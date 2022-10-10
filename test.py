@@ -1,7 +1,17 @@
 from db_init import *
 import numpy as np
 
-for i in range(3, 501) :
+cursor.execute("INSERT INTO Categories VALUES (1, 'Fantasy')")
+cursor.execute("INSERT INTO Categories VALUES (2, 'Science-Fiction')")
+cursor.execute("""--sql
+INSERT INTO Series VALUES (
+    "BRSRK",
+    "Berserk",
+    "manga"
+    1
+);""")
+
+for i in range(501) :
     cursor.execute(f"""
     --sql
     INSERT INTO Books VALUES (
