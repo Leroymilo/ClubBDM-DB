@@ -11,7 +11,6 @@ def get_cols(table_name: str) :
     return [col[1] for col in cols]
 
 columns = {table_name: get_cols(table_name) for table_name in tables}
-print(columns)
 
 class Main(MainWindow) :
     def __init__(self, parent) :

@@ -1,17 +1,19 @@
 from db_init import *
 import numpy as np
 
+import db_reset
+
 cursor.execute("INSERT INTO Categories VALUES (1, 'Fantasy')")
 cursor.execute("INSERT INTO Categories VALUES (2, 'Science-Fiction')")
 cursor.execute("""--sql
 INSERT INTO Series VALUES (
     "BRSRK",
     "Berserk",
-    "manga"
+    "manga",
     1
 );""")
 
-for i in range(501) :
+for i in range(1, 501) :
     cursor.execute(f"""
     --sql
     INSERT INTO Books VALUES (
@@ -19,7 +21,7 @@ for i in range(501) :
         "Berserk vol.{i}",
         "BRSRK",
         {i}, 1,
-        TRUE, 9,
+        TRUE, {i%10+1},
         '2022-10-10', ""
     )
     ;
@@ -34,3 +36,5 @@ for table_name in tables[:-4] :
     print("Table :", table_name)
     print(np.array(cursor.fetchall()))
     print()
+
+db.close()

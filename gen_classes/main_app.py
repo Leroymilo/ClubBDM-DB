@@ -57,15 +57,15 @@ class MainWindow ( wx.Frame ):
 
 		book_v_sizer.Add( book_top_h_sizer, 0, 0, 5 )
 
-		self.book_display = wx.dataview.DataViewListCtrl( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.book_col_0 = self.book_display.AppendTextColumn( u"Cotation", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_2 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_3 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
-		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaire", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE )
+		self.book_display = wx.dataview.DataViewListCtrl( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		self.book_col_0 = self.book_display.AppendTextColumn( u"Cotation", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_2 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_3 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaire", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		book_v_sizer.Add( self.book_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -105,7 +105,7 @@ class MainWindow ( wx.Frame ):
 
 		user_v_sizer.Add( user_top_h_sizer, 0, 0, 5 )
 
-		self.user_display = wx.dataview.DataViewListCtrl( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.user_display = wx.dataview.DataViewListCtrl( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
 		user_v_sizer.Add( self.user_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -151,7 +151,7 @@ class MainWindow ( wx.Frame ):
 
 		loan_v_sizer.Add( loan_top_h_sizer, 0, 0, 5 )
 
-		self.loan_display = wx.dataview.DataViewListCtrl( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.loan_display = wx.dataview.DataViewListCtrl( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
 		loan_v_sizer.Add( self.loan_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -171,7 +171,7 @@ class MainWindow ( wx.Frame ):
 		self.m_staticline9 = wx.StaticLine( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		query_v_sizer.Add( self.m_staticline9, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.query_result = wx.dataview.DataViewListCtrl( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.query_result = wx.dataview.DataViewListCtrl( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
 		query_v_sizer.Add( self.query_result, 1, wx.ALL|wx.EXPAND, 5 )
 
 
