@@ -72,7 +72,47 @@ class MainWindow ( wx.Frame ):
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", True )
+		self.notebook.AddPage( self.books, u"Livres", False )
+		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
+
+		series_top_h_sizer = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.series_add = wx.Button( self.series, wx.ID_ANY, u"Ajouter une série", wx.DefaultPosition, wx.DefaultSize, 0 )
+		series_top_h_sizer.Add( self.series_add, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.m_staticline3 = wx.StaticLine( self.series, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		series_top_h_sizer.Add( self.m_staticline3, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_staticText13 = wx.StaticText( self.series, wx.ID_ANY, u"Rechercher :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText13.Wrap( -1 )
+
+		series_top_h_sizer.Add( self.m_staticText13, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.series_search_val = wx.TextCtrl( self.series, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
+		series_top_h_sizer.Add( self.series_search_val, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.m_staticText23 = wx.StaticText( self.series, wx.ID_ANY, u"dans :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText23.Wrap( -1 )
+
+		series_top_h_sizer.Add( self.m_staticText23, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		series_search_colChoices = [ u"nom", u"catégorie", u"type" ]
+		self.series_search_col = wx.Choice( self.series, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, series_search_colChoices, 0 )
+		self.series_search_col.SetSelection( 0 )
+		series_top_h_sizer.Add( self.series_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		series_v_sizer.Add( series_top_h_sizer, 0, 0, 5 )
+
+		self.series_display = wx.dataview.DataViewListCtrl( self.series, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		series_v_sizer.Add( self.series_display, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		self.series.SetSizer( series_v_sizer )
+		self.series.Layout()
+		series_v_sizer.Fit( self.series )
+		self.notebook.AddPage( self.series, u"Séries", True )
 		self.users = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		user_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -197,6 +237,8 @@ class MainWindow ( wx.Frame ):
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add_book )
 		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_book )
+		self.series_add.Bind( wx.EVT_BUTTON, self.add_book )
+		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_book )
 		self.user_add.Bind( wx.EVT_BUTTON, self.add_user )
 		self.user_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_user )
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add_user )
@@ -216,6 +258,8 @@ class MainWindow ( wx.Frame ):
 
 	def search_book( self, event ):
 		event.Skip()
+
+
 
 	def add_user( self, event ):
 		event.Skip()

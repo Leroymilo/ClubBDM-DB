@@ -8,8 +8,8 @@ editors = pd.read_excel("Inventaire.xlsx", sheet_name="Éditeurs")
 series = pd.read_excel("Inventaire.xlsx", sheet_name="Séries")
 books = pd.read_excel("Inventaire.xlsx", sheet_name="Livres")
 
-series.fillna("")
-books.fillna("")
+series.fillna("NULL", inplace=True)
+books.fillna("NULL", inplace=True)
 
 cat_dict = {}
 for _, line in categories.iterrows() :
@@ -46,23 +46,25 @@ for _, line in series.iterrows() :
 
     for auth in line.auteurs.split(";") :
         auth = auth.strip().lstrip()
-        cursor.execute(f"SELECT auth_id FROM Authors WHERE auth_name = '{auth}'")
-        auth_id, = cursor.fetchone()
-        cursor.execute(f"""--sql
-            INSERT INTO `Srs-Auth` VALUES (
-                '{line.identifiant}', {auth_id}
-            )
-        ;""")
+        if auth != "NULL" :
+            cursor.execute(f"SELECT auth_id FROM Authors WHERE auth_name = '{auth}'")
+            auth_id, = cursor.fetchone()
+            cursor.execute(f"""--sql
+                INSERT INTO `Srs-Auth` VALUES (
+                    '{line.identifiant}', {auth_id}
+                )
+            ;""")
 
     for edit in line.éditeurs.split(";") :
         edit = edit.strip().lstrip()
-        cursor.execute(f"SELECT edit_id FROM Editors WHERE edit_name = '{edit}'")
-        edit_id, = cursor.fetchone()
-        cursor.execute(f"""--sql
-            INSERT INTO `Srs-Edit` VALUES (
-                '{line.identifiant}', {edit_id}
-            )
-        ;""")
+        if edit != "NULL" :
+            cursor.execute(f"SELECT edit_id FROM Editors WHERE edit_name = '{edit}'")
+            edit_id, = cursor.fetchone()
+            cursor.execute(f"""--sql
+                INSERT INTO `Srs-Edit` VALUES (
+                    '{line.identifiant}', {edit_id}
+                )
+            ;""")
 
 for _, line in books.iterrows() :
     srs_id = line["identifiant série"]
@@ -70,11 +72,13 @@ for _, line in books.iterrows() :
     vol_nb = str(line["numéro de volume"])
     dup_nb = str(line["numéro de duplicata"])
 
-    new_id = cat_id.ljust(2, '0') + srs_id + \
-        vol_nb.ljust(3, '0') + dup_nb.ljust(2, '0')
+    new_id = cat_id.rjust(2, '0') + srs_id + \
+        vol_nb.rjust(3, '0') + dup_nb.rjust(2, '0')
     
-    comm = "old id : " + line["ancienne cotation"]
-    if line.commentaire != "" :
+    comm = ""
+    if line["ancienne cotation"] != "NULL" :
+        comm += "old id : " + line["ancienne cotation"]
+    if line.commentaire != "NULL" :
         comm += ";" + line.commentaire
     
     cursor.execute(f"""--sql
@@ -88,11 +92,14 @@ for _, line in books.iterrows() :
             comment
         ) VALUES (
             '{new_id}',
-            '{line.nom}',
+            "{line.nom}",
             '{srs_id}',
             {vol_nb},
             {dup_nb},
             {line.condition},
-            '{comm}'
+            "{comm}"
         )
     ;""")
+
+db.commit()
+db.close()

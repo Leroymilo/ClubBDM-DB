@@ -40,7 +40,7 @@ tables = {
         dup_nb INTEGER,         -- Duplicata number
         available BOOLEAN DEFAULT TRUE,
         condition INTEGER,
-        added_on DATE,
+        added_on DATE DEFAULT NULL,
         comment VARCHAR(1024),
         PRIMARY KEY (book_id),
         FOREIGN KEY (series_id) REFERENCES Series(series_id),
@@ -143,10 +143,10 @@ tables = {
 """}
 
 for table_name in tables :
-    print("creating table", table_name)
+    # print("creating table", table_name)
     cursor.execute(f"DROP TABLE IF EXISTS `{table_name}`;")
     cursor.execute(tables[table_name])
-    print("table", table_name, "created")
+    # print("table", table_name, "created")
 db.commit()
 
 if __name__ == "__main__" :
