@@ -47,7 +47,7 @@
             <property name="minimum_size"></property>
             <property name="name">MainWindow</property>
             <property name="pos"></property>
-            <property name="size">861,675</property>
+            <property name="size">901,675</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">App Club BDManga</property>
@@ -625,7 +625,7 @@
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Numéro volume</property>
+                                                <property name="label">Nom série</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">book_col_2</property>
                                                 <property name="permission">protected</property>
@@ -633,10 +633,10 @@
                                                 <property name="width">-1</property>
                                             </object>
                                             <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="align">wxALIGN_RIGHT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Nom série</property>
+                                                <property name="label">Numéro volume</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">book_col_3</property>
                                                 <property name="permission">protected</property>
@@ -644,7 +644,7 @@
                                                 <property name="width">-1</property>
                                             </object>
                                             <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="align">wxALIGN_RIGHT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Condition</property>
@@ -655,7 +655,7 @@
                                                 <property name="width">-1</property>
                                             </object>
                                             <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="align">wxALIGN_RIGHT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Disponible</property>
@@ -666,7 +666,7 @@
                                                 <property name="width">-1</property>
                                             </object>
                                             <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="align">wxALIGN_RIGHT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Ajouté le</property>
@@ -696,7 +696,7 @@
                             <property name="bitmap"></property>
                             <property name="label">Séries</property>
                             <property name="select">1</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -747,25 +747,25 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">series_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>
-                                        <object class="wxBoxSizer" expanded="1">
+                                        <object class="wxBoxSizer" expanded="0">
                                             <property name="minimum_size"></property>
                                             <property name="name">series_top_h_sizer</property>
                                             <property name="orient">wxHORIZONTAL</property>
                                             <property name="permission">none</property>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxALL|wxEXPAND</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxButton" expanded="1">
+                                                <object class="wxButton" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -832,14 +832,14 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick">add_book</event>
+                                                    <event name="OnButtonClick">add_series</event>
                                                 </object>
                                             </object>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxEXPAND | wxALL</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxStaticLine" expanded="1">
+                                                <object class="wxStaticLine" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -893,11 +893,11 @@
                                                     <property name="window_style"></property>
                                                 </object>
                                             </object>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxStaticText" expanded="1">
+                                                <object class="wxStaticText" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -954,11 +954,11 @@
                                                     <property name="wrap">-1</property>
                                                 </object>
                                             </object>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxTextCtrl" expanded="1">
+                                                <object class="wxTextCtrl" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1016,14 +1016,14 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnTextEnter">search_book</event>
+                                                    <event name="OnTextEnter">search_series</event>
                                                 </object>
                                             </object>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxStaticText" expanded="1">
+                                                <object class="wxStaticText" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1080,11 +1080,11 @@
                                                     <property name="wrap">-1</property>
                                                 </object>
                                             </object>
-                                            <object class="sizeritem" expanded="1">
+                                            <object class="sizeritem" expanded="0">
                                                 <property name="border">5</property>
                                                 <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                                                 <property name="proportion">0</property>
-                                                <object class="wxChoice" expanded="1">
+                                                <object class="wxChoice" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1146,11 +1146,11 @@
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="1">
+                                        <object class="wxDataViewListCtrl" expanded="0">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -1171,6 +1171,72 @@
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
                                             <property name="window_style"></property>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Code</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_1</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Nom</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_2</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Type</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_3</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Catégorie</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_4</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Auteurs</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_5</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Editeurs</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">series_col_6</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
                                         </object>
                                     </object>
                                 </object>
@@ -1180,7 +1246,7 @@
                             <property name="bitmap"></property>
                             <property name="label">Utilisateurs</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -1231,12 +1297,12 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">user_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>
@@ -1664,7 +1730,7 @@
                             <property name="bitmap"></property>
                             <property name="label">Emprunts</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -1715,12 +1781,12 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">loan_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>

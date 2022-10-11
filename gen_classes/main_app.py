@@ -18,7 +18,7 @@ import wx.dataview
 class MainWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BDManga", pos = wx.DefaultPosition, size = wx.Size( 861,675 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BDManga", pos = wx.DefaultPosition, size = wx.Size( 901,675 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -60,11 +60,11 @@ class MainWindow ( wx.Frame ):
 		self.book_display = wx.dataview.DataViewListCtrl( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
 		self.book_col_0 = self.book_display.AppendTextColumn( u"Cotation", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_2 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_3 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_2 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_3 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaire", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		book_v_sizer.Add( self.book_display, 1, wx.ALL|wx.EXPAND, 5 )
 
@@ -72,7 +72,7 @@ class MainWindow ( wx.Frame ):
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", False )
+		self.notebook.AddPage( self.books, u"Livres", True )
 		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -106,13 +106,19 @@ class MainWindow ( wx.Frame ):
 		series_v_sizer.Add( series_top_h_sizer, 0, 0, 5 )
 
 		self.series_display = wx.dataview.DataViewListCtrl( self.series, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		self.series_col_1 = self.series_display.AppendTextColumn( u"Code", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_2 = self.series_display.AppendTextColumn( u"Nom", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_3 = self.series_display.AppendTextColumn( u"Type", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_4 = self.series_display.AppendTextColumn( u"Catégorie", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_5 = self.series_display.AppendTextColumn( u"Auteurs", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_6 = self.series_display.AppendTextColumn( u"Editeurs", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		series_v_sizer.Add( self.series_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.series.SetSizer( series_v_sizer )
 		self.series.Layout()
 		series_v_sizer.Fit( self.series )
-		self.notebook.AddPage( self.series, u"Séries", True )
+		self.notebook.AddPage( self.series, u"Séries", False )
 		self.users = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		user_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -237,8 +243,8 @@ class MainWindow ( wx.Frame ):
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add_book )
 		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_book )
-		self.series_add.Bind( wx.EVT_BUTTON, self.add_book )
-		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_book )
+		self.series_add.Bind( wx.EVT_BUTTON, self.add_series )
+		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_series )
 		self.user_add.Bind( wx.EVT_BUTTON, self.add_user )
 		self.user_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_user )
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add_user )
@@ -259,7 +265,11 @@ class MainWindow ( wx.Frame ):
 	def search_book( self, event ):
 		event.Skip()
 
+	def add_series( self, event ):
+		event.Skip()
 
+	def search_series( self, event ):
+		event.Skip()
 
 	def add_user( self, event ):
 		event.Skip()
