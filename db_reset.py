@@ -148,4 +148,5 @@ for table_name in tables :
     print("table", table_name, "created")
 db.commit()
 
-db.close()
+if __name__ == "__main__" :
+    db.close()

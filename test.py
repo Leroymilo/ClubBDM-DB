@@ -1,13 +1,15 @@
 from db_init import *
 import numpy as np
 
+import db_reset
+
 cursor.execute("INSERT INTO Categories VALUES (1, 'Fantasy')")
 cursor.execute("INSERT INTO Categories VALUES (2, 'Science-Fiction')")
 cursor.execute("""--sql
 INSERT INTO Series VALUES (
     "BRSRK",
     "Berserk",
-    "manga"
+    "manga",
     1
 );""")
 
