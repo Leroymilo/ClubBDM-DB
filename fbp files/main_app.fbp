@@ -578,7 +578,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -676,7 +676,7 @@
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
                                             </object>
-                                            <object class="dataViewListColumn" expanded="0">
+                                            <object class="dataViewListColumn" expanded="1">
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>

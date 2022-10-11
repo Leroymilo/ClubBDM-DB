@@ -52,7 +52,8 @@ tables = {
             AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, '0', 3)
             AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, '0', 2)
         ),
-        CONSTRAINT condition_rating CHECK (condition BETWEEN 1 AND 10)
+        CONSTRAINT condition_rating CHECK (condition BETWEEN 1 AND 10),
+        CONSTRAINT volume_number CHECK (vol_nb > 0)
     );
 """,
 
