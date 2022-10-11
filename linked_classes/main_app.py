@@ -1,6 +1,9 @@
 import wx
 from db_init import *
+
 from gen_classes.main_app import MainWindow
+
+import functions.books as books
 
 tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Auth", "Editors", "Srs-Edit"]
 
@@ -20,14 +23,7 @@ class Main(MainWindow) :
     
     def update_books(self) :
         self.book_display.DeleteAllItems()
-        cursor.execute("""
-        --sql
-        SELECT book_id, book_name, vol_nb, series_name, condition, available, added_on, comment
-        FROM Books
-        JOIN Series USING (series_id)
-        ;
-        """)
-        for line in cursor.fetchall() :
+        for line in books.select() :
             self.book_display.AppendItem(list(map(str,line)))
 
     def update_users(self) :
