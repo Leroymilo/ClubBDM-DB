@@ -5,15 +5,17 @@ from gen_classes.main_app import MainWindow
 
 import functions.books as books
 import functions.series as series
+import functions.users as users
+import functions.loans as loans
 
 filters = {
     "Books" : ["Series", "Author", "Editor"],
     "Series" : ["Name", "Type", "Category", "Author", "Editor"],
-    "Users" : [],
-    "Loans" : []
+    "Users" : ["Name", "Tel", "Status"],
+    "Loans" : ["User", "Book"]
 }
 
-notebook_pages = ["Books", "Series", "Users", "Loans"]
+notebook_pages = ["Books", "Series", "Users", "Loans", "SQL"]
 
 selecters = {"Books" : books.select, "Series" : series.select}
 
