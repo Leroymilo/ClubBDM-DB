@@ -17,7 +17,12 @@ filters = {
 
 notebook_pages = ["Books", "Series", "Users", "Loans", "SQL"]
 
-selecters = {"Books" : books.select, "Series" : series.select}
+selecters = {
+    "Books" : books.select,
+    "Series" : series.select,
+    "Users" : users.select,
+    "Loans" : loans.select
+}
 
 class Main(MainWindow) :
     def __init__(self, parent) :

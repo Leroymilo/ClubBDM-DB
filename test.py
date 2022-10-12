@@ -37,17 +37,20 @@ tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Aut
 #     print(np.array(cursor.fetchall()))
 #     print()
 
-cursor.execute("""
---sql
-SELECT CONCAT('---', auth_name)
-FROM Authors
-NATURAL JOIN (
-    SELECT * FROM `Srs-Auth`
-    WHERE series_id = 'PRNVR'
+cursor.execute("""--sql
+INSERT INTO Users VALUES (
+    1, 'Adriaan Lecorché', 'adriaanboxmail@gmail.com',
+    '0642280338', 10, 90, 20, NULL,
+    'Secrétaire Général', NULL, FALSE, ""
 )
-GROUP BY series_id
-;
-""")
-print(cursor.fetchall())
+;""")
+cursor.execute("""--sql
+INSERT INTO Users VALUES (
+    2, 'Ethan', 'ethan@insa-lyon.fr',
+    '06XXXXXXXX', 2, 30, 20, NULL,
+    'Trésorier', NULL, FALSE, ""
+)
+;""")
+db.commit()
 
 db.close()
