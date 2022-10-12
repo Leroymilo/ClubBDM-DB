@@ -51,6 +51,12 @@ INSERT INTO Users VALUES (
     'Trésorier', NULL, FALSE, ""
 )
 ;""")
+cursor.execute("""--sql
+INSERT INTO Loans VALUES (
+    1, 1, '01BRSRK01201', '05/10/2022',
+    '5/01/2023', NULL, False
+)
+;""")
 db.commit()
 
 db.close()

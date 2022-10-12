@@ -123,7 +123,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Livres</property>
-                            <property name="select">1</property>
+                            <property name="select">0</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -1245,7 +1245,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Utilisateurs</property>
-                            <property name="select">0</property>
+                            <property name="select">1</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -1648,7 +1648,7 @@
                                                     <property name="caption"></property>
                                                     <property name="caption_visible">1</property>
                                                     <property name="center_pane">0</property>
-                                                    <property name="choices">&quot;nom&quot; &quot;tel&quot; &quot;statut&quot;</property>
+                                                    <property name="choices">&quot;nom&quot; &quot;statut&quot;</property>
                                                     <property name="close_button">1</property>
                                                     <property name="context_help"></property>
                                                     <property name="context_menu">1</property>
@@ -1823,7 +1823,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -1903,9 +1903,20 @@
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Statut</property>
+                                                <property name="label">Statut BDM</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_6</property>
+                                                <property name="name">user_col_61</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="1">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Statut ALIR</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">user_col_62</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -2656,11 +2667,11 @@
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="0">
+                                    <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>

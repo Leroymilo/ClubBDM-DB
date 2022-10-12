@@ -11,7 +11,7 @@ import functions.loans as loans
 filters = {
     "Books" : ["Series", "Author", "Editor"],
     "Series" : ["Name", "Type", "Category", "Author", "Editor"],
-    "Users" : ["Name", "Tel", "Status"],
+    "Users" : ["Name", "Status"],
     "Loans" : ["User", "Book"]
 }
 
