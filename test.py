@@ -38,25 +38,11 @@ tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Aut
 #     print()
 
 cursor.execute("""--sql
-INSERT INTO Users VALUES (
-    1, 'Adriaan Lecorché', 'adriaanboxmail@gmail.com',
-    '0642280338', 10, 90, 20, NULL,
-    'Secrétaire Général', NULL, FALSE, ""
-)
+SELECT series_id, CONCAT('; ', auth_name) AS auths
+FROM Authors
+NATURAL JOIN `Srs-Auth`
+GROUP BY series_id
 ;""")
-cursor.execute("""--sql
-INSERT INTO Users VALUES (
-    2, 'Ethan', 'ethan@insa-lyon.fr',
-    '06XXXXXXXX', 2, 30, 20, NULL,
-    'Trésorier', NULL, FALSE, ""
-)
-;""")
-cursor.execute("""--sql
-INSERT INTO Loans VALUES (
-    1, 1, '01BRSRK01201', '05/10/2022',
-    '5/01/2023', NULL, False
-)
-;""")
-db.commit()
+print(cursor.fetchall())
 
 db.close()
