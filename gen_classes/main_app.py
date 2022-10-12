@@ -72,7 +72,7 @@ class MainWindow ( wx.Frame ):
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", True )
+		self.notebook.AddPage( self.books, u"Livres", False )
 		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -97,7 +97,7 @@ class MainWindow ( wx.Frame ):
 
 		series_top_h_sizer.Add( self.m_staticText23, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		series_search_colChoices = [ u"nom", u"catégorie", u"type" ]
+		series_search_colChoices = [ u"nom", u"type", u"catégorie", u"auteur", u"éditeur" ]
 		self.series_search_col = wx.Choice( self.series, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, series_search_colChoices, 0 )
 		self.series_search_col.SetSelection( 0 )
 		series_top_h_sizer.Add( self.series_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -111,14 +111,14 @@ class MainWindow ( wx.Frame ):
 		self.series_col_3 = self.series_display.AppendTextColumn( u"Type", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.series_col_4 = self.series_display.AppendTextColumn( u"Catégorie", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.series_col_5 = self.series_display.AppendTextColumn( u"Auteurs", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.series_col_6 = self.series_display.AppendTextColumn( u"Editeurs", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.series_col_6 = self.series_display.AppendTextColumn( u"Éditeurs", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		series_v_sizer.Add( self.series_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.series.SetSizer( series_v_sizer )
 		self.series.Layout()
 		series_v_sizer.Fit( self.series )
-		self.notebook.AddPage( self.series, u"Séries", False )
+		self.notebook.AddPage( self.series, u"Séries", True )
 		self.users = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		user_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -242,13 +242,13 @@ class MainWindow ( wx.Frame ):
 		# Connect Events
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add_book )
-		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_book )
+		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.series_add.Bind( wx.EVT_BUTTON, self.add_series )
-		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_series )
+		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.user_add.Bind( wx.EVT_BUTTON, self.add_user )
-		self.user_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_user )
+		self.user_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add_user )
-		self.loan_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_user )
+		self.loan_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.query_run.Bind( wx.EVT_BUTTON, self.run_query )
 
 	def __del__( self ):
@@ -262,20 +262,16 @@ class MainWindow ( wx.Frame ):
 	def add_book( self, event ):
 		event.Skip()
 
-	def search_book( self, event ):
+	def search_table( self, event ):
 		event.Skip()
 
 	def add_series( self, event ):
 		event.Skip()
 
-	def search_series( self, event ):
-		event.Skip()
 
 	def add_user( self, event ):
 		event.Skip()
 
-	def search_user( self, event ):
-		event.Skip()
 
 
 

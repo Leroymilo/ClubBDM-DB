@@ -444,7 +444,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnTextEnter">search_book</event>
+                                                    <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -696,7 +696,7 @@
                             <property name="bitmap"></property>
                             <property name="label">Séries</property>
                             <property name="select">1</property>
-                            <object class="wxPanel" expanded="0">
+                            <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -747,7 +747,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="0">
+                                <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">series_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
@@ -1016,7 +1016,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnTextEnter">search_series</event>
+                                                    <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -1098,7 +1098,7 @@
                                                     <property name="caption"></property>
                                                     <property name="caption_visible">1</property>
                                                     <property name="center_pane">0</property>
-                                                    <property name="choices">&quot;nom&quot; &quot;catégorie&quot; &quot;type&quot;</property>
+                                                    <property name="choices">&quot;nom&quot; &quot;type&quot; &quot;catégorie&quot; &quot;auteur&quot; &quot;éditeur&quot;</property>
                                                     <property name="close_button">1</property>
                                                     <property name="context_help"></property>
                                                     <property name="context_menu">1</property>
@@ -1146,7 +1146,7 @@
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="0">
+                                    <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
@@ -1230,7 +1230,7 @@
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Editeurs</property>
+                                                <property name="label">Éditeurs</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">series_col_6</property>
                                                 <property name="permission">protected</property>
@@ -1566,7 +1566,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnTextEnter">search_user</event>
+                                                    <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -2181,7 +2181,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnTextEnter">search_user</event>
+                                                    <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -2345,7 +2345,7 @@
                             <property name="bitmap"></property>
                             <property name="label">Requêtes SQL</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -2396,7 +2396,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">query_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>

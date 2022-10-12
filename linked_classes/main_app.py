@@ -4,42 +4,69 @@ from db_init import *
 from gen_classes.main_app import MainWindow
 
 import functions.books as books
+import functions.series as series
 
-tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Auth", "Editors", "Srs-Edit"]
+filters = {
+    "Books" : ["Series", "Author", "Editor"],
+    "Series" : ["Name", "Type", "Category", "Author", "Editor"],
+    "Users" : [],
+    "Loans" : []
+}
 
-book_filters = ["Series", "Author", "Editor"]
+notebook_pages = ["Books", "Series", "Users", "Loans"]
 
-def get_cols(table_name: str) :
-    cursor.execute(f"""--sql
-        PRAGMA table_info(`{table_name}`);""")
-    cols = cursor.fetchall()
-    return [col[1] for col in cols]
-
-columns = {table_name: get_cols(table_name) for table_name in tables}
+selecters = {"Books" : books.select, "Series" : series.select}
 
 class Main(MainWindow) :
     def __init__(self, parent) :
         super().__init__(parent)
-        self.update_books()
+
+        self.dataViews = {
+            "Books" : self.book_display,
+            "Series" : self.series_display,
+            "Users" : self.user_display,
+            "Loans" : self.loan_display
+        }
+
+        self.searchCols = {
+            "Books" : self.book_search_col,
+            "Series" : self.series_search_col,
+            "Users" : self.user_search_col,
+            "Loans" : self.loan_search_col,
+        }
+        
+        self.searchVals = {
+            self.book_search_val : "Books",
+            self.series_search_val : "Series",
+            self.user_search_val : "Users",
+            self.loan_search_val : "Loans",
+        }
+        
+        tab = notebook_pages[self.notebook.GetSelection()]
+        self.update_table(tab = tab)
         self.Show()
     
-    def update_books(self, filter_: Union[None, Tuple[str]] = None) :
-        self.book_display.DeleteAllItems()
-        table = books.select(filter_)
+    def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
+        
+        dataView = self.dataViews[tab]
+        dataView.DeleteAllItems()
+        table = selecters[tab](filter_)
         for line in table :
-            self.book_display.AppendItem(list(map(str,line)))
+            dataView.AppendItem(list(map(str,line)))
 
-    def update_users(self) :
-        pass
+    def search_table(self, event: wx.Event):
+        search_ctrl: wx.TextCtrl = event.GetEventObject()
+        tab = self.searchVals[search_ctrl]
 
-    def update_loans(self) :
-        pass
-
-    def search_book(self, event):
-        filter_val = self.book_search_val.GetValue()
+        filter_val = search_ctrl.GetValue()
         if filter_val.strip() == "" :
             filter_ = None
         else :
-            filter_col = book_filters[self.book_search_col.GetSelection()]
+            filter_col = filters[tab][self.searchCols[tab].GetSelection()]
             filter_ = (filter_col, filter_val)
-        self.update_books(filter_=filter_)
+        self.update_table(tab, filter_=filter_)
+    
+    def load_display(self, event: wx.Event):
+        tab = notebook_pages[self.notebook.GetSelection()]
+        print(tab)
+        self.update_table(tab)
