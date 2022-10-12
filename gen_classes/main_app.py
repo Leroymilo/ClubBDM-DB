@@ -240,8 +240,11 @@ class MainWindow ( wx.Frame ):
 		self.run_query_button = wx.Button( self.queries, wx.ID_ANY, u"Run query", wx.DefaultPosition, wx.DefaultSize, 0 )
 		query_h_sizer.Add( self.run_query_button, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.query_tuto_link = wx.adv.HyperlinkCtrl( self.queries, wx.ID_ANY, u"Tutoriel utilisation panneau SQL", wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
+		self.query_tuto_link = wx.adv.HyperlinkCtrl( self.queries, wx.ID_ANY, u"Tutoriel utilisation panneau SQL", u"https://github.com/Leroymilo/ClubBDM-DB/blob/main/documentation/tuto%20SQL.md", wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
 		query_h_sizer.Add( self.query_tuto_link, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.query_structure_link = wx.adv.HyperlinkCtrl( self.queries, wx.ID_ANY, u"Structure de la base", u"https://github.com/Leroymilo/ClubBDM-DB/blob/main/documentation/structure%20db.md", wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
+		query_h_sizer.Add( self.query_structure_link, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		query_v_sizer.Add( query_h_sizer, 0, wx.EXPAND, 5 )

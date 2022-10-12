@@ -22,6 +22,7 @@ selecters = {"Books" : books.select, "Series" : series.select}
 class Main(MainWindow) :
     def __init__(self, parent) :
         super().__init__(parent)
+        self.notebook.SetSelection(0)
 
         self.dataViews = {
             "Books" : self.book_display,
