@@ -10,6 +10,7 @@
 import wx
 import wx.xrc
 import wx.dataview
+import wx.adv
 
 ###########################################################################
 ## Class MainWindow
@@ -59,13 +60,13 @@ class MainWindow ( wx.Frame ):
 
 		self.book_display = wx.dataview.DataViewListCtrl( self.books, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
 		self.book_col_0 = self.book_display.AppendTextColumn( u"Cotation", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_2 = self.book_display.AppendTextColumn( u"Nom série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_3 = self.book_display.AppendTextColumn( u"Numéro volume", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_4 = self.book_display.AppendTextColumn( u"Condition", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_5 = self.book_display.AppendTextColumn( u"Disponible", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_1 = self.book_display.AppendTextColumn( u"Nom", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_2 = self.book_display.AppendTextColumn( u"Série", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_3 = self.book_display.AppendTextColumn( u"Num", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_4 = self.book_display.AppendTextColumn( u"État", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_5 = self.book_display.AppendTextColumn( u"Dispo", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.book_col_6 = self.book_display.AppendTextColumn( u"Ajouté le", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_RIGHT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaire", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaires", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		book_v_sizer.Add( self.book_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -118,7 +119,7 @@ class MainWindow ( wx.Frame ):
 		self.series.SetSizer( series_v_sizer )
 		self.series.Layout()
 		series_v_sizer.Fit( self.series )
-		self.notebook.AddPage( self.series, u"Séries", True )
+		self.notebook.AddPage( self.series, u"Séries", False )
 		self.users = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		user_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -128,7 +129,7 @@ class MainWindow ( wx.Frame ):
 		user_top_h_sizer.Add( self.user_add, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline1 = wx.StaticLine( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
-		user_top_h_sizer.Add( self.m_staticline1, 0, wx.EXPAND |wx.ALL, 5 )
+		user_top_h_sizer.Add( self.m_staticline1, 0, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticText11 = wx.StaticText( self.users, wx.ID_ANY, u"Rechercher :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText11.Wrap( -1 )
@@ -143,15 +144,30 @@ class MainWindow ( wx.Frame ):
 
 		user_top_h_sizer.Add( self.m_staticText21, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		user_search_colChoices = [ u"nom", u"tel" ]
+		user_search_colChoices = [ u"nom", u"tel", u"statut" ]
 		self.user_search_col = wx.Choice( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, user_search_colChoices, 0 )
 		self.user_search_col.SetSelection( 0 )
 		user_top_h_sizer.Add( self.user_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.m_staticline7 = wx.StaticLine( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		user_top_h_sizer.Add( self.m_staticline7, 0, wx.EXPAND|wx.ALL, 5 )
+
+		self.m_checkBox1 = wx.CheckBox( self.users, wx.ID_ANY, u"Afficher inactifs :", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		user_top_h_sizer.Add( self.m_checkBox1, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		user_v_sizer.Add( user_top_h_sizer, 0, 0, 5 )
 
 		self.user_display = wx.dataview.DataViewListCtrl( self.users, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		self.user_col_1 = self.user_display.AppendTextColumn( u"Nom", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_2 = self.user_display.AppendTextColumn( u"Mail", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_3 = self.user_display.AppendTextColumn( u"Téléphone", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_4 = self.user_display.AppendTextColumn( u"Emprunts", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_5 = self.user_display.AppendTextColumn( u"Durée emprunts", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_6 = self.user_display.AppendTextColumn( u"Statut", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_7 = self.user_display.AppendTextColumn( u"Dernier emprunt", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_8 = self.user_display.AppendTextColumn( u"Archivé", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.user_col_9 = self.user_display.AppendTextColumn( u"Commentaires", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		user_v_sizer.Add( self.user_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -189,15 +205,26 @@ class MainWindow ( wx.Frame ):
 
 		loan_top_h_sizer.Add( self.m_staticText22, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		loan_search_colChoices = [ u"nom de l'emprunteur", u"cotation du livre", u"nom du livre" ]
+		loan_search_colChoices = [ u"Utilisateur", u"Livre" ]
 		self.loan_search_col = wx.Choice( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, loan_search_colChoices, 0 )
 		self.loan_search_col.SetSelection( 0 )
 		loan_top_h_sizer.Add( self.loan_search_col, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.m_staticline8 = wx.StaticLine( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		loan_top_h_sizer.Add( self.m_staticline8, 0, wx.EXPAND |wx.ALL, 5 )
+
+		self.m_checkBox2 = wx.CheckBox( self.loans, wx.ID_ANY, u"Afficher archivés :", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		loan_top_h_sizer.Add( self.m_checkBox2, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		loan_v_sizer.Add( loan_top_h_sizer, 0, 0, 5 )
 
 		self.loan_display = wx.dataview.DataViewListCtrl( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		self.loan_col_1 = self.loan_display.AppendTextColumn( u"Utilisateur", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.loan_col_2 = self.loan_display.AppendTextColumn( u"Livre", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.loan_col_3 = self.loan_display.AppendTextColumn( u"Date d'emprunt", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.loan_col_4 = self.loan_display.AppendTextColumn( u"Retour au plus tard", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.loan_col_5 = self.loan_display.AppendTextColumn( u"Date de retour", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		loan_v_sizer.Add( self.loan_display, 1, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -208,8 +235,16 @@ class MainWindow ( wx.Frame ):
 		self.queries = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		query_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
-		self.query_run = wx.Button( self.queries, wx.ID_ANY, u"Run query", wx.DefaultPosition, wx.DefaultSize, 0 )
-		query_v_sizer.Add( self.query_run, 0, wx.ALL, 5 )
+		query_h_sizer = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.run_query_button = wx.Button( self.queries, wx.ID_ANY, u"Run query", wx.DefaultPosition, wx.DefaultSize, 0 )
+		query_h_sizer.Add( self.run_query_button, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.query_tuto_link = wx.adv.HyperlinkCtrl( self.queries, wx.ID_ANY, u"Tutoriel utilisation panneau SQL", wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
+		query_h_sizer.Add( self.query_tuto_link, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		query_v_sizer.Add( query_h_sizer, 0, wx.EXPAND, 5 )
 
 		self.query_text = wx.TextCtrl( self.queries, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_PROCESS_TAB )
 		query_v_sizer.Add( self.query_text, 1, wx.ALL|wx.EXPAND, 5 )
@@ -224,7 +259,7 @@ class MainWindow ( wx.Frame ):
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
 
 		top_sizer.Add( self.notebook, 1, wx.EXPAND |wx.ALL, 5 )
 
@@ -247,9 +282,11 @@ class MainWindow ( wx.Frame ):
 		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.user_add.Bind( wx.EVT_BUTTON, self.add_user )
 		self.user_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
+		self.m_checkBox1.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add_user )
 		self.loan_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
-		self.query_run.Bind( wx.EVT_BUTTON, self.run_query )
+		self.m_checkBox2.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
+		self.run_query_button.Bind( wx.EVT_BUTTON, self.run_query )
 
 	def __del__( self ):
 		pass
@@ -270,6 +307,10 @@ class MainWindow ( wx.Frame ):
 
 
 	def add_user( self, event ):
+		event.Skip()
+
+
+	def toggle_archived( self, event ):
 		event.Skip()
 
 
