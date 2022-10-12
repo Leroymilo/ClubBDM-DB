@@ -71,5 +71,6 @@ class Main(MainWindow) :
     
     def load_display(self, event: wx.Event):
         tab = notebook_pages[self.notebook.GetSelection()]
-        print(tab)
-        self.update_table(tab)
+        # print(tab)
+        if tab in selecters :
+            self.update_table(tab)
