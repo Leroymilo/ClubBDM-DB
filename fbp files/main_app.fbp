@@ -180,7 +180,7 @@
                                     <property name="name">book_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="0">
+                                    <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>
@@ -260,7 +260,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick">add_book</event>
+                                                    <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -832,7 +832,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick">add_series</event>
+                                                    <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -1245,7 +1245,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Utilisateurs</property>
-                            <property name="select">1</property>
+                            <property name="select">0</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -1382,7 +1382,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick">add_user</event>
+                                                    <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -1823,7 +1823,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="1">
+                                        <object class="wxDataViewListCtrl" expanded="0">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -1910,7 +1910,7 @@
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
                                             </object>
-                                            <object class="dataViewListColumn" expanded="1">
+                                            <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
@@ -2099,7 +2099,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
-                                                    <event name="OnButtonClick">add_user</event>
+                                                    <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -2231,6 +2231,7 @@
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
+                                                    <event name="OnButtonClick">end_loan</event>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -2755,7 +2756,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Requêtes SQL</property>
-                            <property name="select">0</property>
+                            <property name="select">1</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
