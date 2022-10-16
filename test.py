@@ -1,5 +1,5 @@
-from db_init import *
-import numpy as np
+# from db_init import *
+# import numpy as np
 
 # import db_reset
 
@@ -37,12 +37,12 @@ tables = ["Categories", "Series", "Books", "Users", "Loans", "Authors", "Srs-Aut
 #     print(np.array(cursor.fetchall()))
 #     print()
 
-cursor.execute("""--sql
-SELECT series_id, CONCAT('; ', auth_name) AS auths
-FROM Authors
-NATURAL JOIN `Srs-Auth`
-GROUP BY series_id
-;""")
-print(cursor.fetchall())
+# cursor.execute("""--sql
+# SELECT series_id, CONCAT('; ', auth_name) AS auths
+# FROM Authors
+# NATURAL JOIN `Srs-Auth`
+# GROUP BY series_id
+# ;""")
+# print(cursor.fetchall())
 
-db.close()
+# db.close()

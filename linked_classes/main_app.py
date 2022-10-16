@@ -1,3 +1,4 @@
+from typing import Type
 import wx
 import wx.dataview
 import pandas as pd
@@ -12,6 +13,7 @@ import functions.users as users
 import functions.loans as loans
 
 from linked_classes.book_add import Book
+from linked_classes.pwd_ask import Pwd
 
 filters = {
     "Books" : ["Series", "Author", "Editor"],
@@ -38,6 +40,7 @@ adders = {
 
 class Main(MainWindow) :
     def __init__(self, parent) :
+        self.sql_locked = True
         super().__init__(parent)
 
         self.dataViews = {
@@ -107,14 +110,35 @@ class Main(MainWindow) :
     def run_query(self, event: wx.Event) :
         queries = self.query_text.GetValue().split(';\n')
 
-        for query in queries :
-            if query.upper().startswith("SELECT") :
+        df = pd.DataFrame()
+
+        tried_pwd = False
+        for query in queries :            
+            if not query.upper().startswith("SELECT") and self.sql_locked :
+                if tried_pwd :
+                    continue
+                pwd_dlg = Pwd(self)
+                if pwd_dlg.ShowModal() == 1 :
+                    self.sql_locked = False
+                else :
+                    continue
+            
+            self.help_text.SetLabel("Requête en cours d'execution...")
+            try :
                 df = pd.read_sql(query, db)
+            except TypeError :
+                self.help_text.SetLabel("La requête n'a pas de résultat")
+                db.commit()
+            except pd.errors.DatabaseError as er:
+                self.help_text.SetLabel("Erreur dans la requête : {0}".format(er))
         
-        col_names = df.columns
-        table = df.to_numpy(dtype=str, na_value="None")
         self.query_result.ClearColumns()
         self.query_result.DeleteAllItems()
+        if df.shape == (0, 0) :
+            return
+        self.help_text.SetLabel(f"Dimensions du résultat : {df.shape}")
+        col_names = df.columns
+        table = df.to_numpy(dtype=str, na_value="None")
         for col in col_names :
             self.query_result.AppendTextColumn(col, flags=wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE)
         for line in table :
@@ -123,3 +147,4 @@ class Main(MainWindow) :
     def add(self, event: wx.Event) :
         tab = notebook_pages[self.notebook.GetSelection()]
         sub_frame = adders[tab](self)
+        sub_frame.Show()
