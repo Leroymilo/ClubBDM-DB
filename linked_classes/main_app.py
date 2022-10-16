@@ -14,6 +14,7 @@ import functions.users as users
 import functions.loans as loans
 
 from linked_classes.book_add import Book
+from linked_classes.series_add import Series
 from linked_classes.pwd_ask import Pwd
 
 filters = {
@@ -34,7 +35,7 @@ selectors = {
 
 adders = {
     "Books" : Book,
-    "Series" : None,
+    "Series" : Series,
     "Users" : None,
     "Loans" : None
 }
@@ -101,8 +102,8 @@ class Main(MainWindow) :
         tab = notebook_pages[self.notebook.GetSelection()]
 
         if tab == "Users" :
-            self.user_col_7.SetHidden(1 - self.user_col_7.IsHidden())
-            self.user_col_8.SetHidden(1 - self.user_col_8.IsHidden())
+            self.user_col_9.SetHidden(1 - self.user_col_7.IsHidden())
+            self.user_col_10.SetHidden(1 - self.user_col_8.IsHidden())
         
         elif tab == "Loans" :
             self.loan_col_5.SetHidden(1 - self.loan_col_5.IsHidden())
@@ -160,3 +161,13 @@ class Main(MainWindow) :
     def clean_sub_frames(self) :
         while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
             self.sub_frames.pop()
+    
+    def on_activate(self, event):
+        for sub_frame in self.sub_frames :
+            if sub_frame is not None :
+                sub_frame.Show()
+        
+    def on_iconize(self, event):
+        for sub_frame in self.sub_frames :
+            if sub_frame is not None :
+                sub_frame.Hide()

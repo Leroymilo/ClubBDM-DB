@@ -24,8 +24,9 @@ tables = {
         book_category INTEGER,
         PRIMARY KEY (series_id),
         FOREIGN KEY (book_category) REFERENCES Categories(cat_id),
-        CONSTRAINT id_format CHECK (series_id REGEXP '^[A-Z0-9]{5}$')
-        CONSTRAINT type_chk CHECK (book_type IN ("bd", "comics", "manga"))
+        CONSTRAINT blank_name CHECK (series_name != ""),
+        CONSTRAINT id_format CHECK (series_id REGEXP '^[A-Z0-9]{5}$'),
+        CONSTRAINT type_chk CHECK (book_type IN ("bd", "comics", "manga", "roman"))
     );
 """,
 

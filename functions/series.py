@@ -91,3 +91,24 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
         ;""")
     
     return np.asarray(cursor.fetchall())
+
+def get_categories() :
+    cursor.execute("""--sql
+        SELECT cat_id, cat_name FROM Categories
+    ;""")
+
+    return {el[1]: el[0] for el in cursor.fetchall()}
+
+def get_auths() :
+    cursor.execute("""--sql
+        SELECT auth_id, auth_name FROM Authors
+    ;""")
+
+    return {el[1]: el[0] for el in cursor.fetchall()}
+
+def get_edits() :
+    cursor.execute("""--sql
+        SELECT edit_id, edit_name FROM Editors
+    ;""")
+
+    return {el[1]: el[0] for el in cursor.fetchall()}

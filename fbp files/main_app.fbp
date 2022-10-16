@@ -57,6 +57,10 @@
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <property name="xrc_skip_sizer">1</property>
+            <event name="OnActivate">on_activate</event>
+            <event name="OnHibernate">on_hibernate</event>
+            <event name="OnIconize">on_iconize</event>
+            <event name="OnMaximize">on_maximize</event>
             <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">top_sizer</property>
@@ -1823,7 +1827,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -1899,33 +1903,22 @@
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
                                             </object>
+                                            <object class="dataViewListColumn" expanded="1">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Caution</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">user_col_6</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
                                             <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Statut BDM</property>
-                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_61</property>
-                                                <property name="permission">protected</property>
-                                                <property name="type">Text</property>
-                                                <property name="width">-1</property>
-                                            </object>
-                                            <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
-                                                <property name="ellipsize"></property>
-                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Statut ALIR</property>
-                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_62</property>
-                                                <property name="permission">protected</property>
-                                                <property name="type">Text</property>
-                                                <property name="width">-1</property>
-                                            </object>
-                                            <object class="dataViewListColumn" expanded="0">
-                                                <property name="align">wxALIGN_LEFT</property>
-                                                <property name="ellipsize"></property>
-                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Dernier emprunt</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">user_col_7</property>
                                                 <property name="permission">protected</property>
@@ -1936,9 +1929,31 @@
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
-                                                <property name="label">Archivé</property>
+                                                <property name="label">Statut ALIR</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">user_col_8</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Dernier emprunt</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">user_col_9</property>
+                                                <property name="permission">protected</property>
+                                                <property name="type">Text</property>
+                                                <property name="width">-1</property>
+                                            </object>
+                                            <object class="dataViewListColumn" expanded="0">
+                                                <property name="align">wxALIGN_LEFT</property>
+                                                <property name="ellipsize"></property>
+                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="label">Archivé</property>
+                                                <property name="mode">wxDATAVIEW_CELL_INERT</property>
+                                                <property name="name">user_col_10</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1949,7 +1964,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Commentaires</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_9</property>
+                                                <property name="name">user_col_11</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -2672,7 +2687,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="1">
+                                        <object class="wxDataViewListCtrl" expanded="0">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
