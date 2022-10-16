@@ -4,6 +4,7 @@ import wx.dataview
 import pandas as pd
 
 from db_init import *
+from backup import backup_db
 
 from gen_classes.main_app import MainWindow
 
@@ -40,6 +41,7 @@ adders = {
 
 class Main(MainWindow) :
     def __init__(self, parent) :
+        backup_db(db_name)
         self.sql_locked = True
         super().__init__(parent)
 
@@ -112,10 +114,16 @@ class Main(MainWindow) :
         df = pd.DataFrame()
 
         tried_pwd = False
+        backed_up = False
         for query in queries :            
             if not query.upper().startswith("SELECT") and self.sql_locked :
                 if tried_pwd :
                     continue
+            
+                if not backed_up :
+                    backup_db(db_name)
+                    backed_up = True
+
                 pwd_dlg = Pwd(self)
                 if pwd_dlg.ShowModal() == 1 :
                     self.sql_locked = False

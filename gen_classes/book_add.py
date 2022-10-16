@@ -17,7 +17,7 @@ import wx.xrc
 class BookWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 284,257 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 367,296 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -28,7 +28,7 @@ class BookWindow ( wx.Frame ):
 		self.m_staticText10 = wx.StaticText( self, wx.ID_ANY, u"Nom du volume :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText10.Wrap( -1 )
 
-		h_sizer_1.Add( self.m_staticText10, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer_1.Add( self.m_staticText10, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		self.vol_name_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		h_sizer_1.Add( self.vol_name_txt, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
@@ -41,18 +41,18 @@ class BookWindow ( wx.Frame ):
 		self.m_staticText11 = wx.StaticText( self, wx.ID_ANY, u"Série :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText11.Wrap( -1 )
 
-		h_sizer_2.Add( self.m_staticText11, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer_2.Add( self.m_staticText11, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		series_choiceChoices = []
 		self.series_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, series_choiceChoices, 0 )
 		self.series_choice.SetSelection( 0 )
-		h_sizer_2.Add( self.series_choice, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer_2.Add( self.series_choice, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.add_series_button = wx.Button( self, wx.ID_ANY, u"Nouvelle série", wx.DefaultPosition, wx.DefaultSize, 0 )
+		h_sizer_2.Add( self.add_series_button, 0, wx.ALL, 5 )
 
 
 		v_sizer.Add( h_sizer_2, 0, wx.EXPAND, 5 )
-
-		self.add_series_button = wx.Button( self, wx.ID_ANY, u"Nouvelle série", wx.DefaultPosition, wx.DefaultSize, 0 )
-		v_sizer.Add( self.add_series_button, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
 
 		h_sizer_3 = wx.BoxSizer( wx.HORIZONTAL )
 
@@ -79,6 +79,19 @@ class BookWindow ( wx.Frame ):
 
 
 		v_sizer.Add( h_sizer_4, 0, wx.EXPAND, 5 )
+
+		h_sizer_5 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText6 = wx.StaticText( self, wx.ID_ANY, u"Commentaire :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText6.Wrap( -1 )
+
+		h_sizer_5.Add( self.m_staticText6, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.com_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		h_sizer_5.Add( self.com_txt, 1, wx.ALL, 5 )
+
+
+		v_sizer.Add( h_sizer_5, 0, wx.EXPAND, 5 )
 
 		self.help_text = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.help_text.Wrap( -1 )

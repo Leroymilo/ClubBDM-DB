@@ -1,10 +1,10 @@
 from shutil import copyfile
-from datetime import date
+from datetime import datetime
 
 def backup_db(db_name: str, backup_name: str = None) :
     if backup_name is None :
         suffix_start = db_name.find("_backup")
-        str_date = date.today().strftime("%d-%m-%Y")
+        str_date = datetime.today().strftime("%Y%m%d-%H%M%S")
         if suffix_start == -1 :
             backup_name = db_name + "_backup_" + str_date
         else :

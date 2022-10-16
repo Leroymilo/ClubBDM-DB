@@ -2,7 +2,7 @@ import wx
 
 from gen_classes.book_add import BookWindow
 
-from functions.books import get_series
+from functions.books import get_series, add
 
 class Book(BookWindow) :
     def __init__(self, parent, id_) :
@@ -17,6 +17,14 @@ class Book(BookWindow) :
         if self.series_choice.GetSelection() == -1 :
             self.display("Choisissez une série ou créez-en une nouvelle")
             return
+        book_id = add(
+            self.series_dict[self.series_choice.GetStringSelection()],
+            self.vol_nb_spin.GetValue(),
+            self.condition_spin.GetValue(),
+            self.vol_name_txt.GetValue(),
+            self.com_txt.GetValue()
+        )
+        self.display(f"Livre {book_id} ajouté à la collection")
         return
     
     def display(self, text: str) :
