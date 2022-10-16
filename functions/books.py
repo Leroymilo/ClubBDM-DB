@@ -60,3 +60,10 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
         ;""")
     
     return np.asarray(cursor.fetchall())
+
+def get_series() :
+    cursor.execute("""--sql
+        SELECT series_id, series_name FROM Series
+    ;""")
+
+    return {el[1]: el[0] for el in cursor.fetchall()}

@@ -47,7 +47,7 @@
             <property name="minimum_size"></property>
             <property name="name">BookWindow</property>
             <property name="pos"></property>
-            <property name="size">284,300</property>
+            <property name="size">284,257</property>
             <property name="style">wxCAPTION|wxCLOSE_BOX|wxFRAME_FLOAT_ON_PARENT|wxFRAME_TOOL_WINDOW|wxSYSTEM_MENU</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Ajouter un livre</property>
@@ -57,6 +57,7 @@
             <property name="window_name"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <property name="xrc_skip_sizer">1</property>
+            <event name="OnClose">end_process</event>
             <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>
                 <property name="name">v_sizer</property>
@@ -811,6 +812,15 @@
                         <event name="OnButtonClick">add_book</event>
                     </object>
                 </object>
+            </object>
+            <object class="wxTimer" expanded="1">
+                <property name="enabled">0</property>
+                <property name="id">wxID_ANY</property>
+                <property name="name">help_timer</property>
+                <property name="oneshot">0</property>
+                <property name="period">5000</property>
+                <property name="permission">protected</property>
+                <event name="OnTimer">test_timer</event>
             </object>
         </object>
     </object>

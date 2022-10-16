@@ -9,7 +9,7 @@
 
 - La structure de la base de données sous forme de requêtes SQL est disponible [ici](https://github.com/Leroymilo/ClubBDM-DB/blob/main/documentation/structure%20db.md) pour plus de détails.
 - Si vous écrivez plusieurs requêtes séparées par des `;`, elles seront toutes executées mais seul le dernier `SELECT` sera affiché.
-- Les requêtes de modification sont bloquées (TODO : par un mot de passe).
+- Les requêtes de modification sont protégées par un mot de passe.
 - Les requêtes passent par la librairie python-SQL par défaut `sqlite3` pour éviter des problèmes de màj, mais cette librairie ne supporte pas toutes les fonctions SQL habituelles, voici celles qui ont été réimplémentées :
     - `REGEXP(item, expression)`
     - `LPAD(item, filler, width)`

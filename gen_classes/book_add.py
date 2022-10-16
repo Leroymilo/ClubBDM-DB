@@ -17,7 +17,7 @@ import wx.xrc
 class BookWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 284,300 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 284,257 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -91,22 +91,32 @@ class BookWindow ( wx.Frame ):
 
 		self.SetSizer( v_sizer )
 		self.Layout()
+		self.help_timer = wx.Timer()
+		self.help_timer.SetOwner( self, wx.ID_ANY )
 
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.Bind( wx.EVT_CLOSE, self.end_process )
 		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
 		self.add_book_button.Bind( wx.EVT_BUTTON, self.add_book )
+		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 
 	def __del__( self ):
 		pass
 
 
 	# Virtual event handlers, override them in your derived class
+	def end_process( self, event ):
+		event.Skip()
+
 	def add_series( self, event ):
 		event.Skip()
 
 	def add_book( self, event ):
+		event.Skip()
+
+	def test_timer( self, event ):
 		event.Skip()
 
 

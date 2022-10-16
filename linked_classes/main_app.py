@@ -66,8 +66,7 @@ class Main(MainWindow) :
         
         self.notebook.SetSelection(0)
         self.sub_frames = []
-        tab = notebook_pages[self.notebook.GetSelection()]
-        self.update_table(tab = tab)
+        self.update_table(tab = notebook_pages[self.notebook.GetSelection()])
         self.Show()
 
     def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
@@ -146,5 +145,10 @@ class Main(MainWindow) :
 
     def add(self, event: wx.Event) :
         tab = notebook_pages[self.notebook.GetSelection()]
-        sub_frame = adders[tab](self)
+        sub_frame = adders[tab](self, id_=len(self.sub_frames))
+        self.sub_frames.append(sub_frame)
         sub_frame.Show()
+    
+    def clean_sub_frames(self) :
+        while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
+            self.sub_frames.pop()
