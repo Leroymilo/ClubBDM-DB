@@ -34,18 +34,22 @@ class Series (SeriesWindow) :
     
     def auth_selected(self, event: wx.Event) :
         choice_i = event.GetEventObject().GetId() - 1100
-        if self.auth_choices[choice_i].GetSelection() == 0  and choice_i != len(self.auth_choices) - 1 :
+        if self.auth_choices[choice_i].GetSelection() == 0 \
+            and choice_i != len(self.auth_choices) - 1 :
             for i in range(choice_i, len(self.auth_choices) - 1) :
-                self.auth_choices[i].SetSelection(self.auth_choices[i+1].GetSelection())
+                self.auth_choices[i].SetSelection(
+                    self.auth_choices[i+1].GetSelection()
+                )
             
             if len(self.auth_choices) > 1 :
                 last_choice = self.auth_choices.pop()
                 self.auth_sizer.Remove(last_choice.GetId() - 1100)
                 last_choice.Destroy()
         
-        elif self.auth_choices[choice_i].GetSelection() != 0 and choice_i == len(self.auth_choices) - 1 :
+        elif self.auth_choices[choice_i].GetSelection() != 0 \
+            and choice_i == len(self.auth_choices) - 1 :
             self.add_auth_ch()
-        
+
         self.Layout()
     
     def add_edit_ch(self) :
