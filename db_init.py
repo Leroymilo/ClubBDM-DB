@@ -3,7 +3,7 @@ import re
 from typing import Union, Tuple
 import numpy as np
 
-db_name = "temp"
+db_name = "dbBDM"
 
 def regexp(expr: str, item: str) :
     reg = re.compile(expr)
