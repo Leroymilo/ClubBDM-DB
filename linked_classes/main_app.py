@@ -92,9 +92,7 @@ class Main(MainWindow) :
         self.update_table(tab, filter_=filter_)
     
     def load_display(self, event: wx.Event) :
-        print("before page change")
         tab = notebook_pages[self.notebook.GetSelection()]
-        print(tab)
         if tab in selectors :
             self.update_table(tab)
         print("after page change")
