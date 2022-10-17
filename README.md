@@ -1,13 +1,15 @@
 # Tutoriel d'installation et d'utilisation de l'application BD-Manga
 
 ## Setup de l'environnement sous Windows :
+Si vous avez votre propre environnement, pas besoin de tout installer.
 
 - Installez [python](https://www.python.org/downloads/) :</br>
 ![](2022-10-17-20-38-08.png)</br>
 Pour les options d'installation :
     - Cochez "Add python.exe to PATH"
     - Cliquez sur "Install Now"
-- Installez une éditeur de python : [PyCharmCE]() ou [VSCode]() (un peu plus dur à configurer).</br>
+- Installez une éditeur de python : [PyCharmCE](https://www.jetbrains.com/pycharm/download/#section=windows) (community edition)
+ou [VSCode](https://code.visualstudio.com/download) (un peu plus dur à configurer).</br>
 Faites juste attention à bien cocher l'option "ouvrir avec/en tant que projet PyCharm/VSCode"
 - Installez [git](https://git-scm.com/downloads). Pour les options d'installation :
     - Cochez l'option "Git Bash here"
