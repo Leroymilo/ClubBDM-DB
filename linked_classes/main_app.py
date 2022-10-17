@@ -73,7 +73,6 @@ class Main(MainWindow) :
         self.Show()
 
     def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
-        
         dataView = self.dataViews[tab]
         dataView.DeleteAllItems()
         table = selectors[tab](filter_)
@@ -93,10 +92,12 @@ class Main(MainWindow) :
         self.update_table(tab, filter_=filter_)
     
     def load_display(self, event: wx.Event) :
+        print("before page change")
         tab = notebook_pages[self.notebook.GetSelection()]
-        # print(tab)
+        print(tab)
         if tab in selectors :
             self.update_table(tab)
+        print("after page change")
     
     def toggle_archived(self, event: wx.Event) :
         tab = notebook_pages[self.notebook.GetSelection()]

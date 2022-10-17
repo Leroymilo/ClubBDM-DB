@@ -7,6 +7,7 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
             tel,
             IF(loan_c IS NULL, "0", loan_c) || "/" || max_loans,
             loan_length || " jours",
+            bail,
             IF(status_BDM IS NULL, "", status_BDM),
             IF(status_ALIR IS NULL, "", status_ALIR),
             last_loan,

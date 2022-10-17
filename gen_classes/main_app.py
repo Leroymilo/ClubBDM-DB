@@ -176,7 +176,7 @@ class MainWindow ( wx.Frame ):
 		self.users.SetSizer( user_v_sizer )
 		self.users.Layout()
 		user_v_sizer.Fit( self.users )
-		self.notebook.AddPage( self.users, u"Utilisateurs", False )
+		self.notebook.AddPage( self.users, u"Utilisateurs", True )
 		self.loans = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		loan_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -264,9 +264,9 @@ class MainWindow ( wx.Frame ):
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
 
-		top_sizer.Add( self.notebook, 1, wx.EXPAND |wx.ALL, 5 )
+		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.help_text = wx.StaticText( self, wx.ID_ANY, u"display help here", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.help_text.Wrap( -1 )
@@ -281,9 +281,7 @@ class MainWindow ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_ACTIVATE, self.on_activate )
-		self.Bind( wx.EVT_HIBERNATE, self.on_hibernate )
 		self.Bind( wx.EVT_ICONIZE, self.on_iconize )
-		self.Bind( wx.EVT_MAXIMIZE, self.on_maximize )
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add )
 		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
@@ -306,13 +304,7 @@ class MainWindow ( wx.Frame ):
 	def on_activate( self, event ):
 		event.Skip()
 
-	def on_hibernate( self, event ):
-		event.Skip()
-
 	def on_iconize( self, event ):
-		event.Skip()
-
-	def on_maximize( self, event ):
 		event.Skip()
 
 	def load_display( self, event ):
