@@ -1,3 +1,4 @@
+from typing import Set
 from db_init import *
 
 def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
@@ -112,3 +113,39 @@ def get_edits() :
     ;""")
 
     return {el[1]: el[0] for el in cursor.fetchall()}
+
+def add(id: str, name: str, b_type: str, cat: str,
+    auth_ids: Set[int], edit_ids: Set[int]) :
+
+    cursor.execute(f"""--sql
+        SELECT series_id FROM Series
+        WHERE series_id = "{id}"
+    ;""")
+    if cursor.fetchall() != [] :
+        return 1
+    
+    cursor.execute(f"""--sql
+        SELECT series_name FROM Series
+        WHERE series_name LIKE "{name}"
+    ;""")
+    if cursor.fetchall() != [] :
+        return 2
+    
+    cursor.execute(f"""--sql
+    INSERT INTO Series VALUES (
+        '{id}', "{name}", '{b_type}', {cat}
+    )
+    ;""")
+    
+    for auth_id in auth_ids :
+        cursor.execute(f"""--sql
+            INSERT INTO `Srs-Auth` VALUES ('{id}', {auth_id})
+        ;""")
+    
+    for edit_id in edit_ids :
+        cursor.execute(f"""--sql
+            INSERT INTO `Srs-Edit` VALUES ('{id}', {edit_id})
+        ;""")
+
+    db.commit()
+    return 0
