@@ -15,6 +15,7 @@ import functions.loans as loans
 
 from linked_classes.book_add import Book
 from linked_classes.series_add import Series
+from linked_classes.author_add import Author
 from linked_classes.pwd_ask import Pwd
 
 filters = {
@@ -36,7 +37,7 @@ selectors = {
 adders = {
     "Books" : Book,
     "Series" : Series,
-    "Users" : None,
+    "Users" : Author,
     "Loans" : None
 }
 

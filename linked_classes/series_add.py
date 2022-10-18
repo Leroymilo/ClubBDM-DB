@@ -2,6 +2,9 @@ import wx
 
 from gen_classes.series_add import SeriesWindow
 
+from linked_classes.author_add import Author
+from linked_classes.editor_add import Editor
+
 from functions.series import get_categories, get_auths, get_edits, add
 
 class Series (SeriesWindow) :
@@ -136,7 +139,16 @@ class Series (SeriesWindow) :
             self.display(f"La série '{series_name}' existe déjà")
         else :
             self.display("Erreur inconnue")
-        
+    
+    def add_auth(self, event) :
+        sub_frame = Author(self, id_=len(self.sub_frames))
+        self.sub_frames.append(sub_frame)
+        sub_frame.Show()
+    
+    def add_edit(self, event) :
+        sub_frame = Editor(self, id_=len(self.sub_frames))
+        self.sub_frames.append(sub_frame)
+        sub_frame.Show()
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
