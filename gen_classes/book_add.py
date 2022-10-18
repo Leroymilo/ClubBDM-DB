@@ -110,9 +110,7 @@ class BookWindow ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
-		self.Bind( wx.EVT_ACTIVATE, self.on_activate )
 		self.Bind( wx.EVT_CLOSE, self.end_process )
-		self.Bind( wx.EVT_ICONIZE, self.on_iconize )
 		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
 		self.add_book_button.Bind( wx.EVT_BUTTON, self.add_book )
 		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
@@ -122,13 +120,7 @@ class BookWindow ( wx.Frame ):
 
 
 	# Virtual event handlers, override them in your derived class
-	def on_activate( self, event ):
-		event.Skip()
-
 	def end_process( self, event ):
-		event.Skip()
-
-	def on_iconize( self, event ):
 		event.Skip()
 
 	def add_series( self, event ):

@@ -4,8 +4,8 @@ import wx
 
 app = wx.App()
 frame = Main(None)
-# frame.Show()
-frame.ShowFullScreen(True)
+frame.Show()
+# frame.Maximize()
 app.MainLoop()
 
 db.close()

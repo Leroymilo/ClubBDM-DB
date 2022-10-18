@@ -1,12 +1,93 @@
+from __future__ import annotations
+
 import wx
 
 from gen_classes.series_add import SeriesWindow
 
-from linked_classes.author_add import Author
-from linked_classes.editor_add import Editor
-
 from functions.series import get_categories, get_auths, get_edits, add
 
+#================================================================================================================================================================================
+
+# Sub class containing averything usefull to implement the scrolled windows
+# for authors and editors
+class ScrolledChoices :
+    def __init__(self, scroll: wx.ScrolledWindow, d: dict) :
+        self.choices: list[wx.Choice] = []
+        self.scroll = scroll
+        self.sizer: wx.Sizer = scroll.GetSizer()
+        self.dict = d
+        self.to_update = []
+    
+    def add_choice(self, type_: str, frame: Series) :
+        # Creating the new choice
+        new_choice = wx.Choice(
+            self.scroll, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
+            [""], wx.CB_SORT
+        )
+        self.to_update.append(True)
+        new_choice.Select(0)
+
+        # Setting some way to recognize it as an event's object
+        new_choice.SetId(len(self.choices))
+        new_choice.SetName(type_)
+        # Adding it to the sizer and the list of choices
+        self.sizer.Add( new_choice, 0, wx.ALL|wx.EXPAND, 5 )
+        self.choices.append(new_choice)
+
+        # Binding methods
+        new_choice.Bind(wx.EVT_CHOICE, frame.choice_selected)
+        new_choice.Bind(wx.EVT_ENTER_WINDOW, frame.update_choice)
+    
+    def manage_select(self, type_: str, choice: wx.Choice, frame: Series) :
+        max_id = len(self.choices) - 1
+        self.to_update = [choice.GetId() != i for i in range(len(self.to_update))]
+
+        # If any choice (except the last) is reset to 0 :
+        if choice.GetSelection() == 0 and \
+            choice.GetId() < max_id :
+            
+            # Push choices up :
+            for i in range(choice.GetId(), max_id) :
+                new_string = self.choices[i+1].GetStringSelection()
+                self.choices[i].Set(self.choices[i].GetStrings() + [new_string])
+                self.choices[i].SetStringSelection(new_string)
+            
+            # If the last choice is on 0 :
+            if self.choices[-1].GetSelection() == 0 :
+                # Remove the last choice :
+                last_choice = self.choices.pop()
+                self.sizer.Remove(last_choice.GetId())
+                last_choice.Destroy()   # Just in case
+                self.to_update.pop()
+            
+            # Else (only happens if every auth/edit is selected) :
+            else :
+                self.choices[-1].SetSelection(0)
+
+        # If a choice gets a non-0 selection :
+        elif choice.GetSelection() != 0 :
+            # If it's the last one and all the auth/edit are not selected :
+            if choice.GetId() == max_id and len(self.choices) < len(self.dict.keys()) :
+                self.add_choice(type_, frame)
+    
+    def update_choice(self, choice: wx.Choice) :
+        if self.to_update[choice.GetId()] :
+            self.to_update[choice.GetId()] = False
+
+            selection = choice.GetStringSelection()
+            selected = {choice.GetStringSelection() for choice in self.choices}
+            strings = set(self.dict.keys()).difference(selected)
+            strings = {"", selection} | strings
+            choice.SetItems(list(strings))
+            choice.SetStringSelection(selection)
+            # print("choice", choice.GetId(), "updated")
+    
+    def get_selection_ids(self) :
+        return [self.dict[choice.GetStringSelection()] for choice in self.choices if choice.GetSelection() != 0]
+
+#================================================================================================================================================================================
+
+# Main frame class
 class Series (SeriesWindow) :
     def __init__(self, parent, id_: int) :
         super().__init__(parent)
@@ -15,80 +96,29 @@ class Series (SeriesWindow) :
         self.book_cat_choice.SetItems([""]+ list(self.cat_dict.keys()))
         self.timer_tick = 0
 
-        self.auth_choices = []
-        self.auth_sizer = self.scroll_auth.GetSizer()
-        self.auth_dict = get_auths()
-        self.add_auth_ch()
-
-        self.edit_choices = []
-        self.edit_sizer = self.scroll_edit.GetSizer()
-        self.edit_dict = get_edits()
-        self.add_edit_ch()
+        self.auth_edit = {
+            "auth" : ScrolledChoices(self.scroll_auth, get_auths()),
+            "edit" : ScrolledChoices(self.scroll_edit, get_edits())
+        }
+        self.auth_edit["auth"].add_choice("auth", self)
+        self.auth_edit["edit"].add_choice("edit", self)
 
         self.sub_frames = []
     
-    def add_auth_ch(self) :
-        new_choice = wx.Choice(
-            self.scroll_auth, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
-            [""] + list(self.auth_dict.keys()), wx.CB_SORT )
-        new_choice.Select(0)
-        new_choice.SetId(1100+len(self.auth_choices))
-        self.auth_sizer.Add( new_choice, 0, wx.ALL|wx.EXPAND, 5 )
-        self.auth_choices.append(new_choice)
-        new_choice.Bind(wx.EVT_CHOICE, self.auth_selected)
-    
-    def auth_selected(self, event: wx.Event) :
-        choice_i = event.GetEventObject().GetId() - 1100
-        if self.auth_choices[choice_i].GetSelection() == 0 \
-            and choice_i != len(self.auth_choices) - 1 :
-            for i in range(choice_i, len(self.auth_choices) - 1) :
-                self.auth_choices[i].SetSelection(
-                    self.auth_choices[i+1].GetSelection()
-                )
-            
-            if len(self.auth_choices) > 1 :
-                if self.auth_choices[-1].GetStringSelection() == "" :
-                    last_choice = self.auth_choices.pop()
-                    self.auth_sizer.Remove(last_choice.GetId() - 1100)
-                    last_choice.Destroy()
-                else :
-                    self.auth_choices[-1].SetSelection(0)
-        
-        elif self.auth_choices[choice_i].GetSelection() != 0 \
-            and choice_i == len(self.auth_choices) - 1 \
-            and len(self.auth_choices) < len(self.auth_dict.keys()) :
-            self.add_auth_ch()
+    def choice_selected(self, event: wx.Event) :
+        choice: wx.Choice = event.GetEventObject()
+        type_: str = choice.GetName()
+
+        self.auth_edit[type_].manage_select(type_, choice, self)
 
         self.Layout()
     
-    def add_edit_ch(self) :
-        new_choice = wx.Choice(
-            self.scroll_edit, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
-            [""] + list(self.edit_dict.keys()), wx.CB_SORT )
-        new_choice.Select(0)
-        new_choice.SetId(1200+len(self.edit_choices))
-        self.edit_sizer.Add( new_choice, 0, wx.ALL|wx.EXPAND, 5 )
-        self.edit_choices.append(new_choice)
-        new_choice.Bind(wx.EVT_CHOICE, self.edit_selected)
-    
-    def edit_selected(self, event: wx.Event) :
-        choice_i = event.GetEventObject().GetId() - 1200
-        if self.edit_choices[choice_i].GetSelection() == 0  and choice_i != len(self.edit_choices) - 1 :
-            for i in range(choice_i, len(self.edit_choices) - 1) :
-                self.edit_choices[i].SetSelection(self.edit_choices[i+1].GetSelection())
-            
-            if len(self.edit_choices) > 1 :
-                if self.edit_choices[-1].GetStringSelection() == "" :
-                    last_choice = self.edit_choices.pop()
-                    self.edit_sizer.Remove(last_choice.GetId() - 1100)
-                    last_choice.Destroy()
-                else :
-                    self.edit_choices[-1].SetSelection(0)
-        
-        elif self.edit_choices[choice_i].GetSelection() != 0 and choice_i == len(self.edit_choices) - 1 :
-            self.add_edit_ch()
-        
-        self.Layout()
+    def update_choice(self, event: wx.Event) :
+        choice: wx.Choice = event.GetEventObject()
+        type_: str = choice.GetName()
+
+        self.auth_edit[type_].update_choice(choice)
+
     
     def add_series(self, event) :
         if self.book_cat_choice.GetSelection() == 0 :
@@ -111,8 +141,8 @@ class Series (SeriesWindow) :
         if series_name == "" :
             self.display("Le nom de la série ne peut pas être vide.")
         
-        auth_ids = {self.auth_dict[choice.GetStringSelection()] for choice in self.auth_choices[:-1]}
-        edit_ids = {self.edit_dict[choice.GetStringSelection()] for choice in self.edit_choices[:-1]}
+        auth_ids = self.auth_edit["auth"].get_selection_ids()
+        edit_ids = self.auth_edit["edit"].get_selection_ids()
 
         err_code = add(
             series_id,
@@ -131,7 +161,6 @@ class Series (SeriesWindow) :
                     p.search_table(None)
             else :
                 p.update_series()
-
         
         elif err_code == 1 :
             self.display(f"Le code de série '{series_id}' est déjà utilisé")
@@ -141,14 +170,10 @@ class Series (SeriesWindow) :
             self.display("Erreur inconnue")
     
     def add_auth(self, event) :
-        sub_frame = Author(self, id_=len(self.sub_frames))
-        self.sub_frames.append(sub_frame)
-        sub_frame.Show()
+        self.Parent.add(tab="Authors")
     
     def add_edit(self, event) :
-        sub_frame = Editor(self, id_=len(self.sub_frames))
-        self.sub_frames.append(sub_frame)
-        sub_frame.Show()
+        self.Parent.add(tab="Editors")
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
@@ -164,20 +189,5 @@ class Series (SeriesWindow) :
 
     def end_process(self, event) :
         self.help_timer.Stop()
-        self.Parent.sub_frames[self.id_] = None
-        self.Parent.clean_sub_frames()
+        self.Parent.sub_frames.pop(self.id_)
         self.Destroy()
-    
-    def clean_sub_frames(self) :
-        while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
-            self.sub_frames.pop()
-    
-    def on_activate(self, event):
-        for sub_frame in self.sub_frames :
-            if sub_frame is not None :
-                sub_frame.Show()
-        
-    def on_iconize(self, event):
-        for sub_frame in self.sub_frames :
-            if sub_frame is not None :
-                sub_frame.Hide()

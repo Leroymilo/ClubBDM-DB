@@ -1,4 +1,3 @@
-from typing import Type
 import wx
 import wx.dataview
 import pandas as pd
@@ -16,6 +15,7 @@ import functions.loans as loans
 from linked_classes.book_add import Book
 from linked_classes.series_add import Series
 from linked_classes.author_add import Author
+from linked_classes.editor_add import Editor
 from linked_classes.pwd_ask import Pwd
 
 filters = {
@@ -37,7 +37,9 @@ selectors = {
 adders = {
     "Books" : Book,
     "Series" : Series,
-    "Users" : Author,
+    "Authors" : Author,
+    "Editors" : Editor,
+    "Users" : None,
     "Loans" : None
 }
 
@@ -45,7 +47,6 @@ class Main(MainWindow) :
     def __init__(self, parent) :
         backup_db(db_name)
         self.sql_locked = True
-        self.id_ = -1
         super().__init__(parent)
 
         self.dataViews = {
@@ -70,7 +71,7 @@ class Main(MainWindow) :
         }
         
         self.notebook.SetSelection(0)
-        self.sub_frames = []
+        self.sub_frames = {}
         self.update_table(tab = notebook_pages[self.notebook.GetSelection()])
 
     def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
@@ -151,22 +152,20 @@ class Main(MainWindow) :
         for line in table :
             self.query_result.AppendItem(list(map(str,line)))
 
-    def add(self, event: wx.Event) :
-        tab = notebook_pages[self.notebook.GetSelection()]
-        sub_frame = adders[tab](self, id_=len(self.sub_frames))
-        self.sub_frames.append(sub_frame)
+    def add(self, event=None, tab: str=None) :
+        if tab is None :
+            tab = notebook_pages[self.notebook.GetSelection()]
+        id_ = max(self.sub_frames.keys(), default=0) + 1
+        sub_frame = adders[tab](self, id_)
+        self.sub_frames[id_] = sub_frame
         sub_frame.Show()
     
-    def clean_sub_frames(self) :
-        while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
-            self.sub_frames.pop()
-    
     def on_activate(self, event):
-        for sub_frame in self.sub_frames :
+        for sub_frame in self.sub_frames.values() :
             if sub_frame is not None :
                 sub_frame.Show()
         
     def on_iconize(self, event):
-        for sub_frame in self.sub_frames :
+        for sub_frame in self.sub_frames.values() :
             if sub_frame is not None :
                 sub_frame.Hide()

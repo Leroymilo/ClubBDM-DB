@@ -1,4 +1,3 @@
-from typing import Set
 from db_init import *
 
 def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
@@ -115,7 +114,7 @@ def get_edits() :
     return {el[1]: el[0] for el in cursor.fetchall()}
 
 def add(id: str, name: str, b_type: str, cat: str,
-    auth_ids: Set[int], edit_ids: Set[int]) :
+    auth_ids: list[int], edit_ids: list[int]) :
 
     cursor.execute(f"""--sql
         SELECT series_id FROM Series

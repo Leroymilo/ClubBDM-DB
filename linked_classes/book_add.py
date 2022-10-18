@@ -1,7 +1,6 @@
 import wx
 
 from gen_classes.book_add import BookWindow
-from linked_classes.series_add import Series
 
 from functions.books import get_series, add
 
@@ -13,7 +12,6 @@ class Book(BookWindow) :
         self.series_choice.Set([""] + list(self.series_dict.keys()))
         self.timer_tick = 0
 
-        self.sub_frames = []
         sizer_h = self.GetSizer().GetSize()[1]
         self.SetSize(-1, -1, -1, sizer_h+10)
     
@@ -36,9 +34,7 @@ class Book(BookWindow) :
                 p.search_table(None)
     
     def add_series(self, event) :
-        sub_frame = Series(self, id_=len(self.sub_frames))
-        self.sub_frames.append(sub_frame)
-        sub_frame.Show()
+        self.Parent.add(tab="Series")
     
     def update_series(self) :
         self.series_dict = get_series()
@@ -60,20 +56,5 @@ class Book(BookWindow) :
 
     def end_process(self, event) :
         self.help_timer.Stop()
-        self.Parent.sub_frames[self.id_] = None
-        self.Parent.clean_sub_frames()
+        self.Parent.sub_frames.pop(self.id_)
         self.Destroy()
-    
-    def clean_sub_frames(self) :
-        while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
-            self.sub_frames.pop()
-    
-    def on_activate(self, event):
-        for sub_frame in self.sub_frames :
-            if sub_frame is not None :
-                sub_frame.Show()
-        
-    def on_iconize(self, event):
-        for sub_frame in self.sub_frames :
-            if sub_frame is not None :
-                sub_frame.Hide()
