@@ -44,6 +44,7 @@ class Main(MainWindow) :
     def __init__(self, parent) :
         backup_db(db_name)
         self.sql_locked = True
+        self.id_ = -1
         super().__init__(parent)
 
         self.dataViews = {
@@ -61,16 +62,15 @@ class Main(MainWindow) :
         }
         
         self.searchVals = {
-            self.book_search_val : "Books",
-            self.series_search_val : "Series",
-            self.user_search_val : "Users",
-            self.loan_search_val : "Loans",
+            "Books" : self.book_search_val,
+            "Series" : self.series_search_val,
+            "Users" : self.user_search_val,
+            "Loans" : self.loan_search_val,
         }
         
         self.notebook.SetSelection(0)
         self.sub_frames = []
         self.update_table(tab = notebook_pages[self.notebook.GetSelection()])
-        self.Show()
 
     def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
         dataView = self.dataViews[tab]
@@ -79,10 +79,10 @@ class Main(MainWindow) :
         for line in table :
             dataView.AppendItem(list(map(str,line)))
 
-    def search_table(self, event: wx.Event) :
-        search_ctrl: wx.TextCtrl = event.GetEventObject()
-        tab = self.searchVals[search_ctrl]
+    def search_table(self, event) :
+        tab = notebook_pages[self.notebook.GetSelection()]
 
+        search_ctrl = self.searchVals[tab]
         filter_val = search_ctrl.GetValue()
         if filter_val.strip() == "" :
             filter_ = None

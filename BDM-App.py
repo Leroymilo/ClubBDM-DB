@@ -4,6 +4,8 @@ import wx
 
 app = wx.App()
 frame = Main(None)
+# frame.Show()
+frame.ShowFullScreen(True)
 app.MainLoop()
 
 db.close()

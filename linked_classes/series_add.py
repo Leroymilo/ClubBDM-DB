@@ -21,6 +21,8 @@ class Series (SeriesWindow) :
         self.edit_sizer = self.scroll_edit.GetSizer()
         self.edit_dict = get_edits()
         self.add_edit_ch()
+
+        self.sub_frames = []
     
     def add_auth_ch(self) :
         new_choice = wx.Choice(
@@ -119,12 +121,22 @@ class Series (SeriesWindow) :
 
         if err_code == 0 :
             self.display(f"La série '{series_name}' a été ajoutée à la liste")
+            
+            p = self.Parent
+            if p.id_ == -1 :
+                if p.notebook.GetSelection() == 1 :
+                    p.search_table(None)
+            else :
+                p.update_series()
+
+        
         elif err_code == 1 :
             self.display(f"Le code de série '{series_id}' est déjà utilisé")
         elif err_code == 2 :
             self.display(f"La série '{series_name}' existe déjà")
         else :
             self.display("Erreur inconnue")
+        
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
@@ -143,3 +155,17 @@ class Series (SeriesWindow) :
         self.Parent.sub_frames[self.id_] = None
         self.Parent.clean_sub_frames()
         self.Destroy()
+    
+    def clean_sub_frames(self) :
+        while len(self.sub_frames) > 0 and self.sub_frames[-1] is None :
+            self.sub_frames.pop()
+    
+    def on_activate(self, event):
+        for sub_frame in self.sub_frames :
+            if sub_frame is not None :
+                sub_frame.Show()
+        
+    def on_iconize(self, event):
+        for sub_frame in self.sub_frames :
+            if sub_frame is not None :
+                sub_frame.Hide()

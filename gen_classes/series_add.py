@@ -71,13 +71,13 @@ class SeriesWindow ( wx.Frame ):
 
 		h_sizer_32 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, u"Catégorie littéraire :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, u"Catégorie :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText31.Wrap( -1 )
 
 		h_sizer_32.Add( self.m_staticText31, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		book_cat_choiceChoices = []
-		self.book_cat_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_cat_choiceChoices, 0 )
+		self.book_cat_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_cat_choiceChoices, wx.CB_SORT )
 		self.book_cat_choice.SetSelection( 0 )
 		h_sizer_32.Add( self.book_cat_choice, 0, wx.ALL, 5 )
 
@@ -155,7 +155,9 @@ class SeriesWindow ( wx.Frame ):
 		self.Centre( wx.BOTH )
 
 		# Connect Events
+		self.Bind( wx.EVT_ACTIVATE, self.on_activate )
 		self.Bind( wx.EVT_CLOSE, self.end_process )
+		self.Bind( wx.EVT_ICONIZE, self.on_iconize )
 		self.add_auth_button.Bind( wx.EVT_BUTTON, self.add_auth )
 		self.add_edit_button.Bind( wx.EVT_BUTTON, self.add_edit )
 		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
@@ -166,7 +168,13 @@ class SeriesWindow ( wx.Frame ):
 
 
 	# Virtual event handlers, override them in your derived class
+	def on_activate( self, event ):
+		event.Skip()
+
 	def end_process( self, event ):
+		event.Skip()
+
+	def on_iconize( self, event ):
 		event.Skip()
 
 	def add_auth( self, event ):
