@@ -95,7 +95,6 @@ class Main(MainWindow) :
         tab = notebook_pages[self.notebook.GetSelection()]
         if tab in selectors :
             self.update_table(tab)
-        print("after page change")
     
     def toggle_archived(self, event: wx.Event) :
         tab = notebook_pages[self.notebook.GetSelection()]
