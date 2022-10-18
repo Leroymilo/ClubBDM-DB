@@ -155,12 +155,7 @@ class Series (SeriesWindow) :
         if err_code == 0 :
             self.display(f"La série '{series_name}' a été ajoutée à la liste")
             
-            p = self.Parent
-            if p.id_ == -1 :
-                if p.notebook.GetSelection() == 1 :
-                    p.search_table(None)
-            else :
-                p.update_series()
+            # TODO : update Series in main window and add_book windows
         
         elif err_code == 1 :
             self.display(f"Le code de série '{series_id}' est déjà utilisé")
