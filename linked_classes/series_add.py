@@ -129,7 +129,7 @@ class Series (SeriesWindow) :
             self.display("Sélectionnez un type de livres.")
             return
         
-        series_id = self.series_id_txt.GetValue().strip(' ')
+        series_id = self.series_id_txt.GetValue().strip(' ').lstrip(' ')
         if not series_id.isalnum() :
             self.display("Le code de la série doit être alpha-numérique.")
             return
@@ -137,7 +137,7 @@ class Series (SeriesWindow) :
             self.display("Le code de la série doit être composé de 5 charactères")
             return
     
-        series_name = self.series_name_txt.GetValue().strip(' ')
+        series_name = self.series_name_txt.GetValue().strip(' ').lstrip(' ')
         if series_name == "" :
             self.display("Le nom de la série ne peut pas être vide.")
         

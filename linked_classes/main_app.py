@@ -102,8 +102,8 @@ class Main(MainWindow) :
         tab = notebook_pages[self.notebook.GetSelection()]
 
         if tab == "Users" :
-            self.user_col_9.SetHidden(1 - self.user_col_7.IsHidden())
-            self.user_col_10.SetHidden(1 - self.user_col_8.IsHidden())
+            self.user_col_9.SetHidden(1 - self.user_col_9.IsHidden())
+            self.user_col_10.SetHidden(1 - self.user_col_10.IsHidden())
         
         elif tab == "Loans" :
             self.loan_col_5.SetHidden(1 - self.loan_col_5.IsHidden())
@@ -156,9 +156,10 @@ class Main(MainWindow) :
         if tab is None :
             tab = notebook_pages[self.notebook.GetSelection()]
         id_ = max(self.sub_frames.keys(), default=0) + 1
-        sub_frame = adders[tab](self, id_)
+        sub_frame: wx.Frame = adders[tab](self, id_)
         self.sub_frames[id_] = sub_frame
         sub_frame.Show()
+        sub_frame.SetFocus()
     
     def on_activate(self, event):
         for sub_frame in self.sub_frames.values() :

@@ -1,9 +1,8 @@
 ```sql
 CREATE TABLE Categories
 (
-    cat_id INTEGER,
-    cat_name VARCHAR(64),
-    PRIMARY KEY (cat_id)
+    cat_id INTEGER PRIMARY KEY, --Auto increment
+    cat_name VARCHAR(64)
 );
 
 CREATE TABLE Series
@@ -46,7 +45,7 @@ CREATE TABLE Books
 
 CREATE TABLE Users
 (
-    user_id INTEGER,
+    user_id INTEGER PRIMARY KEY,    --Auto increment
     user_name VARCHAR(256) NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
@@ -58,20 +57,18 @@ CREATE TABLE Users
     status_ALIR VARCHAR(64),
     archived BOOLEAN DEFAULT FALSE,
     comment VARCHAR(1024),
-    PRIMARY KEY (user_id),
     CONSTRAINT contact CHECK (mail IS NOT NULL OR tel IS NOT NULL)
 );
 
 CREATE TABLE Loans
 (
-    loan_id INTEGER AUTO_INCREMENT,
+    loan_id INTEGER PRIMARY KEY,    --Auto increment
     user_id INTEGER,
     book_id VARCHAR(12),
     loan_start DATE,
     late_return DATE,       -- Date after which the loan is late
     loan_return DATE DEFAULT NULL,
     archived BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (loan_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (book_id) REFERENCES Books(book_id),
     CONSTRAINT archiving CHECK (archived = (loan_return IS NOT NULL))
@@ -79,9 +76,8 @@ CREATE TABLE Loans
 
 CREATE TABLE Authors
 (
-    auth_id INTEGER,
+    auth_id INTEGER PRIMARY KEY,    --Auto increment
     auth_name VARCHAR(256),
-    PRIMARY KEY (auth_id),
     UNIQUE (auth_name)
 );
 
@@ -96,9 +92,8 @@ CREATE TABLE `Srs-Auth`
 
 CREATE TABLE Editors
 (
-    edit_id INTEGER,
+    edit_id INTEGER PRIMARY KEY,    --Auto increment
     edit_name VARCHAR(256),
-    PRIMARY KEY (edit_id),
     UNIQUE (edit_name)
 );
 

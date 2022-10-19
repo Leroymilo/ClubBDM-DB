@@ -23,15 +23,14 @@ class Book(BookWindow) :
             self.series_dict[self.series_choice.GetStringSelection()],
             self.vol_nb_spin.GetValue(),
             self.condition_spin.GetValue(),
-            self.vol_name_txt.GetValue(),
-            self.com_txt.GetValue()
+            self.vol_name_txt.GetValue().strip(' ').lstrip(' '),
+            self.com_txt.GetValue().strip(' ').lstrip(' ')
         )
-        self.display(f"Livre {book_id} ajouté à la collection")
-
-        p = self.Parent
-        if p.id_ == -1 :
-            if p.notebook.GetSelection() == 0 :
-                p.search_table(None)
+        
+        if book_id is None :
+            self.display("Erreur inconnue")
+        else :
+            self.display(f"Livre {book_id} ajouté à la collection")
     
     def add_series(self, event) :
         self.Parent.add(tab="Series")
