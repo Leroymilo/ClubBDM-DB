@@ -1246,7 +1246,7 @@
                         </object>
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
-                            <property name="label">Utilisateurs</property>
+                            <property name="label">Membres</property>
                             <property name="select">1</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
@@ -1283,7 +1283,7 @@
                                 <property name="minimize_button">0</property>
                                 <property name="minimum_size"></property>
                                 <property name="moveable">1</property>
-                                <property name="name">users</property>
+                                <property name="name">members</property>
                                 <property name="pane_border">1</property>
                                 <property name="pane_position"></property>
                                 <property name="pane_size"></property>
@@ -1301,16 +1301,16 @@
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
                                 <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
-                                    <property name="name">user_v_sizer</property>
+                                    <property name="name">member_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
                                     <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>
-                                        <object class="wxBoxSizer" expanded="0">
+                                        <object class="wxBoxSizer" expanded="1">
                                             <property name="minimum_size"></property>
-                                            <property name="name">user_top_h_sizer</property>
+                                            <property name="name">member_top_h_sizer</property>
                                             <property name="orient">wxHORIZONTAL</property>
                                             <property name="permission">none</property>
                                             <object class="sizeritem" expanded="0">
@@ -1351,7 +1351,7 @@
                                                     <property name="gripper">0</property>
                                                     <property name="hidden">0</property>
                                                     <property name="id">wxID_ANY</property>
-                                                    <property name="label">Ajouter un utilisateur</property>
+                                                    <property name="label">Ajouter un membre</property>
                                                     <property name="margins"></property>
                                                     <property name="markup">0</property>
                                                     <property name="max_size"></property>
@@ -1361,7 +1361,7 @@
                                                     <property name="minimize_button">0</property>
                                                     <property name="minimum_size"></property>
                                                     <property name="moveable">1</property>
-                                                    <property name="name">user_add</property>
+                                                    <property name="name">member_add</property>
                                                     <property name="pane_border">1</property>
                                                     <property name="pane_position"></property>
                                                     <property name="pane_size"></property>
@@ -1546,7 +1546,7 @@
                                                     <property name="minimize_button">0</property>
                                                     <property name="minimum_size"></property>
                                                     <property name="moveable">1</property>
-                                                    <property name="name">user_search_val</property>
+                                                    <property name="name">member_search_val</property>
                                                     <property name="pane_border">1</property>
                                                     <property name="pane_position"></property>
                                                     <property name="pane_size"></property>
@@ -1672,7 +1672,7 @@
                                                     <property name="minimize_button">0</property>
                                                     <property name="minimum_size"></property>
                                                     <property name="moveable">1</property>
-                                                    <property name="name">user_search_col</property>
+                                                    <property name="name">member_search_col</property>
                                                     <property name="pane_border">1</property>
                                                     <property name="pane_position"></property>
                                                     <property name="pane_size"></property>
@@ -1836,7 +1836,7 @@
                                             <property name="id">wxID_ANY</property>
                                             <property name="maximum_size"></property>
                                             <property name="minimum_size"></property>
-                                            <property name="name">user_display</property>
+                                            <property name="name">member_display</property>
                                             <property name="permission">protected</property>
                                             <property name="pos"></property>
                                             <property name="size"></property>
@@ -1852,7 +1852,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Nom</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_1</property>
+                                                <property name="name">member_col_1</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1863,7 +1863,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Mail</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_2</property>
+                                                <property name="name">member_col_2</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1874,7 +1874,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Téléphone</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_3</property>
+                                                <property name="name">member_col_3</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1885,7 +1885,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Emprunts</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_4</property>
+                                                <property name="name">member_col_4</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1896,18 +1896,18 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Durée emprunts</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_5</property>
+                                                <property name="name">member_col_5</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
                                             </object>
-                                            <object class="dataViewListColumn" expanded="1">
+                                            <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Caution</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_6</property>
+                                                <property name="name">member_col_6</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1918,7 +1918,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Statut BDM</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_7</property>
+                                                <property name="name">member_col_7</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1929,7 +1929,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Statut ALIR</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_8</property>
+                                                <property name="name">member_col_8</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1940,7 +1940,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Dernier emprunt</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_9</property>
+                                                <property name="name">member_col_9</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1951,7 +1951,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Archivé</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_10</property>
+                                                <property name="name">member_col_10</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>
@@ -1962,7 +1962,7 @@
                                                 <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Commentaires</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
-                                                <property name="name">user_col_11</property>
+                                                <property name="name">member_col_11</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Text</property>
                                                 <property name="width">-1</property>

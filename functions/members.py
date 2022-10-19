@@ -2,7 +2,7 @@ from db_init import *
 
 def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
     base_query = """
-        SELECT user_name,
+        SELECT member_name,
             mail,
             tel,
             IF(loan_c IS NULL, "0", loan_c) || "/" || max_loans,
@@ -13,13 +13,13 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
             last_loan,
             IF(archived, "Oui", "Non"),
             comment
-        FROM Users
+        FROM Members
         LEFT JOIN (
-            SELECT user_id, COUNT(*) AS loan_c
+            SELECT member_id, COUNT(*) AS loan_c
             FROM Loans
             WHERE NOT archived
-            GROUP BY user_id
-        ) USING (user_id)
+            GROUP BY member_id
+        ) USING (member_id)
     """
 
     if filter_ is None :
@@ -27,7 +27,7 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
     
     elif filter_[0] == "Name" :
         cursor.execute(base_query + f"""
-            WHERE user_name LIKE "%{filter_[1]}%"
+            WHERE member_name LIKE "%{filter_[1]}%"
         """)
     
     elif filter_[0] == "Status" :

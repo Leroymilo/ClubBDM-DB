@@ -9,7 +9,7 @@ from gen_classes.main_app import MainWindow
 
 import functions.books as books
 import functions.series as series
-import functions.users as users
+import functions.members as members
 import functions.loans as loans
 
 from linked_classes.book_add import Book
@@ -21,16 +21,16 @@ from linked_classes.pwd_ask import Pwd
 filters = {
     "Books" : ["Series", "Author", "Editor"],
     "Series" : ["Name", "Type", "Category", "Author", "Editor"],
-    "Users" : ["Name", "Status"],
-    "Loans" : ["User", "Book"]
+    "Members" : ["Name", "Status"],
+    "Loans" : ["Member", "Book"]
 }
 
-notebook_pages = ["Books", "Series", "Users", "Loans", "SQL"]
+notebook_pages = ["Books", "Series", "Members", "Loans", "SQL"]
 
 selectors = {
     "Books" : books.select,
     "Series" : series.select,
-    "Users" : users.select,
+    "Members" : members.select,
     "Loans" : loans.select
 }
 
@@ -39,7 +39,7 @@ adders = {
     "Series" : Series,
     "Authors" : Author,
     "Editors" : Editor,
-    "Users" : None,
+    "Members" : None,
     "Loans" : None
 }
 
@@ -52,21 +52,21 @@ class Main(MainWindow) :
         self.dataViews = {
             "Books" : self.book_display,
             "Series" : self.series_display,
-            "Users" : self.user_display,
+            "Members" : self.member_display,
             "Loans" : self.loan_display
         }
 
         self.searchCols = {
             "Books" : self.book_search_col,
             "Series" : self.series_search_col,
-            "Users" : self.user_search_col,
+            "Members" : self.member_search_col,
             "Loans" : self.loan_search_col,
         }
         
         self.searchVals = {
             "Books" : self.book_search_val,
             "Series" : self.series_search_val,
-            "Users" : self.user_search_val,
+            "Members" : self.member_search_val,
             "Loans" : self.loan_search_val,
         }
         
@@ -101,9 +101,9 @@ class Main(MainWindow) :
     def toggle_archived(self, event: wx.Event) :
         tab = notebook_pages[self.notebook.GetSelection()]
 
-        if tab == "Users" :
-            self.user_col_9.SetHidden(1 - self.user_col_9.IsHidden())
-            self.user_col_10.SetHidden(1 - self.user_col_10.IsHidden())
+        if tab == "Members" :
+            self.member_col_9.SetHidden(1 - self.member_col_9.IsHidden())
+            self.member_col_10.SetHidden(1 - self.member_col_10.IsHidden())
         
         elif tab == "Loans" :
             self.loan_col_5.SetHidden(1 - self.loan_col_5.IsHidden())
@@ -166,7 +166,7 @@ class Main(MainWindow) :
             self.search_table(None)
         
         to_update = {
-            "Users": "Loans",
+            "Members": "Loans",
             "Books": "Loans",
             "Series": "Books",
             "Authors": "Series",

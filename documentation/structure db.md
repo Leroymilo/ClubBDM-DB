@@ -41,10 +41,10 @@ CREATE TABLE Books
     CONSTRAINT volume_number CHECK (vol_nb > 0)
 );
 
-CREATE TABLE Users
+CREATE TABLE Members
 (
-    user_id INTEGER PRIMARY KEY,    --Auto increment
-    user_name VARCHAR(256) NOT NULL,
+    member_id INTEGER PRIMARY KEY,    --Auto increment
+    member_name VARCHAR(256) NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
     max_loans INTEGER NOT NULL,      -- Maximum number of simultaneous loans
@@ -61,13 +61,13 @@ CREATE TABLE Users
 CREATE TABLE Loans
 (
     loan_id INTEGER PRIMARY KEY,    --Auto increment
-    user_id INTEGER NOT NULL,
+    member_id INTEGER NOT NULL,
     book_id VARCHAR(12) NOT NULL,
     loan_start DATE NOT NULL,
     late_return DATE,       -- Date after which the loan is late
     loan_return DATE DEFAULT NULL,
     archived BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
     FOREIGN KEY (book_id) REFERENCES Books(book_id),
     CONSTRAINT archiving CHECK (archived = (loan_return IS NOT NULL))
 );
