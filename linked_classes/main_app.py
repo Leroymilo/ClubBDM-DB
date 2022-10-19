@@ -157,16 +157,32 @@ class Main(MainWindow) :
             tab = notebook_pages[self.notebook.GetSelection()]
         id_ = max(self.sub_frames.keys(), default=0) + 1
         sub_frame: wx.Frame = adders[tab](self, id_)
-        self.sub_frames[id_] = sub_frame
+        self.sub_frames[id_] = (tab, sub_frame)
         sub_frame.Show()
         sub_frame.SetFocus()
     
+    def update_data(self, tab: str) :
+        if tab == notebook_pages[self.notebook.GetSelection()] :
+            self.search_table(None)
+        
+        to_update = {
+            "Users": "Loans",
+            "Books": "Loans",
+            "Series": "Books",
+            "Authors": "Series",
+            "Editors": "Series"
+        }
+
+        for type_, sub_frame in self.sub_frames.values() :
+            if type_ == to_update[tab] :
+                sub_frame.update_data(tab)
+    
     def on_activate(self, event):
-        for sub_frame in self.sub_frames.values() :
+        for _, sub_frame in self.sub_frames.values() :
             if sub_frame is not None :
                 sub_frame.Show()
         
     def on_iconize(self, event):
-        for sub_frame in self.sub_frames.values() :
+        for _, sub_frame in self.sub_frames.values() :
             if sub_frame is not None :
                 sub_frame.Hide()

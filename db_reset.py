@@ -4,24 +4,21 @@ from backup import backup_db
 backup_db(db_name)
 
 tables = {
-"Categories" : """
-    --sql
+"Categories" : """--sql
     CREATE TABLE Categories
     (
         cat_id INTEGER PRIMARY KEY,    --Auto increment
-        cat_name VARCHAR(64)
+        cat_name VARCHAR(64) UNIQUE NOT NULL
     );
 """,
 
-"Series" : """
-    --sql
+"Series" : """--sql
     CREATE TABLE Series
     (
-        series_id VARCHAR(5),
-        series_name VARCHAR(256),
+        series_id VARCHAR(5) PRIMARY KEY,
+        series_name VARCHAR(256) NOT NULL,
         book_type VARCHAR(16),
-        book_category INTEGER,
-        PRIMARY KEY (series_id),
+        book_category INTEGER NOT NULL,
         FOREIGN KEY (book_category) REFERENCES Categories(cat_id),
         CONSTRAINT blank_name CHECK (series_name != ""),
         CONSTRAINT id_format CHECK (series_id REGEXP '^[A-Z0-9]{5}$'),
@@ -29,20 +26,18 @@ tables = {
     );
 """,
 
-"Books" : """
-    --sql
+"Books" : """--sql
     CREATE TABLE Books
     (
-        book_id VARCHAR(12),
+        book_id VARCHAR(12) PRIMARY KEY,
         book_name VARCHAR(256),
-        series_id VARCHAR(5),
-        vol_nb INTEGER,         -- Volume number
-        dup_nb INTEGER,         -- Duplicata number
+        series_id VARCHAR(5) NOT NULL,
+        vol_nb INTEGER NOT NULL,        -- Volume number
+        dup_nb INTEGER NOT NULL,        -- Duplicata number
         available BOOLEAN DEFAULT TRUE,
         condition INTEGER,
         added_on DATE DEFAULT NULL,
         comment VARCHAR(1024),
-        PRIMARY KEY (book_id),
         FOREIGN KEY (series_id) REFERENCES Series(series_id),
         CONSTRAINT book_unicity UNIQUE (series_id, vol_nb, dup_nb),
         CONSTRAINT id_format CHECK
@@ -57,17 +52,16 @@ tables = {
     );
 """,
 
-"Users" : """
-    --sql
+"Users" : """--sql
     CREATE TABLE Users
     (
         user_id INTEGER PRIMARY KEY,    --Auto increment
         user_name VARCHAR(256) NOT NULL,
         mail VARCHAR(256),
         tel VARCHAR(12),
-        max_loans INTEGER,      -- Maximum number of simultaneous loans
+        max_loans INTEGER NOT NULL,      -- Maximum number of simultaneous loans
         loan_length INTEGER,    -- Maximum loan duration in days
-        bail FLOAT,             -- Caution (€)
+        bail FLOAT DEFAULT 0,             -- Caution (€)
         last_loan DATE,         -- Last loan taken or returned
         status_BDM VARCHAR(64),
         status_ALIR VARCHAR(64),
@@ -77,14 +71,13 @@ tables = {
     );
 """,
 
-"Loans" : """
-    --sql
+"Loans" : """--sql
     CREATE TABLE Loans
     (
         loan_id INTEGER PRIMARY KEY,    --Auto increment
-        user_id INTEGER,
-        book_id VARCHAR(12),
-        loan_start DATE,
+        user_id INTEGER NOT NULL,
+        book_id VARCHAR(12) NOT NULL,
+        loan_start DATE NOT NULL,
         late_return DATE,       -- Date after which the loan is late
         loan_return DATE DEFAULT NULL,
         archived BOOLEAN DEFAULT FALSE,
@@ -94,44 +87,38 @@ tables = {
     );
 """,
 
-"Authors" : """
-    --sql
+"Authors" : """--sql
     CREATE TABLE Authors
     (
         auth_id INTEGER PRIMARY KEY,    --Auto increment
-        auth_name VARCHAR(256),
-        UNIQUE (auth_name)
+        auth_name VARCHAR(256) UNIQUE
     );
 """,
 
-"Srs-Auth" : """
-    --sql
+"Srs-Auth" : """--sql
     CREATE TABLE `Srs-Auth`
     (
-        series_id VARCHAR(5),
-        auth_id INTEGER,
+        series_id VARCHAR(5) NOT NULL,
+        auth_id INTEGER NOT NULL,
         PRIMARY KEY (series_id, auth_id),
         FOREIGN KEY (series_id) REFERENCES Series(series_id),
         FOREIGN KEY (auth_id) REFERENCES Authors(auth_id)
     );
 """,
 
-"Editors" : """
-    --sql
+"Editors" : """--sql
     CREATE TABLE Editors
     (
         edit_id INTEGER PRIMARY KEY,    --Auto increment
-        edit_name VARCHAR(256),
-        UNIQUE (edit_name)
+        edit_name VARCHAR(256) UNIQUE
     );
 """,
 
-"Srs-Edit" : """
-    --sql
+"Srs-Edit" : """--sql
     CREATE TABLE `Srs-Edit`
     (
-        series_id VARCHAR(5),
-        edit_id INTEGER,
+        series_id VARCHAR(5) NOT NULL,
+        edit_id INTEGER NOT NULL,
         PRIMARY KEY (series_id, edit_id),
         FOREIGN KEY (series_id) REFERENCES Series(series_id),
         FOREIGN KEY (edit_id) REFERENCES Editors(edit_id)

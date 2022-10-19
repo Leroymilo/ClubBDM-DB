@@ -47,7 +47,7 @@
             <property name="minimum_size"></property>
             <property name="name">BookWindow</property>
             <property name="pos"></property>
-            <property name="size">367,296</property>
+            <property name="size">330,265</property>
             <property name="style">wxCAPTION|wxCLOSE_BOX|wxFRAME_FLOAT_ON_PARENT|wxFRAME_TOOL_WINDOW|wxSYSTEM_MENU</property>
             <property name="subclass">; ; forward_declare</property>
             <property name="title">Ajouter un livre</property>

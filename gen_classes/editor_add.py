@@ -25,13 +25,13 @@ class EditorWindow ( wx.Frame ):
 
 		h_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText1 = wx.StaticText( self, wx.ID_ANY, u"Nom :", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText1.Wrap( -1 )
+		self.static_text = wx.StaticText( self, wx.ID_ANY, u"Nom :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.static_text.Wrap( -1 )
 
-		h_sizer.Add( self.m_staticText1, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer.Add( self.static_text, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.m_textCtrl3 = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		h_sizer.Add( self.m_textCtrl3, 1, wx.ALL, 5 )
+		self.name_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		h_sizer.Add( self.name_txt, 1, wx.ALL, 5 )
 
 
 		v_sizer.Add( h_sizer, 0, wx.EXPAND, 5 )

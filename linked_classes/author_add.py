@@ -21,6 +21,7 @@ class Author (AuthorWindow) :
             self.display(f"L'auteur {name} existe déjà")
         elif err_code == 0 :
             self.display(f"L'auteur {name} a été ajouté à la liste")
+            self.Parent.update_data("Authors")
         else :
             self.display("Erreur inconnue")
 

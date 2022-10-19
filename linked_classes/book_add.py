@@ -11,9 +11,6 @@ class Book(BookWindow) :
         self.series_dict = get_series()
         self.series_choice.Set([""] + list(self.series_dict.keys()))
         self.timer_tick = 0
-
-        sizer_h = self.GetSizer().GetSize()[1]
-        self.SetSize(-1, -1, -1, sizer_h+10)
     
     def add_book(self, event) :
         if self.series_choice.GetSelection() == -1 :
@@ -31,11 +28,12 @@ class Book(BookWindow) :
             self.display("Erreur inconnue")
         else :
             self.display(f"Livre {book_id} ajouté à la collection")
+            self.Parent.update_data("Books")
     
     def add_series(self, event) :
         self.Parent.add(tab="Series")
     
-    def update_series(self) :
+    def update_data(self, tab: str=None) :
         self.series_dict = get_series()
         old_choice = self.series_choice.GetStringSelection()
         self.series_choice.Set([""] + list(self.series_dict.keys()))

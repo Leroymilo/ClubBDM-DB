@@ -6,6 +6,12 @@ from gen_classes.series_add import SeriesWindow
 
 from functions.series import get_categories, get_auths, get_edits, add
 
+getters = {
+    "cat": get_categories,
+    "auth": get_auths,
+    "edit": get_edits
+}
+
 #================================================================================================================================================================================
 
 # Sub class containing averything usefull to implement the scrolled windows
@@ -118,7 +124,6 @@ class Series (SeriesWindow) :
         type_: str = choice.GetName()
 
         self.auth_edit[type_].update_choice(choice)
-
     
     def add_series(self, event) :
         if self.book_cat_choice.GetSelection() == 0 :
@@ -154,8 +159,7 @@ class Series (SeriesWindow) :
 
         if err_code == 0 :
             self.display(f"La série '{series_name}' a été ajoutée à la liste")
-            
-            # TODO : update Series in main window and add_book windows
+            self.Parent.update_data("Series")
         
         elif err_code == 1 :
             self.display(f"Le code de série '{series_id}' est déjà utilisé")
@@ -169,6 +173,11 @@ class Series (SeriesWindow) :
     
     def add_edit(self, event) :
         self.Parent.add(tab="Editors")
+    
+    def update_data(self, tab: str) :
+        type_ = {"Authors": "auth", "Editors": "edit"}[tab]
+        self.auth_edit[type_].dict = getters[type_]()
+        self.auth_edit[type_].to_update = [True for _ in self.auth_edit[type_].choices]
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
