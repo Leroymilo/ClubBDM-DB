@@ -1,6 +1,6 @@
 import wx
 
-from gen_classes.book_add import BookWindow
+from gen_classes.book import BookWindow
 
 from functions.books import get_item_data, get_series, add
 
@@ -25,9 +25,9 @@ class Book(BookWindow) :
             self.vol_nb_spin.Disable()
             self.condition_spin.SetValue(item_data["condition"])
             self.com_txt.SetValue(item_data["comment"])
-            self.add_book_button.SetLabel("Appliquer la modification")
+            self.end_button.SetLabel("Appliquer la modification")
     
-    def add_book(self, event) :
+    def complete(self, event) :
         if self.series_choice.GetSelection() == 0 :
             self.display("Choisissez une série ou créez-en une nouvelle.")
             return

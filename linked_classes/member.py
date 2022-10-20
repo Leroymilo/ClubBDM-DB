@@ -1,6 +1,6 @@
 import wx
 
-from gen_classes.member_add import MemberWindow
+from gen_classes.member import MemberWindow
 
 from functions.members import add
 
@@ -11,7 +11,7 @@ class Member (MemberWindow) :
         self.id_ = id_
         super().__init__(parent)
     
-    def add(self, event) :
+    def complete(self, event) :
         name: str = self.name_txt.GetValue().strip().lstrip()
         if name == "" :
             self.display("Le nom ne doit pas être vide.")

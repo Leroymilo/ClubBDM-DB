@@ -50,7 +50,7 @@
             <property name="size">901,675</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass">; ; forward_declare</property>
-            <property name="title">App Club BDManga</property>
+            <property name="title">App Club BD-Manga</property>
             <property name="tooltip"></property>
             <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
@@ -3227,7 +3227,7 @@
                         <property name="gripper">0</property>
                         <property name="hidden">0</property>
                         <property name="id">wxID_ANY</property>
-                        <property name="label">display help here</property>
+                        <property name="label">Cliquez sur le nom d&apos;une colonne pour trier le tableau. Double-cliquez sur une ligne pour modifier l&apos;entrée.</property>
                         <property name="markup">0</property>
                         <property name="max_size"></property>
                         <property name="maximize_button">0</property>

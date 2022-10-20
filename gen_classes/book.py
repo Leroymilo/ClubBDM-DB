@@ -98,8 +98,8 @@ class BookWindow ( wx.Frame ):
 
 		v_sizer.Add( self.help_text, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.add_book_button = wx.Button( self, wx.ID_ANY, u"Ajouter livre", wx.DefaultPosition, wx.DefaultSize, 0 )
-		v_sizer.Add( self.add_book_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+		self.end_button = wx.Button( self, wx.ID_ANY, u"Ajouter livre", wx.DefaultPosition, wx.DefaultSize, 0 )
+		v_sizer.Add( self.end_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
 		self.SetSizer( v_sizer )
@@ -112,7 +112,7 @@ class BookWindow ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.end_process )
 		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
-		self.add_book_button.Bind( wx.EVT_BUTTON, self.add_book )
+		self.end_button.Bind( wx.EVT_BUTTON, self.complete )
 		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 
 	def __del__( self ):
@@ -126,7 +126,7 @@ class BookWindow ( wx.Frame ):
 	def add_series( self, event ):
 		event.Skip()
 
-	def add_book( self, event ):
+	def complete( self, event ):
 		event.Skip()
 
 	def test_timer( self, event ):
