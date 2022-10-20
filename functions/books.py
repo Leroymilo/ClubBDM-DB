@@ -1,3 +1,4 @@
+from msilib.schema import Condition
 from db_init import *
 from datetime import date
 
@@ -69,7 +70,9 @@ def get_series() :
 
     return {el[1]: el[0] for el in cursor.fetchall()}
 
-def add(series_id: str, vol_nb: int, cond: int, vol_name: str, comment: str) :
+def add(series_id: str, vol_nb: int, cond: int,
+    vol_name: str, comment: str) :
+
     cursor.execute(f"""--sql
         SELECT book_category FROM Series
         WHERE series_id = "{series_id}"
@@ -108,3 +111,20 @@ def get_item_data(item_id: str) :
     values = cursor.fetchone()
     keys = ("book_name", "series_name", "vol_nb", "condition", "comment")
     return {keys[i]: values[i] for i in range(5)}
+
+def edit(book_id: str, series_id: str, vol_nb: int,
+    cond: int, vol_name: str, comment: str) :
+
+    cursor.execute(f"""--sql
+    UPDATE Books
+    SET
+        book_name = "{vol_name}",
+        series_id = "{series_id}",
+        vol_nb = {vol_nb},
+        condition = {cond},
+        comment = "{comment}"
+    WHERE book_id = "{book_id}"
+    ;""")
+
+    db.commit()
+    return 0

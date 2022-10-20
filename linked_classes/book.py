@@ -2,12 +2,13 @@ import wx
 
 from gen_classes.book import BookWindow
 
-from functions.books import get_item_data, get_series, add
+from functions.books import get_item_data, get_series, add, edit
 
 class Book(BookWindow) :
     def __init__(self, parent, id_, item_id=None) :
         super().__init__(parent)
         self.id_ = id_
+        self.item_id = item_id
         self.series_dict = get_series()
         self.series_choice.Set([""] + list(self.series_dict.keys()))
         self.timer_tick = 0
@@ -33,8 +34,20 @@ class Book(BookWindow) :
             return
         
         if self.is_editor :
-            print("book modified")
-            self.Close()
+            err_code = edit(
+                self.item_id,
+                self.series_dict[self.series_choice.GetStringSelection()],
+                self.vol_nb_spin.GetValue(),
+                self.condition_spin.GetValue(),
+                self.vol_name_txt.GetValue().strip(' ').lstrip(' '),
+                self.com_txt.GetValue().strip(' ').lstrip(' ')
+            )
+
+            if err_code == 0 :
+                self.Parent.update_data("Books")
+                self.Close()
+            else :
+                self.display("Erreur inconnue")
 
         else :
             book_id = add(

@@ -148,3 +148,80 @@ def add(id: str, name: str, b_type: str, cat: str,
 
     db.commit()
     return 0
+
+def get_item_data(series_id: str) :
+    cursor.execute(f"""--sql
+        SELECT series_name, book_type, cat_name
+        FROM Series
+        JOIN Categories
+            ON book_category = cat_id
+        WHERE series_id = "{series_id}"
+    ;""")
+    values = cursor.fetchone()
+    keys = ("series_name", "book_type", "book_cat")
+
+    cursor.execute(f"""--sql
+        SELECT auth_name
+        FROM Authors
+        JOIN `Srs-Auth` USING (auth_id)
+        WHERE series_id = "{series_id}"
+    ;""")
+    authors = tuple(auth for auth, in cursor.fetchall())
+
+    cursor.execute(f"""--sql
+        SELECT edit_name
+        FROM Editors
+        JOIN `Srs-Edit` USING (edit_id)
+        WHERE series_id = "{series_id}"
+    ;""")
+    editors = tuple(edit for edit, in cursor.fetchall())
+
+    cursor.execute(f"""--sql
+        SELECT book_id FROM Books
+        WHERE series_id = "{series_id}"
+    ;""")
+    has_books = (cursor.fetchall() != [])
+
+    return {keys[i]: values[i] for i in range(3)} |\
+        {"authors": authors, "editors": editors, "has_books": has_books}
+
+def edit(id: str, name: str, b_type: str, cat: str,
+    auth_ids: list[int], edit_ids: list[int]) :
+    
+    cursor.execute(f"""--sql
+        SELECT series_name FROM Series
+        WHERE series_name LIKE "{name}"
+        AND series_id != "{id}"
+    ;""")
+    if cursor.fetchall() != [] :
+        return 1
+    
+    cursor.execute(f"""--sql
+    UPDATE Series
+    SET
+        series_name = "{name}",
+        book_type = '{b_type}',
+        book_category = {cat}
+    WHERE series_id = "{id}"
+    ;""")
+    
+    cursor.execute(f"""--sql
+        DELETE FROM `Srs-Auth`
+        WHERE series_id = "{id}"
+    ;""")
+    for auth_id in auth_ids :
+        cursor.execute(f"""--sql
+            INSERT INTO `Srs-Auth` VALUES ('{id}', {auth_id})
+        ;""")
+    
+    cursor.execute(f"""--sql
+        DELETE FROM `Srs-Edit`
+        WHERE series_id = "{id}"
+    ;""")
+    for edit_id in edit_ids :
+        cursor.execute(f"""--sql
+            INSERT INTO `Srs-Edit` VALUES ('{id}', {edit_id})
+        ;""")
+
+    db.commit()
+    return 0

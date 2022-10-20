@@ -4,7 +4,7 @@ import wx
 
 from gen_classes.series import SeriesWindow
 
-from functions.series import get_categories, get_auths, get_edits, add
+from functions.series import get_categories, get_auths, get_edits, get_item_data, add, edit
 
 getters = {
     "cat": get_categories,
@@ -43,6 +43,12 @@ class ScrolledChoices :
         # Binding methods
         new_choice.Bind(wx.EVT_CHOICE, frame.choice_selected)
         new_choice.Bind(wx.EVT_ENTER_WINDOW, frame.update_choice)
+    
+    def set_choices(self, strings: list[str], type_: str, frame: Series) :
+        for i in range(len(strings)) :
+            self.add_choice(type_, frame)
+            self.update_choice(self.choices[i])
+            self.choices[i].SetStringSelection(strings[i])
     
     def manage_select(self, type_: str, choice: wx.Choice, frame: Series) :
         max_id = len(self.choices) - 1
@@ -95,9 +101,11 @@ class ScrolledChoices :
 
 # Main frame class
 class Series (SeriesWindow) :
-    def __init__(self, parent, id_: int) :
+    def __init__(self, parent, id_: int, item_id=None) :
         super().__init__(parent)
+        self.default_text = ""
         self.id_ = id_
+        self.item_id = item_id
         self.cat_dict = get_categories()
         self.book_cat_choice.SetItems([""]+ list(self.cat_dict.keys()))
         self.timer_tick = 0
@@ -109,8 +117,27 @@ class Series (SeriesWindow) :
         self.auth_edit["auth"].add_choice("auth", self)
         self.auth_edit["edit"].add_choice("edit", self)
 
-        self.sub_frames = []
-    
+        self.is_editor = item_id is not None
+
+        if self.is_editor :
+            self.SetLabel("Modifier la série")
+            item_data = get_item_data(item_id)
+            self.series_name_txt.SetValue(item_data["series_name"])
+            self.series_id_txt.SetValue(item_id)
+            self.series_id_txt.Disable()
+            self.book_type_choice.SetStringSelection(item_data["book_type"])
+            self.book_cat_choice.SetStringSelection(item_data["book_cat"])
+            
+            if item_data["has_books"] :
+                self.default_text = "La catégorie ne peut pas être changée car cette série contient des livres."
+                self.help_text.SetLabel(self.default_text)
+                self.book_cat_choice.Disable()
+
+            self.auth_edit["auth"].set_choices(item_data["authors"], "auth", self)
+            self.auth_edit["edit"].set_choices(item_data["editors"], "edit", self)
+
+            self.end_button.SetLabel("Appliquer la modification")
+
     def choice_selected(self, event: wx.Event) :
         choice: wx.Choice = event.GetEventObject()
         type_: str = choice.GetName()
@@ -139,7 +166,7 @@ class Series (SeriesWindow) :
             self.display("Le code de la série doit être alpha-numérique.")
             return
         if len(series_id) != 5 :
-            self.display("Le code de la série doit être composé de 5 charactères")
+            self.display("Le code de la série doit être composé de 5 charactères.")
             return
     
         series_name = self.series_name_txt.GetValue().strip(' ').lstrip(' ')
@@ -149,24 +176,43 @@ class Series (SeriesWindow) :
         auth_ids = self.auth_edit["auth"].get_selection_ids()
         edit_ids = self.auth_edit["edit"].get_selection_ids()
 
-        err_code = add(
-            series_id,
-            series_name,
-            self.book_type_choice.GetStringSelection(),
-            self.cat_dict[self.book_cat_choice.GetStringSelection()],
-            auth_ids, edit_ids
-        )
+        if self.is_editor :
+            err_code = edit(
+                series_id,
+                series_name,
+                self.book_type_choice.GetStringSelection(),
+                self.cat_dict[self.book_cat_choice.GetStringSelection()],
+                auth_ids, edit_ids
+            )
 
-        if err_code == 0 :
-            self.display(f"La série {series_name} a été ajoutée à la liste")
-            self.Parent.update_data("Series")
-        
-        elif err_code == 1 :
-            self.display(f"Le code de série '{series_id}' est déjà utilisé")
-        elif err_code == 2 :
-            self.display(f"La série {series_name} existe déjà")
+            if err_code == 0 :
+                self.Parent.update_data("Series")
+                self.Close()
+            
+            elif err_code == 1 :
+                self.display(f"Le nom de série {series_name} est déjà utilisé.")
+            else :
+                self.display("Erreur inconnue.")
+
         else :
-            self.display("Erreur inconnue")
+            err_code = add(
+                series_id,
+                series_name,
+                self.book_type_choice.GetStringSelection(),
+                self.cat_dict[self.book_cat_choice.GetStringSelection()],
+                auth_ids, edit_ids
+            )
+
+            if err_code == 0 :
+                self.display(f"La série {series_name} a été ajoutée à la liste.")
+                self.Parent.update_data("Series")
+            
+            elif err_code == 1 :
+                self.display(f"Le code de série '{series_id}' est déjà utilisé.")
+            elif err_code == 2 :
+                self.display(f"La série {series_name} existe déjà.")
+            else :
+                self.display("Erreur inconnue.")
     
     def add_auth(self, event) :
         self.Parent.add(tab="Authors")
@@ -186,7 +232,7 @@ class Series (SeriesWindow) :
     
     def test_timer(self, event) :
         if self.timer_tick == 500 :
-            self.help_text.SetLabel("")
+            self.help_text.SetLabel(self.default_text)
             self.help_timer.Stop()
         else :
             self.timer_tick += 1
