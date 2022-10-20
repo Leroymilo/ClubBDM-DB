@@ -97,3 +97,14 @@ def add(series_id: str, vol_nb: int, cond: int, vol_name: str, comment: str) :
     ;""")
     db.commit()
     return book_id
+
+def get_item_data(item_id: str) :
+    cursor.execute(f"""--sql
+        SELECT book_name, series_name, vol_nb, condition, comment
+        FROM Books JOIN Series USING (series_id)
+        WHERE book_id = "{item_id}"
+    ;""")
+
+    values = cursor.fetchone()
+    keys = ("book_name", "series_name", "vol_nb", "condition", "comment")
+    return {keys[i]: values[i] for i in range(5)}

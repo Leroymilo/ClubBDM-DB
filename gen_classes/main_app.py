@@ -73,7 +73,7 @@ class MainWindow ( wx.Frame ):
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", False )
+		self.notebook.AddPage( self.books, u"Livres", True )
 		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -176,7 +176,7 @@ class MainWindow ( wx.Frame ):
 		self.members.SetSizer( member_v_sizer )
 		self.members.Layout()
 		member_v_sizer.Fit( self.members )
-		self.notebook.AddPage( self.members, u"Membres", True )
+		self.notebook.AddPage( self.members, u"Membres", False )
 		self.loans = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		loan_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -285,15 +285,19 @@ class MainWindow ( wx.Frame ):
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add )
 		self.book_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
+		self.book_display.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self.edit, id = wx.ID_ANY )
 		self.series_add.Bind( wx.EVT_BUTTON, self.add )
 		self.series_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
+		self.series_display.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self.edit, id = wx.ID_ANY )
 		self.member_add.Bind( wx.EVT_BUTTON, self.add )
 		self.member_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.m_checkBox1.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
+		self.member_display.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self.edit, id = wx.ID_ANY )
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add )
 		self.loan_end.Bind( wx.EVT_BUTTON, self.end_loan )
 		self.loan_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
 		self.m_checkBox2.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
+		self.loan_display.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self.edit, id = wx.ID_ANY )
 		self.run_query_button.Bind( wx.EVT_BUTTON, self.run_query )
 
 	def __del__( self ):
@@ -316,6 +320,10 @@ class MainWindow ( wx.Frame ):
 	def search_table( self, event ):
 		event.Skip()
 
+	def edit( self, event ):
+		event.Skip()
+
+
 
 
 
@@ -324,8 +332,10 @@ class MainWindow ( wx.Frame ):
 		event.Skip()
 
 
+
 	def end_loan( self, event ):
 		event.Skip()
+
 
 
 

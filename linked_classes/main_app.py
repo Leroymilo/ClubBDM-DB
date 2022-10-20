@@ -162,6 +162,16 @@ class Main(MainWindow) :
         sub_frame.Show()
         sub_frame.SetFocus()
     
+    def edit(self, event: wx.dataview.DataViewEvent) :
+        tab = notebook_pages[self.notebook.GetSelection()]
+        dvlc = self.dataViews[tab]
+        item_id = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
+        id_ = max(self.sub_frames.keys(), default=0) + 1
+        sub_frame: wx.Frame = adders[tab](self, id_, item_id)
+        self.sub_frames[id_] = (tab, sub_frame)
+        sub_frame.Show()
+        sub_frame.SetFocus()
+    
     def update_data(self, tab: str) :
         if tab == notebook_pages[self.notebook.GetSelection()] :
             self.search_table(None)
