@@ -37,3 +37,30 @@ def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
         """)
     
     return np.asarray(cursor.fetchall())
+
+def add(name: str, mail: str, tel: str, max_loans: int, loan_len: int,
+    bail: float, BDM: str, ALIR: str, comment: str) :
+
+    cursor.execute(f"""--sql
+        SELECT member_id FROM Members
+        WHERE member_name LIKE "{name}"
+    ;""")
+    if cursor.fetchall() != [] :
+        return 1
+    
+    cursor.execute(f"""--sql
+        INSERT INTO Members (
+            member_name, mail, tel,
+            max_loans, loan_length, bail,
+            status_BDM, status_ALIR,
+            comment
+        ) VALUES (
+            "{name}", "{mail}", "{tel}",
+            {max_loans}, {loan_len}, {bail},
+            "{BDM}", "{ALIR}",
+            "{comment}"
+        )
+    ;""")
+
+    db.commit()
+    return 0

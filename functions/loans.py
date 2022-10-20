@@ -2,21 +2,21 @@ from db_init import *
 
 def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
     base_query = """
-        SELECT user_name,
+        SELECT member_name,
             book_id,
             loan_start,
             late_return,
             loan_return
         FROM Loans
-        JOIN Users USING (user_id)
+        JOIN Members USING (member_id)
     """
 
     if filter_ is None :
         cursor.execute(base_query)
     
-    elif filter_[0] == "User" :
+    elif filter_[0] == "Member" :
         cursor.execute(base_query + f"""
-            WHERE user_name LIKE "%{filter_[1]}%"
+            WHERE member_name LIKE "%{filter_[1]}%"
         """)
     
     elif filter_[0] == "Book" :

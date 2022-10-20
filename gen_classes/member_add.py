@@ -17,7 +17,7 @@ import wx.xrc
 class MemberWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un membre", pos = wx.DefaultPosition, size = wx.Size( 432,300 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un membre", pos = wx.DefaultPosition, size = wx.Size( -1,262 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -62,12 +62,12 @@ class MemberWindow ( wx.Frame ):
 
 		h_sizer_3 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText13 = wx.StaticText( self, wx.ID_ANY, u"Statut BDM :", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText13.Wrap( -1 )
+		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, u"Statut BDM :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31.Wrap( -1 )
 
-		h_sizer_3.Add( self.m_staticText13, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer_3.Add( self.m_staticText31, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		BDM_status_choiceChoices = []
+		BDM_status_choiceChoices = [ u"Non-membre", u"Membre", u"Membre +", u"Membre actif", u"Membre actif +", u"Membre honorable", u"Bureau" ]
 		self.BDM_status_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, BDM_status_choiceChoices, 0 )
 		self.BDM_status_choice.SetSelection( 0 )
 		h_sizer_3.Add( self.BDM_status_choice, 1, wx.ALL, 5 )
@@ -75,12 +75,12 @@ class MemberWindow ( wx.Frame ):
 		self.m_staticline1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		h_sizer_3.Add( self.m_staticline1, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_staticText14 = wx.StaticText( self, wx.ID_ANY, u"Statut ALIR :", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.m_staticText14.Wrap( -1 )
+		self.m_staticText32 = wx.StaticText( self, wx.ID_ANY, u"Statut ALIR :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText32.Wrap( -1 )
 
-		h_sizer_3.Add( self.m_staticText14, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		h_sizer_3.Add( self.m_staticText32, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		ALIR_status_choiceChoices = []
+		ALIR_status_choiceChoices = [ u"Non-membre", u"Membre" ]
 		self.ALIR_status_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, ALIR_status_choiceChoices, 0 )
 		self.ALIR_status_choice.SetSelection( 0 )
 		h_sizer_3.Add( self.ALIR_status_choice, 1, wx.ALL, 5 )
@@ -88,14 +88,56 @@ class MemberWindow ( wx.Frame ):
 
 		v_sizer.Add( h_sizer_3, 0, wx.EXPAND, 5 )
 
+		h_sizer_4 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText41 = wx.StaticText( self, wx.ID_ANY, u"Caution :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41.Wrap( -1 )
+
+		h_sizer_4.Add( self.m_staticText41, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.bail_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		h_sizer_4.Add( self.bail_txt, 0, wx.ALL, 5 )
+
+		self.m_staticText42 = wx.StaticText( self, wx.ID_ANY, u"€", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText42.Wrap( -1 )
+
+		h_sizer_4.Add( self.m_staticText42, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+
+		v_sizer.Add( h_sizer_4, 0, wx.EXPAND, 5 )
+
+		h_sizer_5 = wx.BoxSizer( wx.HORIZONTAL )
+
+		self.m_staticText7 = wx.StaticText( self, wx.ID_ANY, u"Commentaires :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText7.Wrap( -1 )
+
+		h_sizer_5.Add( self.m_staticText7, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+
+		self.comment_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		h_sizer_5.Add( self.comment_txt, 1, wx.ALL, 5 )
+
+
+		v_sizer.Add( h_sizer_5, 0, wx.EXPAND, 5 )
+
+		self.help_text = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.help_text.Wrap( -1 )
+
+		v_sizer.Add( self.help_text, 0, wx.ALL|wx.EXPAND, 5 )
+
+		self.add_button = wx.Button( self, wx.ID_ANY, u"Ajouter le membre", wx.DefaultPosition, wx.DefaultSize, 0 )
+		v_sizer.Add( self.add_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+
 
 		self.SetSizer( v_sizer )
 		self.Layout()
+		self.help_timer = wx.Timer()
+		self.help_timer.SetOwner( self, wx.ID_ANY )
 
 		self.Centre( wx.BOTH )
 
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.end_process )
+		self.add_button.Bind( wx.EVT_BUTTON, self.add )
 
 	def __del__( self ):
 		pass
@@ -103,6 +145,9 @@ class MemberWindow ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def end_process( self, event ):
+		event.Skip()
+
+	def add( self, event ):
 		event.Skip()
 
 

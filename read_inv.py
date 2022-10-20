@@ -2,7 +2,6 @@ from db_init import *
 import pandas as pd
 
 import db_reset #Cleans database
-print("Database backed-up and cleaned")
 
 categories = pd.read_excel("Inventaire.xlsx", sheet_name="Catégories")
 authors = pd.read_excel("Inventaire.xlsx", sheet_name="Auteurs")

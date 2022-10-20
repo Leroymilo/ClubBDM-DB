@@ -34,6 +34,7 @@ class ConcatAgg :
 
 db = connect(db_name + ".sql")
 cursor = db.cursor()
+cursor.execute("PRAGMA foreign_keys = ON;")
 db.create_function("REGEXP", 2, regexp)
 db.create_function("LPAD", 3, lpad)
 db.create_function("IF", 3, if_)

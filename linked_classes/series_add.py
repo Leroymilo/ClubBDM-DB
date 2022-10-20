@@ -158,13 +158,13 @@ class Series (SeriesWindow) :
         )
 
         if err_code == 0 :
-            self.display(f"La série '{series_name}' a été ajoutée à la liste")
+            self.display(f"La série {series_name} a été ajoutée à la liste")
             self.Parent.update_data("Series")
         
         elif err_code == 1 :
             self.display(f"Le code de série '{series_id}' est déjà utilisé")
         elif err_code == 2 :
-            self.display(f"La série '{series_name}' existe déjà")
+            self.display(f"La série {series_name} existe déjà")
         else :
             self.display("Erreur inconnue")
     
