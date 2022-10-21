@@ -90,6 +90,7 @@ def edit(member_id: int, name: str, mail: str, tel: str, max_loans: int,
     
     cursor.execute(f"""--sql
         UPDATE Members
+        SET
             member_name = "{name}",
             mail = "{mail}", tel = "{tel}",
             max_loans = {max_loans},

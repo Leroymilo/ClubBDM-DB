@@ -21,7 +21,7 @@ class Member (MemberWindow) :
             self.name_txt.SetValue(item_name)
             self.mail_txt.SetValue(item_data["mail"])
             self.tel_txt.SetValue(item_data["tel"])
-            self.bail_txt.SetValue(item_data["bail"])
+            self.bail_txt.SetValue(str(item_data["bail"]))
             self.BDM_status_choice.SetStringSelection(item_data["BDM"])
             self.ALIR_status_choice.SetStringSelection(item_data["ALIR"])
             self.comment_txt.SetValue(item_data["comment"])
