@@ -143,8 +143,8 @@ class SeriesWindow ( wx.Frame ):
 
 		v_sizer.Add( self.help_text, 0, wx.ALL, 5 )
 
-		self.add_series_button = wx.Button( self, wx.ID_ANY, u"Créer la série", wx.DefaultPosition, wx.DefaultSize, 0 )
-		v_sizer.Add( self.add_series_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+		self.end_button = wx.Button( self, wx.ID_ANY, u"Créer la série", wx.DefaultPosition, wx.DefaultSize, 0 )
+		v_sizer.Add( self.end_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
 		self.SetSizer( v_sizer )
@@ -158,7 +158,7 @@ class SeriesWindow ( wx.Frame ):
 		self.Bind( wx.EVT_CLOSE, self.end_process )
 		self.add_auth_button.Bind( wx.EVT_BUTTON, self.add_auth )
 		self.add_edit_button.Bind( wx.EVT_BUTTON, self.add_edit )
-		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
+		self.end_button.Bind( wx.EVT_BUTTON, self.complete )
 		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 
 	def __del__( self ):
@@ -175,7 +175,7 @@ class SeriesWindow ( wx.Frame ):
 	def add_edit( self, event ):
 		event.Skip()
 
-	def add_series( self, event ):
+	def complete( self, event ):
 		event.Skip()
 
 	def test_timer( self, event ):

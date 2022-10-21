@@ -1,6 +1,6 @@
 import wx
 
-from gen_classes.member_add import MemberWindow
+from gen_classes.member import MemberWindow
 
 from functions.members import get_item_data, add, edit
 
@@ -24,7 +24,7 @@ class Member (MemberWindow) :
             self.ALIR_status_choice.SetStringSelection(item_data["ALIR"])
             self.comment_txt.SetValue(item_data["comment"])
     
-    def add(self, event) :
+    def complete(self, event) :
         name: str = self.name_txt.GetValue().strip().lstrip()
         if name == "" :
             self.display("Le nom ne doit pas être vide.")

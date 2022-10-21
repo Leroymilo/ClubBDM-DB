@@ -12,11 +12,11 @@ import functions.series as series
 import functions.members as members
 import functions.loans as loans
 
-from linked_classes.book_add import Book
-from linked_classes.series_add import Series
+from linked_classes.book import Book
+from linked_classes.series import Series
 from linked_classes.author_add import Author
 from linked_classes.editor_add import Editor
-from linked_classes.member_add import Member
+from linked_classes.member import Member
 from linked_classes.pwd_ask import Pwd
 
 filters = {

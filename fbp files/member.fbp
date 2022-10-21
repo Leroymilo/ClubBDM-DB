@@ -11,13 +11,13 @@
         <property name="embedded_files_path">res</property>
         <property name="encoding">UTF-8</property>
         <property name="event_generation">connect</property>
-        <property name="file">member_add</property>
+        <property name="file">member</property>
         <property name="first_id">1000</property>
         <property name="help_provider">none</property>
         <property name="image_path_wrapper_function_name"></property>
         <property name="indent_with_spaces"></property>
         <property name="internationalize">0</property>
-        <property name="name">MemberAdd</property>
+        <property name="name">Member</property>
         <property name="namespace"></property>
         <property name="path">D:\Code\ClubBDM\gen_classes</property>
         <property name="precompiled_header"></property>
@@ -1279,7 +1279,7 @@
                         <property name="minimize_button">0</property>
                         <property name="minimum_size"></property>
                         <property name="moveable">1</property>
-                        <property name="name">add_button</property>
+                        <property name="name">end_button</property>
                         <property name="pane_border">1</property>
                         <property name="pane_position"></property>
                         <property name="pane_size"></property>
@@ -1302,7 +1302,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
                         <property name="window_style"></property>
-                        <event name="OnButtonClick">add</event>
+                        <event name="OnButtonClick">complete</event>
                     </object>
                 </object>
             </object>

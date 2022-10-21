@@ -19,7 +19,7 @@ import wx.adv
 class MainWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BDManga", pos = wx.DefaultPosition, size = wx.Size( 901,675 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"App Club BD-Manga", pos = wx.DefaultPosition, size = wx.Size( 901,675 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
@@ -268,7 +268,7 @@ class MainWindow ( wx.Frame ):
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.help_text = wx.StaticText( self, wx.ID_ANY, u"display help here", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.help_text = wx.StaticText( self, wx.ID_ANY, u"Cliquez sur le nom d'une colonne pour trier le tableau. Double-cliquez sur une ligne pour modifier l'entrée.", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.help_text.Wrap( -1 )
 
 		top_sizer.Add( self.help_text, 0, wx.ALL, 5 )

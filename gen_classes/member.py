@@ -124,8 +124,8 @@ class MemberWindow ( wx.Frame ):
 
 		v_sizer.Add( self.help_text, 0, wx.ALL|wx.EXPAND, 5 )
 
-		self.add_button = wx.Button( self, wx.ID_ANY, u"Ajouter le membre", wx.DefaultPosition, wx.DefaultSize, 0 )
-		v_sizer.Add( self.add_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
+		self.end_button = wx.Button( self, wx.ID_ANY, u"Ajouter le membre", wx.DefaultPosition, wx.DefaultSize, 0 )
+		v_sizer.Add( self.end_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
 		self.SetSizer( v_sizer )
@@ -137,7 +137,7 @@ class MemberWindow ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.end_process )
-		self.add_button.Bind( wx.EVT_BUTTON, self.add )
+		self.end_button.Bind( wx.EVT_BUTTON, self.complete )
 
 	def __del__( self ):
 		pass
@@ -147,7 +147,7 @@ class MemberWindow ( wx.Frame ):
 	def end_process( self, event ):
 		event.Skip()
 
-	def add( self, event ):
+	def complete( self, event ):
 		event.Skip()
 
 

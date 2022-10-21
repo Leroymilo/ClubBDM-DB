@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import wx
 
-from gen_classes.series_add import SeriesWindow
+from gen_classes.series import SeriesWindow
 
 from functions.series import get_categories, get_auths, get_edits, add
 
@@ -125,7 +125,7 @@ class Series (SeriesWindow) :
 
         self.auth_edit[type_].update_choice(choice)
     
-    def add_series(self, event) :
+    def complete(self, event) :
         if self.book_cat_choice.GetSelection() == 0 :
             self.display("Sélectionnez une catégorie littéraire.")
             return
