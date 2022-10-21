@@ -17,6 +17,7 @@ from linked_classes.series import Series
 from linked_classes.author_add import Author
 from linked_classes.editor_add import Editor
 from linked_classes.member import Member
+from linked_classes.loan import Loan
 from linked_classes.pwd_ask import Pwd
 
 filters = {
@@ -35,13 +36,13 @@ selectors = {
     "Loans" : loans.select
 }
 
-adders = {
+sub_frames = {
     "Books" : Book,
     "Series" : Series,
     "Authors" : Author,
     "Editors" : Editor,
     "Members" : Member,
-    "Loans" : None
+    "Loans" : Loan
 }
 
 class Main(MainWindow) :
@@ -157,7 +158,7 @@ class Main(MainWindow) :
         if tab is None :
             tab = notebook_pages[self.notebook.GetSelection()]
         id_ = max(self.sub_frames.keys(), default=0) + 1
-        sub_frame: wx.Frame = adders[tab](self, id_)
+        sub_frame: wx.Frame = sub_frames[tab](self, id_)
         self.sub_frames[id_] = (tab, sub_frame)
         sub_frame.Show()
         sub_frame.SetFocus()
@@ -167,7 +168,7 @@ class Main(MainWindow) :
         dvlc = self.dataViews[tab]
         item_id = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
         id_ = max(self.sub_frames.keys(), default=0) + 1
-        sub_frame: wx.Frame = adders[tab](self, id_, item_id)
+        sub_frame: wx.Frame = sub_frames[tab](self, id_, item_id)
         self.sub_frames[id_] = (tab, sub_frame)
         sub_frame.Show()
         sub_frame.SetFocus()
@@ -181,7 +182,8 @@ class Main(MainWindow) :
             "Books": "Loans",
             "Series": "Books",
             "Authors": "Series",
-            "Editors": "Series"
+            "Editors": "Series",
+            "Loans": "Loans"
         }
 
         for type_, sub_frame in self.sub_frames.values() :
