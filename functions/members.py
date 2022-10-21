@@ -64,3 +64,20 @@ def add(name: str, mail: str, tel: str, max_loans: int, loan_len: int,
 
     db.commit()
     return 0
+
+def get_item_data(item_name: str) :
+    cursor.execute(f"""--sql
+        SELECT member_id, mail, tel, bail,
+            status_BDM, status_ALIR, comment
+        FROM Members
+        WHERE member_name = "{item_name}"
+    ;""")
+    values = cursor.fetchone()
+    keys = ("id", "mail", "tel", "bail", "BDM", "ALIR", "comment")
+
+    return {keys[i]: values[i] for i in range(7)}
+
+def edit(member_id: int, name: str, mail: str, tel: str, max_loans: int,
+    loan_len: int, bail: float, BDM: str, ALIR: str, comment: str) :
+
+    pass

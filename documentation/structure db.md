@@ -46,7 +46,7 @@ CREATE TABLE Books
 CREATE TABLE Members
 (
     member_id INTEGER PRIMARY KEY,    --Auto increment
-    member_name VARCHAR(256) NOT NULL,
+    member_name VARCHAR(256) UNIQUE NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
     max_loans INTEGER NOT NULL,     -- Maximum number of simultaneous loans
