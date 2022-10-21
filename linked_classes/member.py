@@ -2,14 +2,29 @@ import wx
 
 from gen_classes.member import MemberWindow
 
-from functions.members import add
+from functions.members import get_item_data, add, edit
 
 # from functions.members import 
 
 class Member (MemberWindow) :
-    def __init__(self, parent, id_):
+    def __init__(self, parent, id_, item_name=None):
         self.id_ = id_
         super().__init__(parent)
+
+        self.is_editor = item_name is not None
+
+        if self.is_editor :
+            self.SetLabel("Modifier le membre")
+            self.end_button.SetLabel("Appliquer les modifications")
+            item_data = get_item_data(item_name)
+            self.item_id = item_data["id"]
+            self.name_txt.SetValue(item_name)
+            self.mail_txt.SetValue(item_data["mail"])
+            self.tel_txt.SetValue(item_data["tel"])
+            self.bail_txt.SetValue(str(item_data["bail"]))
+            self.BDM_status_choice.SetStringSelection(item_data["BDM"])
+            self.ALIR_status_choice.SetStringSelection(item_data["ALIR"])
+            self.comment_txt.SetValue(item_data["comment"])
     
     def complete(self, event) :
         name: str = self.name_txt.GetValue().strip().lstrip()
@@ -24,7 +39,7 @@ class Member (MemberWindow) :
 
         bail: str = self.bail_txt.GetValue()
         try :
-            bail = str(bail.strip().lstrip())
+            bail = float(bail.strip().lstrip())
         except :
             self.display("La caution doit être numérique")
             return
@@ -38,19 +53,35 @@ class Member (MemberWindow) :
         else :
             max_loan = 0
         
-        err_code = add(
-            name, mail, tel, max_loan, 30, bail,
-            BDMstatus, ALIRstatus, self.comment_txt.GetValue()
-        )
+        if self.is_editor :
+            err_code = edit(
+                self.item_id, name, mail, tel, max_loan, 30, bail,
+                BDMstatus, ALIRstatus, self.comment_txt.GetValue()
+            )
+            
+            if err_code == 0 :
+                self.Parent.update_data("Members")
+                self.Close()
 
-        if err_code == 0 :
-            self.display(f"Le membre {name} a été ajouté à la liste.")
-            self.Parent.update_data("Members")
+            elif err_code == 1 :
+                self.display(f"Le membre {name} existe déjà.")
+            else :
+                self.display("Erreur inconnue")
 
-        elif err_code == 1 :
-            self.display(f"Le membre {name} existe déjà.")
         else :
-            self.display("Erreur inconnue")
+            err_code = add(
+                name, mail, tel, max_loan, 30, bail,
+                BDMstatus, ALIRstatus, self.comment_txt.GetValue()
+            )
+
+            if err_code == 0 :
+                self.display(f"Le membre {name} a été ajouté à la liste.")
+                self.Parent.update_data("Members")
+
+            elif err_code == 1 :
+                self.display(f"Le membre {name} existe déjà.")
+            else :
+                self.display("Erreur inconnue")
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)

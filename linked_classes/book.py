@@ -26,7 +26,7 @@ class Book(BookWindow) :
             self.vol_nb_spin.Disable()
             self.condition_spin.SetValue(item_data["condition"])
             self.com_txt.SetValue(item_data["comment"])
-            self.end_button.SetLabel("Appliquer la modification")
+            self.end_button.SetLabel("Appliquer les modifications")
     
     def complete(self, event) :
         if self.series_choice.GetSelection() == 0 :
