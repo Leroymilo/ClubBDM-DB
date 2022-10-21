@@ -14,6 +14,8 @@ class Member (MemberWindow) :
         self.is_editor = item_name is not None
 
         if self.is_editor :
+            self.SetLabel("Modifier le membre")
+            self.end_button.SetLabel("Appliquer les modifications")
             item_data = get_item_data(item_name)
             self.item_id = item_data["id"]
             self.name_txt.SetValue(item_name)
@@ -51,19 +53,35 @@ class Member (MemberWindow) :
         else :
             max_loan = 0
         
-        err_code = add(
-            name, mail, tel, max_loan, 30, bail,
-            BDMstatus, ALIRstatus, self.comment_txt.GetValue()
-        )
+        if self.is_editor :
+            err_code = edit(
+                self.item_id, name, mail, tel, max_loan, 30, bail,
+                BDMstatus, ALIRstatus, self.comment_txt.GetValue()
+            )
+            
+            if err_code == 0 :
+                self.Parent.update_data("Members")
+                self.Close()
 
-        if err_code == 0 :
-            self.display(f"Le membre {name} a été ajouté à la liste.")
-            self.Parent.update_data("Members")
+            elif err_code == 1 :
+                self.display(f"Le membre {name} existe déjà.")
+            else :
+                self.display("Erreur inconnue")
 
-        elif err_code == 1 :
-            self.display(f"Le membre {name} existe déjà.")
         else :
-            self.display("Erreur inconnue")
+            err_code = add(
+                name, mail, tel, max_loan, 30, bail,
+                BDMstatus, ALIRstatus, self.comment_txt.GetValue()
+            )
+
+            if err_code == 0 :
+                self.display(f"Le membre {name} a été ajouté à la liste.")
+                self.Parent.update_data("Members")
+
+            elif err_code == 1 :
+                self.display(f"Le membre {name} existe déjà.")
+            else :
+                self.display("Erreur inconnue")
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
