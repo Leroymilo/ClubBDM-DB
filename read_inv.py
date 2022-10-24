@@ -1,5 +1,6 @@
 from db_init import *
 import pandas as pd
+from datetime import date
 
 import db_reset #Cleans database
 
@@ -82,6 +83,8 @@ for _, line in books.iterrows() :
     if line.commentaire != "NULL" :
         comm += ";" + line.commentaire
     
+    today = date.today().strftime("%Y/%m/%d")
+    
     cursor.execute(f"""--sql
         INSERT INTO Books (
             book_id,
@@ -89,6 +92,7 @@ for _, line in books.iterrows() :
             series_id,
             vol_nb,
             dup_nb,
+            added_on,
             condition,
             comment
         ) VALUES (
@@ -97,6 +101,7 @@ for _, line in books.iterrows() :
             '{srs_id}',
             {vol_nb},
             {dup_nb},
+            "{today}",
             {line.condition},
             "{comm}"
         )
