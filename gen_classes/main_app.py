@@ -276,6 +276,8 @@ class MainWindow ( wx.Frame ):
 
 		self.SetSizer( top_sizer )
 		self.Layout()
+		self.help_timer = wx.Timer()
+		self.help_timer.SetOwner( self, wx.ID_ANY )
 
 		self.Centre( wx.BOTH )
 

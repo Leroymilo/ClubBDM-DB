@@ -69,6 +69,7 @@ class Pwd (PwdDlg) :
     
     def send_pwd(self, event):
         if hasher.verify(self.pwd_ctrl.GetValue(), hash) :
+            self.help_txt.SetLabel("Mot de passe correct")
             self.EndModal(1)
             return
 

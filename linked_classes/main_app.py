@@ -18,6 +18,7 @@ from linked_classes.author_add import Author
 from linked_classes.editor_add import Editor
 from linked_classes.member import Member
 from linked_classes.loan import Loan
+from linked_classes.loan_end import LoanEnd
 from linked_classes.pwd_ask import Pwd
 
 filters = {
@@ -50,6 +51,7 @@ class Main(MainWindow) :
         backup_db(db_name)
         self.sql_locked = True
         super().__init__(parent)
+        self.default_text = self.help_text.GetLabel()
 
         self.dataViews = {
             "Books" : self.book_display,
@@ -197,6 +199,32 @@ class Main(MainWindow) :
         for type_, sub_frame in self.sub_frames.values() :
             if type_ == to_update[tab] :
                 sub_frame.update_data(tab)
+            
+    def end_loan(self, event) :
+        row = self.loan_display.GetSelectedRow()
+
+        if row == wx.NOT_FOUND :
+            self.display("Sélectionnez un emprunt à terminer d'abord.")
+            return
+        
+        dlg = LoanEnd(self)
+        if dlg.ShowModal() :
+            pass
+
+    def display(self, text: str) :
+        self.help_text.SetLabel(text)
+        self.help_timer.Start()
+        self.timer_tick = 0
+    
+    def test_timer(self, event) :
+        if self.timer_tick == 500 :
+            self.help_text.SetLabel(self.default_text)
+            self.help_timer.Stop()
+        else :
+            self.timer_tick += 1
+
+    def end_process(self, event) :
+        self.help_timer.Stop()
     
     def on_activate(self, event):
         for _, sub_frame in self.sub_frames.values() :
