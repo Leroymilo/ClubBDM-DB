@@ -31,7 +31,7 @@ class LoanWindow ( wx.Frame ):
 		h_sizer_1.Add( self.m_staticText1, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		member_choiceChoices = []
-		self.member_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, member_choiceChoices, 0 )
+		self.member_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, member_choiceChoices, wx.CB_SORT )
 		self.member_choice.SetSelection( 0 )
 		h_sizer_1.Add( self.member_choice, 1, wx.ALL, 5 )
 
@@ -46,7 +46,7 @@ class LoanWindow ( wx.Frame ):
 		h_sizer_2.Add( self.m_staticText2, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		book_choiceChoices = []
-		self.book_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_choiceChoices, 0 )
+		self.book_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_choiceChoices, wx.CB_SORT )
 		self.book_choice.SetSelection( 0 )
 		h_sizer_2.Add( self.book_choice, 1, wx.ALL, 5 )
 

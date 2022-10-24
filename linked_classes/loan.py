@@ -8,34 +8,52 @@ class Loan (LoanWindow) :
     def __init__(self, parent, id_, item_id=None) :
         self.id_ = id_
         super().__init__(parent)
+        
+        self.is_editor = item_id is not None
+
         self.update_data("Members")
         self.update_data("Books")
 
-        self.is_editor = item_id is not None
-
         if self.is_editor :
-            pass
-
+            self.SetLabel("Modifier l'emprunt")
+            item_data = get_item_data(item_id)
+            self.loan_id = item_data["loan_id"]
+            self.member_dict[item_id[0]] = item_data["member_id"]
+            if item_id[0] not in self.member_choice.GetStrings() :
+                self.member_choice.Append(item_id[0])
+            self.book_choice.Append(item_id[1])
+            self.member_choice.SetStringSelection(item_id[0])
+            self.book_choice.SetStringSelection(item_id[1])
+            self.end_button.SetLabel("Appliquer les modifications")
+            
     def update_data(self, type_: str) :
         if type_ == "Members" :
             self.member_dict = get_members()
             selection = self.member_choice.GetStringSelection()
-            self.member_choice.SetItems([""] + list(self.member_dict.keys()))
+            self.member_choice.SetItems(
+                list(set(self.member_dict.keys()) | {"", selection})
+            )
             self.member_choice.SetStringSelection(selection)
         
         elif type_ == "Books" :
             selection = self.book_choice.GetStringSelection()
-            self.book_choice.SetItems([""] + get_books())
+            self.book_choice.SetItems(
+                list(get_books() | {"", selection})
+            )
             self.book_choice.SetStringSelection(selection)
         
         elif type_ == "Loans" :
             self.member_dict = get_members()
             selection = self.member_choice.GetStringSelection()
-            self.member_choice.SetItems([""] + list(self.member_dict.keys()))
+            self.member_choice.SetItems(
+                [""] + list(set(self.member_dict.keys()) | {selection})
+            )
             self.member_choice.SetStringSelection(selection)
             
             selection = self.book_choice.GetStringSelection()
-            self.book_choice.SetItems([""] + get_books())
+            self.book_choice.SetItems(
+                [""] + get_books() + [selection] * self.is_editor
+            )
             self.book_choice.SetStringSelection(selection)
     
     def complete(self, event):

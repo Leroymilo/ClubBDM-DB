@@ -166,7 +166,15 @@ class Main(MainWindow) :
     def edit(self, event: wx.dataview.DataViewEvent) :
         tab = notebook_pages[self.notebook.GetSelection()]
         dvlc = self.dataViews[tab]
-        item_id = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
+
+        if tab == "Loans" :
+            item_id = (
+                dvlc.GetValue(dvlc.GetSelectedRow(), 0),
+                dvlc.GetValue(dvlc.GetSelectedRow(), 1)
+            )
+        else :
+            item_id = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
+        
         id_ = max(self.sub_frames.keys(), default=0) + 1
         sub_frame: wx.Frame = sub_frames[tab](self, id_, item_id)
         self.sub_frames[id_] = (tab, sub_frame)

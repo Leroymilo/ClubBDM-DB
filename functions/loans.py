@@ -50,7 +50,7 @@ def get_books() :
         WHERE available
     ;""")
 
-    return [el for el, in cursor.fetchall()]
+    return {el for el, in cursor.fetchall()}
 
 def add(member_id: int, book_id: str) :
     cursor.execute(f"""--sql
@@ -78,8 +78,19 @@ def add(member_id: int, book_id: str) :
     db.commit()
     return 0
 
-def get_item_data() :
-    pass
+def get_item_data(item_id: tuple[str]) :
+    cursor.execute(f"""--sql
+        SELECT loan_id, member_id, loan_start, late_return
+        FROM Loans JOIN Members USING (member_id)
+        WHERE member_name = "{item_id[0]}"
+        AND book_id = "{item_id[1]}"
+        AND NOT Loans.archived
+    ;""")
+    values = cursor.fetchone()
+    print(values)
+    keys = ("loan_id", "member_id", "loan_start", "due_date")
+
+    return {keys[i]: values[i] for i in range(4)}
 
 def edit(item_id: int, member_id: int, book_id: str) :
     pass
