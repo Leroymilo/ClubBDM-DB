@@ -87,10 +87,34 @@ def get_item_data(item_id: tuple[str]) :
         AND NOT Loans.archived
     ;""")
     values = cursor.fetchone()
-    print(values)
     keys = ("loan_id", "member_id", "loan_start", "due_date")
 
     return {keys[i]: values[i] for i in range(4)}
 
 def edit(item_id: int, member_id: int, book_id: str) :
-    pass
+    cursor.execute(f"""--sql
+        SELECT book_id
+        FROM Loans WHERE loan_id = {item_id}
+    ;""")
+    old_book_id, = cursor.fetchone()
+
+    if old_book_id != book_id :
+        cursor.execute(f"""--sql
+            UPDATE Books
+            SET available = TRUE
+            WHERE book_id = "{old_book_id}"
+        ;""")
+        cursor.execute(f"""--sql
+            UPDATE Books
+            SET available = FALSE
+            WHERE book_id = "{book_id}"
+        ;""")
+    
+    cursor.execute(f"""--sql
+        UPDATE Loans
+        SET member_id = {member_id}, book_id = "{book_id}"
+        WHERE loan_id = {item_id}
+    ;""")
+
+    db.commit()
+    return 0

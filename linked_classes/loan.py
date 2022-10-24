@@ -46,13 +46,13 @@ class Loan (LoanWindow) :
             self.member_dict = get_members()
             selection = self.member_choice.GetStringSelection()
             self.member_choice.SetItems(
-                [""] + list(set(self.member_dict.keys()) | {selection})
+                list(set(self.member_dict.keys()) | {"", selection})
             )
             self.member_choice.SetStringSelection(selection)
             
             selection = self.book_choice.GetStringSelection()
             self.book_choice.SetItems(
-                [""] + get_books() + [selection] * self.is_editor
+                list(get_books() | {"", selection})
             )
             self.book_choice.SetStringSelection(selection)
     
@@ -69,7 +69,14 @@ class Loan (LoanWindow) :
         book_id = self.book_choice.GetStringSelection()
 
         if self.is_editor :
-            pass
+            err_code = edit(self.loan_id, member_id, book_id)
+
+            if err_code == 0 :
+                self.Parent.update_data("Loans")
+                self.Close()
+            
+            else :
+                self.display("Erreur inconnue")
 
         else :
             err_code = add(member_id, book_id)
