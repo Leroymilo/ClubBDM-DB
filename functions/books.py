@@ -1,6 +1,5 @@
 from msilib.schema import Condition
 from db_init import *
-from datetime import date
 
 def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
     base_query = """
@@ -71,7 +70,9 @@ def get_series() :
     return {el[1]: el[0] for el in cursor.fetchall()}
 
 def add(series_id: str, vol_nb: int, cond: int,
-    vol_name: str, comment: str) :
+    vol_name: str, dispo: bool, date: str, comment: str) :
+    
+    dispo = ["FALSE", "TRUE"][dispo]
 
     cursor.execute(f"""--sql
         SELECT book_category FROM Series
@@ -92,10 +93,10 @@ def add(series_id: str, vol_nb: int, cond: int,
     cursor.execute(f"""--sql
     INSERT INTO Books (
         book_id, book_name, series_id, vol_nb,
-        dup_nb, condition, added_on, comment
+        dup_nb, condition, available, added_on, comment
     ) Values (
         "{book_id}", "{vol_name}", "{series_id}", {vol_nb},
-        {dup_nb}, {cond}, "{date.today().strftime("%Y-%m-%d")}", "{comment}"
+        {dup_nb}, {cond}, {dispo}, "{date}", "{comment}"
     )
     ;""")
     db.commit()
@@ -103,17 +104,21 @@ def add(series_id: str, vol_nb: int, cond: int,
 
 def get_item_data(item_id: str) :
     cursor.execute(f"""--sql
-        SELECT book_name, series_name, vol_nb, condition, comment
+        SELECT book_name, series_name, vol_nb, condition,
+            available, added_on, comment
         FROM Books JOIN Series USING (series_id)
         WHERE book_id = "{item_id}"
     ;""")
 
     values = cursor.fetchone()
-    keys = ("book_name", "series_name", "vol_nb", "condition", "comment")
-    return {keys[i]: values[i] for i in range(5)}
+    keys = ("book_name", "series_name", "vol_nb", "condition",
+    "available", "added_on", "comment")
+    return {keys[i]: values[i] for i in range(7)}
 
 def edit(book_id: str, series_id: str, vol_nb: int,
-    cond: int, vol_name: str, comment: str) :
+    cond: int, vol_name: str, dispo: bool, date: str, comment: str) :
+    
+    dispo = ["FALSE", "TRUE"][dispo]
 
     cursor.execute(f"""--sql
     UPDATE Books
@@ -122,6 +127,8 @@ def edit(book_id: str, series_id: str, vol_nb: int,
         series_id = "{series_id}",
         vol_nb = {vol_nb},
         condition = {cond},
+        available = {dispo},
+        added_on = "{date}",
         comment = "{comment}"
     WHERE book_id = "{book_id}"
     ;""")

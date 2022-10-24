@@ -11,6 +11,7 @@ class Book(BookWindow) :
         self.item_id = item_id
         self.series_dict = get_series()
         self.series_choice.Set([""] + list(self.series_dict.keys()))
+        self.series_choice.SetSelection(0)
         self.timer_tick = 0
 
         self.is_editor = item_id is not None
@@ -25,6 +26,9 @@ class Book(BookWindow) :
             self.vol_nb_spin.SetValue(item_data["vol_nb"])
             self.vol_nb_spin.Disable()
             self.condition_spin.SetValue(item_data["condition"])
+            self.disp_check.SetValue(item_data["available"])
+            y, m, d = map(int, item_data["added_on"].split("/"))
+            self.date_picker.SetValue(wx.DateTime(d, m, y))
             self.com_txt.SetValue(item_data["comment"])
             self.end_button.SetLabel("Appliquer les modifications")
     
@@ -33,6 +37,8 @@ class Book(BookWindow) :
             self.display("Choisissez une série ou créez-en une nouvelle.")
             return
         
+        date = self.date_picker.GetValue().Format("%Y/%m/%d")
+        
         if self.is_editor :
             err_code = edit(
                 self.item_id,
@@ -40,6 +46,8 @@ class Book(BookWindow) :
                 self.vol_nb_spin.GetValue(),
                 self.condition_spin.GetValue(),
                 self.vol_name_txt.GetValue().strip(' ').lstrip(' '),
+                self.disp_check.GetValue(),
+                date,
                 self.com_txt.GetValue().strip(' ').lstrip(' ')
             )
 
@@ -55,6 +63,8 @@ class Book(BookWindow) :
                 self.vol_nb_spin.GetValue(),
                 self.condition_spin.GetValue(),
                 self.vol_name_txt.GetValue().strip(' ').lstrip(' '),
+                self.disp_check.GetValue(),
+                date,
                 self.com_txt.GetValue().strip(' ').lstrip(' ')
             )
             
