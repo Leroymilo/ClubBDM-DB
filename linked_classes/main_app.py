@@ -28,7 +28,7 @@ filters = {
     "Loans" : ["Member", "Book"]
 }
 
-notebook_pages = ["Books", "Series", "Members", "Loans", "SQL"]
+notebook_pages = ["Books", "Series", "Members", "Loans", "SQL", "Inventory"]
 
 selectors = {
     "Books" : books.select,
