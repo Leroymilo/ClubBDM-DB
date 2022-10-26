@@ -77,6 +77,8 @@ class Main(MainWindow) :
         self.notebook.SetSelection(0)
         self.sub_frames = {}
         self.update_table(tab = notebook_pages[self.notebook.GetSelection()])
+        self.replace_button.SetName("replace")
+        self.append_button.SetName("append")
 
     def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
         dataView = self.dataViews[tab]
@@ -210,6 +212,17 @@ class Main(MainWindow) :
         dlg = LoanEnd(self)
         if dlg.ShowModal() :
             pass
+    
+    def read_inv(self, event: wx.Event) :
+        
+        
+        
+        button: wx.Button = event.GetEventObject()
+        if button.GetName() == "replace" :
+            pass
+    
+    def gen_inv(self, event) :
+        pass
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
