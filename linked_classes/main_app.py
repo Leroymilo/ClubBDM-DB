@@ -1,3 +1,4 @@
+from msilib.schema import Directory
 import wx
 import wx.dataview
 import pandas as pd
@@ -215,7 +216,7 @@ class Main(MainWindow) :
     
     def read_inv(self, event: wx.Event) :
         
-        
+        directory = self.read_file_picker.GetPath()
         
         button: wx.Button = event.GetEventObject()
         if button.GetName() == "replace" :
