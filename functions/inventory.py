@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import date
 
 def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
-    return {
+    data = {
         "categories" : pd.read_excel(directory, sheet_name="Catégories"),
         "authors" : pd.read_excel(directory, sheet_name="Auteurs"),
         "editors" : pd.read_excel(directory, sheet_name="Éditeurs"),
@@ -11,6 +11,8 @@ def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
         "books" : pd.read_excel(directory, sheet_name="Livres"),
         "members": pd.read_excel(directory, sheet_name="Membres"),
     }
+
+    return data
 
 def write_db(data: dict[str, pd.DataFrame]) -> None :
     pass
