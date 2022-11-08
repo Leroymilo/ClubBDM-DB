@@ -24,15 +24,15 @@ def read_db() -> dict[str, pd.DataFrame] :
             SELECT cat_id AS code,
                    cat_name AS `désignation`
             FROM Categories
-        ;"""),
+        ;""", db),
         "authors" : pd.read_sql_query("""--sql
             SELECT auth_name AS nom
             FROM Authors
-        ;"""),
+        ;""", db),
         "editors" : pd.read_sql_query("""--sql
             SELECT edit_name AS nom
             FROM Editors
-        ;"""),
+        ;""", db),
         "series" : pd.read_sql_query("""--sql
             SELECT series_id AS identifiant,
                    series_name AS nom,
@@ -55,7 +55,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id
             )
-        ;"""),
+        ;""", db),
         "books" : pd.read_sql_query("""--sql
             SELECT book_id AS `cotation (sera recalculée)`,
                    book_name AS nom,
@@ -67,7 +67,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    added_on AS `date d'ajout`,
                    comment AS commentaire
             FROM Books
-        ;"""),
+        ;""", db),
         "members": pd.read_sql_query("""--sql
             SELECT member_name AS nom,
                    mail, tel,
@@ -75,14 +75,14 @@ def read_db() -> dict[str, pd.DataFrame] :
                    bail AS caution,
                    comment AS commentaire
             FROM Members
-        ;"""),
+        ;""", db),
         "loans": pd.read_sql_query("""--sql
             SELECT member_name AS `nom membre`,
                    book_id AS `cotation livre`
             FROM Loans
             JOIN Members
                 USING (member_id)
-        ;""")
+        ;""", db)
     }
 
     return data
@@ -93,7 +93,7 @@ def write_xlsx(directory: str, data: dict[str, pd.DataFrame]) -> None :
         "series": "Séries",
         "books": "Livres",
         "members": "Membres",
-        "loans": "Loans",
+        "loans": "Emprunts",
         "authors": "Auteurs",
         "editors": "Éditeurs"
     }
@@ -107,3 +107,4 @@ def write_xlsx(directory: str, data: dict[str, pd.DataFrame]) -> None :
             sheet_name=sh_name,
             index=False
         )
+    writer.close()

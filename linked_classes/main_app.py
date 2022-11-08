@@ -1,4 +1,3 @@
-from msilib.schema import Directory
 import wx
 import wx.dataview
 import pandas as pd
@@ -237,9 +236,22 @@ class Main(MainWindow) :
         directory: str = self.write_txt.GetValue()
         directory = directory.strip()
 
-        if directory == "" or not directory.endswith(".xslx"):
-            self.display("Choisissez un fichier excel valide à importer.")
-        write_xlsx()
+        if directory == "" :
+            self.display("Donnez un nom au fichier à générer.")
+            return
+        
+        if not directory.endswith(".xlsx") :
+            directory += ".xlsx"
+        
+        try :
+            writer = pd.ExcelWriter(directory)
+        except OSError :
+            self.display("Le nom de fichier à générer est invalide.")
+            return
+        
+        self.display("Génération de l'inventaire...")
+        write_xlsx(directory, read_db())
+        self.display("Inventaire généré!")
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)

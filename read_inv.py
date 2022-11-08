@@ -19,27 +19,27 @@ for _, line in categories.iterrows() :
     cursor.execute(f"""--sql
         INSERT INTO Categories VALUES (
             {line.code},
-            '{line.désignation}'
+            "{line.désignation}"
         )
     ;""")
 
 for _, line in authors.iterrows() :
     cursor.execute(f"""--sql
-        INSERT INTO Authors (auth_name) VALUES ('{line.nom}')
+        INSERT INTO Authors (auth_name) VALUES ("{line.nom}")
     ;""")
 
 for _, line in editors.iterrows() :
     cursor.execute(f"""--sql
-        INSERT INTO Editors (edit_name) VALUES ('{line.nom}')
+        INSERT INTO Editors (edit_name) VALUES ("{line.nom}")
     ;""")
 
 srs_cat_dict = {}
 for _, line in series.iterrows() :
     cursor.execute(f"""--sql
         INSERT INTO Series VALUES (
-            '{line.identifiant}',
-            '{line.nom}',
-            '{line.type}',
+            "{line.identifiant}",
+            "{line.nom}",
+            "{line.type}",
             {cat_dict[line.catégorie]}
         )
     ;""")
@@ -49,22 +49,22 @@ for _, line in series.iterrows() :
     for auth in line.auteurs.split(";") :
         auth = auth.strip().lstrip()
         if auth != "NULL" :
-            cursor.execute(f"SELECT auth_id FROM Authors WHERE auth_name = '{auth}'")
+            cursor.execute(f"""SELECT auth_id FROM Authors WHERE auth_name = "{auth}";""")
             auth_id, = cursor.fetchone()
             cursor.execute(f"""--sql
                 INSERT INTO `Srs-Auth` VALUES (
-                    '{line.identifiant}', {auth_id}
+                    "{line.identifiant}", {auth_id}
                 )
             ;""")
 
     for edit in line.éditeurs.split(";") :
         edit = edit.strip().lstrip()
         if edit != "NULL" :
-            cursor.execute(f"SELECT edit_id FROM Editors WHERE edit_name = '{edit}'")
+            cursor.execute(f"""SELECT edit_id FROM Editors WHERE edit_name = "{edit}";""")
             edit_id, = cursor.fetchone()
             cursor.execute(f"""--sql
                 INSERT INTO `Srs-Edit` VALUES (
-                    '{line.identifiant}', {edit_id}
+                    "{line.identifiant}", {edit_id}
                 )
             ;""")
 
@@ -76,12 +76,6 @@ for _, line in books.iterrows() :
 
     new_id = cat_id.rjust(2, '0') + srs_id + \
         vol_nb.rjust(3, '0') + dup_nb.rjust(2, '0')
-    
-    comm = ""
-    if line["ancienne cotation"] != "NULL" :
-        comm += "old id : " + line["ancienne cotation"]
-    if line.commentaire != "NULL" :
-        comm += ";" + line.commentaire
     
     today = date.today().strftime("%Y/%m/%d")
     
@@ -96,14 +90,14 @@ for _, line in books.iterrows() :
             condition,
             comment
         ) VALUES (
-            '{new_id}',
+            "{new_id}",
             "{line.nom}",
-            '{srs_id}',
+            "{srs_id}",
             {vol_nb},
             {dup_nb},
             "{today}",
             {line.condition},
-            "{comm}"
+            "{line.commentaire}"
         )
     ;""")
 
