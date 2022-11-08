@@ -57,17 +57,95 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Categories :
     cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
     cursor.execute(f"""--sql
-        INSERT INTO Categories VALUES ({"), (".join(
+        INSERT OR IGNORE
+        INTO Categories
+        VALUES ({"), (".join(
             f'{line.code}, "{line.désignation}"'
             for _, line in data["categories"].iterrows()
         )})
     ;""")
 
     print(f"Categories took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
 
-    print()
+    # Authors :
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO Authors (auth_name)
+        VALUES ({"), (".join(
+            f'"{line.nom}"'
+            for _, line in data["authors"].iterrows()
+        )})
+    ;""")
 
-    #
+    print(f"Authors took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
+
+    # Editors :
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO Editors (edit_name)
+        VALUES ({"), (".join(
+            f'"{line.nom}"'
+            for _, line in data["editors"].iterrows()
+        )})
+    ;""")
+
+    print(f"Editors took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
+
+    # Series :
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO Series
+        VALUES ({"), (".join(
+            f'"{line.identifiant}", "{line.nom}", "{line.type}", {cat_dict[line.catégorie]}'
+            for _, line in data["series"].iterrows()
+        )})
+    ;""")
+
+    cursor.execute("SELECT * FROM Authors;")
+    auth_dict = {
+        name: code
+        for code, name in cursor.fetchall()
+    }
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO `Srs-Auth`
+        VALUES ({"), (".join(
+            "), (".join(
+                f'"{line.identifiant}", {auth_dict[auth_name.strip()]}'
+                for auth_name in line.auteurs.split(";")
+            )
+            for _, line in data["series"].iterrows()
+        )})
+    ;""")
+
+    cursor.execute("SELECT * FROM Editors;")
+    edit_dict = {
+        name: code
+        for code, name in cursor.fetchall()
+    }
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO `Srs-Edit`
+        VALUES ({"), (".join(
+            "), (".join(
+                f'"{line.identifiant}", {edit_dict[edit_name.strip()]}'
+                for edit_name in line.éditeurs.split(";")
+            )
+            for _, line in data["series"].iterrows()
+        )})
+    ;""")
+
+    print(f"Series took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
+
+    # Books
+    
+
+    print(f"Books took {round(t.time()-t0, 3)}s")
+
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
