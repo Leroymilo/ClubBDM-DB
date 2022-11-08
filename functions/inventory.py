@@ -39,7 +39,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    book_type AS type,
                    cat_name AS catégorie,
                    auths AS auteurs,
-                   edits AS editors
+                   edits AS éditeurs
             FROM Series
             JOIN Categories
                 ON book_category = cat_id
