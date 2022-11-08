@@ -229,13 +229,19 @@ class Main(MainWindow) :
         if button.GetName() == "replace" :
             replace = True
         
+        self.display("Lecture de l'excel...")
+
         errcode, data = read_xlsx(directory)
 
         if errcode :
             sheet_name, miss_cols = data
             self.display(f"Colonnes {', '.join(miss_cols)} manquantes dans la feuille {sheet_name}.")
     
+        self.display("Écriture des données...")
+
         errcode = write_db(data, replace)
+
+        self.display("Données enregistrées!")
 
     def gen_inv(self, event) :
 

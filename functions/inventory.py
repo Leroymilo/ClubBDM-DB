@@ -1,7 +1,7 @@
 from db_init import *
 import pandas as pd
 from datetime import date
-
+import time as t
 
 Cols = {
     "categories": {"code", "désignation"},
@@ -48,7 +48,12 @@ def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
 
 
 def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
+    if replace :
+        import db_reset
     
+    t0 = t.time()
+    print("started writing")
+
     # Categories :
     cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
     cursor.execute(f"""--sql
@@ -58,7 +63,9 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         )})
     ;""")
 
+    print(f"Categories took {round(t.time()-t0, 3)}s")
 
+    print()
 
     #
 
