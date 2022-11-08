@@ -12,7 +12,7 @@ import functions.series as series
 import functions.members as members
 import functions.loans as loans
 
-from functions.inventory import read_db, write_xlsx
+from functions.inventory import read_xlsx, write_db, read_db, write_xlsx
 
 from linked_classes.book import Book
 from linked_classes.series import Series
@@ -220,7 +220,7 @@ class Main(MainWindow) :
         directory: str = self.read_file_picker.GetPath()
         directory = directory.strip()
 
-        if directory == "" or not directory.endswith(".xslx"):
+        if directory == "" or not directory.endswith(".xlsx"):
             self.display("Choisissez un fichier excel valide à importer.")
             return
         
@@ -229,8 +229,14 @@ class Main(MainWindow) :
         if button.GetName() == "replace" :
             replace = True
         
-        
+        errcode, data = read_xlsx(directory)
+
+        if errcode :
+            sheet_name, miss_cols = data
+            self.display(f"Colonnes {', '.join(miss_cols)} manquantes dans la feuille {sheet_name}.")
     
+        errcode = write_db(data, replace)
+
     def gen_inv(self, event) :
 
         directory: str = self.write_txt.GetValue()

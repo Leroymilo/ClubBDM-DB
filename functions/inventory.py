@@ -2,6 +2,32 @@ from db_init import *
 import pandas as pd
 from datetime import date
 
+
+Cols = {
+    "categories": {"code", "désignation"},
+    "series": {"identifiant", "nom", "type", "catégorie", "auteurs", "éditeurs"},
+    "books": {
+        "cotation", "nom", "identifiant série",
+        "numéro de volume", "numéro de duplicata", "disponible",
+        "condition", "date d'ajout", "commentaire"
+    },
+    "members": {"nom", "mail", "tel", "statut", "caution", "commentaire"},
+    "loans": {"nom membre", "cotation livre"},
+    "authors": {"nom"},
+    "editors": {"nom"}
+}
+
+Sheets = {
+    "categories": "Catégories",
+    "series": "Séries",
+    "books": "Livres",
+    "members": "Membres",
+    "loans": "Emprunts",
+    "authors": "Auteurs",
+    "editors": "Éditeurs"
+}
+
+
 def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
     data = {
         "categories" : pd.read_excel(directory, sheet_name="Catégories"),
@@ -13,10 +39,28 @@ def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
         "loans": pd.read_excel(directory, sheet_name="Emprunts")
     }
 
-    return data
+    for table_name, table in data.items() :
+        miss_cols = Cols[table_name].difference(set(table.columns.to_list()))
+        if len(miss_cols) > 0 :
+            return 1, (Sheets[table_name], miss_cols)
+
+    return 0, data
+
 
 def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
-    pass
+    
+    # Categories :
+    cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
+    cursor.execute(f"""--sql
+        INSERT INTO Categories VALUES ({"), (".join(
+            f'{line.code}, "{line.désignation}"'
+            for _, line in data["categories"].iterrows()
+        )})
+    ;""")
+
+
+
+    #
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
@@ -87,24 +131,14 @@ def read_db() -> dict[str, pd.DataFrame] :
 
     return data
 
-def write_xlsx(directory: str, data: dict[str, pd.DataFrame]) -> None :
-    Sheet_names = {
-        "categories": "Catégories",
-        "series": "Séries",
-        "books": "Livres",
-        "members": "Membres",
-        "loans": "Emprunts",
-        "authors": "Auteurs",
-        "editors": "Éditeurs"
-    }
 
+def write_xlsx(directory: str, data: dict[str, pd.DataFrame]) -> None :
     writer = pd.ExcelWriter(directory, engine='xlsxwriter')
 
-    for table in Sheet_names :
-        sh_name = Sheet_names[table]
+    for table in Sheets :
         data[table].to_excel(
             excel_writer=writer,
-            sheet_name=sh_name,
+            sheet_name=Sheets[table],
             index=False
         )
     writer.close()
