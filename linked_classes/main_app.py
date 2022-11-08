@@ -216,11 +216,18 @@ class Main(MainWindow) :
     
     def read_inv(self, event: wx.Event) :
         
-        directory = self.read_file_picker.GetPath()
+        directory: str = self.read_file_picker.GetPath()
+        directory = directory.strip()
+
+        if directory == "" or not directory.endswith(".xslx"):
+            self.display("Choisissez un fichier excel valide à importer.")
         
         button: wx.Button = event.GetEventObject()
+        replace = False
         if button.GetName() == "replace" :
-            pass
+            replace = True
+        
+        
     
     def gen_inv(self, event) :
         pass
