@@ -142,7 +142,21 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     t0 = t.time()
 
     # Books
-    
+    series_dict = {
+        line.identifiant : cat_dict[line.catégorie]
+        for _, line in data["series"].iterrows()
+    }
+
+    data["books"].loc[data["books"].cotation == ""]
+
+    # cursor.execute(f"""--sql
+    #     INSERT OR IGNORE
+    #     INTO Books
+    #     Values ({"), (".join(
+    #         f'{line}'
+    #         for _, line in data["books"].iterrows()
+    #     )})
+    # ;""")
 
     print(f"Books took {round(t.time()-t0, 3)}s")
 
