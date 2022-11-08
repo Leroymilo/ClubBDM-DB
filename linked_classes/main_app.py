@@ -13,6 +13,8 @@ import functions.series as series
 import functions.members as members
 import functions.loans as loans
 
+from functions.inventory import read_db, write_xlsx
+
 from linked_classes.book import Book
 from linked_classes.series import Series
 from linked_classes.author_add import Author
@@ -221,6 +223,7 @@ class Main(MainWindow) :
 
         if directory == "" or not directory.endswith(".xslx"):
             self.display("Choisissez un fichier excel valide à importer.")
+            return
         
         button: wx.Button = event.GetEventObject()
         replace = False
@@ -230,7 +233,13 @@ class Main(MainWindow) :
         
     
     def gen_inv(self, event) :
-        pass
+
+        directory: str = self.write_txt.GetValue()
+        directory = directory.strip()
+
+        if directory == "" or not directory.endswith(".xslx"):
+            self.display("Choisissez un fichier excel valide à importer.")
+        write_xlsx()
 
     def display(self, text: str) :
         self.help_text.SetLabel(text)
