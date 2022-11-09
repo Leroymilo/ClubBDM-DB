@@ -7,7 +7,7 @@ Cols = {
     "categories": {"code", "désignation"},
     "series": {"identifiant", "nom", "type", "catégorie", "auteurs", "éditeurs"},
     "books": {
-        "cotation", "nom", "identifiant série",
+        "nom", "identifiant série",
         "numéro de volume", "numéro de duplicata", "disponible",
         "condition", "date d'ajout", "commentaire"
     },
@@ -142,21 +142,33 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     t0 = t.time()
 
     # Books
-    series_dict = {
+    srs_cat_dict = {
         line.identifiant : cat_dict[line.catégorie]
         for _, line in data["series"].iterrows()
     }
 
-    data["books"].loc[data["books"].cotation == ""]
+    data["books"].rename(columns={
+            "identifiant série": "srs",
+            "numéro de volume": "vol",
+            "numéro de duplicata": "dup",
+            "date d'ajout": "date"
+        }, inplace=True)
+    
+    data["books"].fillna(value="", inplace=True)
 
-    # cursor.execute(f"""--sql
-    #     INSERT OR IGNORE
-    #     INTO Books
-    #     Values ({"), (".join(
-    #         f'{line}'
-    #         for _, line in data["books"].iterrows()
-    #     )})
-    # ;""")
+    cursor.execute(f"""--sql
+        INSERT OR IGNORE
+        INTO Books
+        Values ({"), (".join(
+            '"' + str(srs_cat_dict[line.srs]).rjust(2, '0') + line.srs +
+            str(line.vol).rjust(3, '0') + str(line.dup).rjust(2, '0') +
+            f'''", "{line.nom}", "{line.srs}", {line.vol}, {line.dup},
+            {line.disponible == "Oui"}, {line.condition},
+            "{date.today().strftime('%Y/%m/%d') if line.date == '' else line.date}",
+            "{line.commentaire}"'''
+            for _, line in data["books"].iterrows()
+        )})
+    ;""")
 
     print(f"Books took {round(t.time()-t0, 3)}s")
 
