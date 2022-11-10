@@ -30,6 +30,8 @@ Sheets = {
     "editors": "Éditeurs"
 }
 
+BDM_Status = {"Membre", "Membre actif", "Membre +", "Membre actif +", "Bureau"}
+
 def parse_date(date_: str | date | datetime | pd.Timestamp) -> str :
     if type(date_) == pd.Timestamp :
         date_: datetime = date_.date()
@@ -38,6 +40,20 @@ def parse_date(date_: str | date | datetime | pd.Timestamp) -> str :
     if (type(date_) == str and date_ == "") or pd.isnull(date_) :
         return date.today().strftime("%Y/%m/%d")
     return date_
+
+def parse_max_loans(line: pd.Series) -> int :
+    if line.statut in {"Membre +", "Membre actif +"} :
+        return line.caution//8
+    elif line.statut == "Bureau" :
+        return 20
+    else :
+        return 0
+
+def parse_status(status: str) -> str :
+    if status in BDM_Status :
+        return status
+    return "Non-membre"
+
 
 def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
     data = {
@@ -171,12 +187,11 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             }, inplace=True)
         
         data["books"].fillna(value="", inplace=True)
-        print(data["books"])
 
         cursor.execute(f"""--sql
             INSERT OR REPLACE
             INTO Books
-            Values ({"), (".join(
+            VALUES ({"), (".join(
                 '"' + str(srs_cat_dict[line.srs]).rjust(2, '0') + line.srs +
                 str(line.vol).rjust(3, '0') + str(line.dup).rjust(2, '0') +
                 f'''", "{line.nom}", "{line.srs}", {line.vol}, {line.dup},
@@ -188,6 +203,28 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         ;""")
 
         print(f"Books took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
+
+    # Members
+    if data["members"].shape[0] > 0 :
+        cursor.execute(f"""--sql
+            INSERT OR REPLACE
+            INTO Members (
+                member_name, mail, tel,
+                max_loans, loan_length, bail,
+                status_BDM, status_ALIR,
+                comment
+            )
+            VALUES ({"), (".join(
+                f'''"{line.nom}", "{line.mail}", "{line.tel}",
+                {parse_max_loans(line)}, 30, {line.caution},
+                "{parse_status(line.statut)}", "Non-Membre",
+                "{line.commentaire}"
+                '''
+                for _, line in data["members"].iterrows()
+            )})
+        ;""")
+        print(f"Members took {round(t.time()-t0, 3)}s")
 
     db.commit()
 
