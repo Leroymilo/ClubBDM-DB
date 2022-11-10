@@ -37,12 +37,11 @@ Faites juste attention à bien cocher l'option "ouvrir avec/en tant que projet P
 Pour initialiser la base de données, vous aurez besoin d'un inventaire (feuille excel bien formatée) ou d'une backup (.sql).
 
 - Si vous avez un inventaire :</br>
-    Lancez `read_inv.py` en entrant la commande `python read_inv.py` dans le terminal</br>
-    (le bouton pour lancer le script de votre éditeur risque de ne pas prendre l'environnement virtuel en compte)
+    Lancez l'application avec la commande `python "BDM-App.py"`, puis allez dans l'onglet `inventaire`.</br>
+    D'ici, vous pouvez choisir un fichier excel en cliquant sur `Browse`, puis l'importer en "Remplaçant" les données actuelles ou en "Ajoutant" des nouvelles données à la suite.
 - Si vous avez une backup :</br>
-    Renommez-la `dbBDM.sql`
-
-Vous devriez pouvoir maintenant entrer la commande `python "BDM-App.py"` pour tester l'application.
+    Renommez-la `dbBDM.sql` et mettez là dans le dossier principal de cette application.</br>
+    Vous devriez pouvoir maintenant entrer la commande `python "BDM-App.py"` pour tester l'application.
 
 ## Mettre à jour et lancer l'application
 
