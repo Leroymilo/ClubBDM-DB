@@ -1,7 +1,7 @@
 from msilib.schema import Condition
 from db_init import *
 
-def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
+def select(filter_: tuple[str] | None = None) -> np.array :
     base_query = """
         SELECT book_id,
             book_name,

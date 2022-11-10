@@ -3,7 +3,7 @@
 ## Setup de l'environnement sous Windows :
 Si vous avez votre propre environnement, pas besoin de tout installer.
 
-- Installez [python](https://www.python.org/downloads/) :</br>
+- Installez [python3.10.8](https://www.python.org/downloads/release/python-3108/) :</br>
 ![](2022-10-17-20-38-08.png)</br>
 Pour les options d'installation :
     - Cochez "Add python.exe to PATH"

@@ -1,6 +1,5 @@
 from sqlite3 import *
 import re
-from typing import Union, Tuple
 import numpy as np
 
 db_name = "dbBDM"

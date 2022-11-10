@@ -82,7 +82,7 @@ class Main(MainWindow) :
         self.replace_button.SetName("replace")
         self.append_button.SetName("append")
 
-    def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
+    def update_table(self, tab: str, filter_: tuple[str] | None = None) :
         dataView = self.dataViews[tab]
         dataView.DeleteAllItems()
         table = selectors[tab](filter_)
