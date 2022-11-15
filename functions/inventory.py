@@ -78,6 +78,12 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     if replace :
         reset(db, db_name, cursor)
     
+    # The idea is that we need to insert all new rows in one query because one query per row is slow as fuck,
+    # that's why every query is an unreadable f-string clusterfuck.
+    # Technically it would be as fast and way more readable to build the query with a for loop and then execute it,
+    # but everything is already done and I can't be bothered to rewrite it all for now.
+    # If you really need help with this function, just contact me. Info in doc.
+
     t0 = t.time()
     print("started writing")
 
