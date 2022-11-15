@@ -264,7 +264,7 @@ class MainWindow ( wx.Frame ):
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
 		self.inventories = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		inv_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -281,7 +281,7 @@ class MainWindow ( wx.Frame ):
 
 		inv_v_sizer.Add( inv_h_sizer_1, 0, wx.EXPAND, 5 )
 
-		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE )
+		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
 		inv_v_sizer.Add( self.read_file_picker, 0, wx.ALL, 5 )
 
 		inv_h_sizer_2 = wx.BoxSizer( wx.HORIZONTAL )
@@ -323,7 +323,7 @@ class MainWindow ( wx.Frame ):
 		self.inventories.SetSizer( inv_v_sizer )
 		self.inventories.Layout()
 		inv_v_sizer.Fit( self.inventories )
-		self.notebook.AddPage( self.inventories, u"Inventaire", False )
+		self.notebook.AddPage( self.inventories, u"Inventaire", True )
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 
