@@ -264,7 +264,7 @@ class MainWindow ( wx.Frame ):
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
 		self.inventories = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		inv_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -275,7 +275,7 @@ class MainWindow ( wx.Frame ):
 
 		inv_h_sizer_1.Add( self.m_staticText61, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.inv_tuto_format = wx.adv.HyperlinkCtrl( self.inventories, wx.ID_ANY, u"Format de la feuille excel", wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
+		self.inv_tuto_format = wx.adv.HyperlinkCtrl( self.inventories, wx.ID_ANY, u"Format de la feuille excel", u"https://github.com/Leroymilo/ClubBDM-DB/blob/main/documentation/inventaire_format.md", wx.DefaultPosition, wx.DefaultSize, wx.adv.HL_DEFAULT_STYLE )
 		inv_h_sizer_1.Add( self.inv_tuto_format, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
@@ -323,7 +323,7 @@ class MainWindow ( wx.Frame ):
 		self.inventories.SetSizer( inv_v_sizer )
 		self.inventories.Layout()
 		inv_v_sizer.Fit( self.inventories )
-		self.notebook.AddPage( self.inventories, u"Inventaire", False )
+		self.notebook.AddPage( self.inventories, u"Inventaire", True )
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 
