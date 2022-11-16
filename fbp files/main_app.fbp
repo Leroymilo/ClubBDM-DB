@@ -120,7 +120,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_name"></property>
-                        <property name="window_style"></property>
+                        <property name="window_style">wxTAB_TRAVERSAL</property>
                         <event name="OnNotebookPageChanged">load_display</event>
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
@@ -261,7 +261,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
@@ -445,7 +445,7 @@
                                                     <property name="value"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
@@ -571,12 +571,12 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
@@ -600,7 +600,7 @@
                                             <property name="tooltip"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                             <event name="OnDataViewListCtrlItemActivated">edit</event>
                                             <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
@@ -698,7 +698,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Séries</property>
-                            <property name="select">0</property>
+                            <property name="select">1</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -750,12 +750,12 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">series_v_sizer</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag"></property>
                                         <property name="proportion">0</property>
@@ -834,7 +834,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
@@ -1018,7 +1018,7 @@
                                                     <property name="value"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
@@ -1144,12 +1144,12 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
@@ -1385,7 +1385,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
@@ -1569,7 +1569,7 @@
                                                     <property name="value"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
@@ -1695,7 +1695,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -1817,7 +1817,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnCheckBox">toggle_archived</event>
                                                 </object>
                                             </object>
@@ -1847,7 +1847,7 @@
                                             <property name="tooltip"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                             <event name="OnDataViewListCtrlItemActivated">edit</event>
                                             <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
@@ -2114,7 +2114,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">add</event>
                                                 </object>
                                             </object>
@@ -2246,7 +2246,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">end_loan</event>
                                                 </object>
                                             </object>
@@ -2430,7 +2430,7 @@
                                                     <property name="value"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnTextEnter">search_table</event>
                                                 </object>
                                             </object>
@@ -2556,7 +2556,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -2678,7 +2678,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnCheckBox">toggle_archived</event>
                                                 </object>
                                             </object>
@@ -2708,7 +2708,7 @@
                                             <property name="tooltip"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                             <event name="OnDataViewListCtrlItemActivated">edit</event>
                                             <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
@@ -2834,7 +2834,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND</property>
                                         <property name="proportion">0</property>
-                                        <object class="wxBoxSizer" expanded="0">
+                                        <object class="wxBoxSizer" expanded="1">
                                             <property name="minimum_size"></property>
                                             <property name="name">query_h_sizer</property>
                                             <property name="orient">wxHORIZONTAL</property>
@@ -2909,7 +2909,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">run_query</event>
                                                 </object>
                                             </object>
@@ -2973,7 +2973,7 @@
                                                     <property name="visited_color"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                             <object class="sizeritem" expanded="0">
@@ -3036,7 +3036,7 @@
                                                     <property name="visited_color"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                         </object>
@@ -3102,7 +3102,7 @@
                                             <property name="value"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                         </object>
                                     </object>
                                     <object class="sizeritem" expanded="0">
@@ -3187,7 +3187,7 @@
                                             <property name="tooltip"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                         </object>
                                     </object>
                                 </object>
@@ -3196,7 +3196,7 @@
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">Inventaire</property>
-                            <property name="select">1</property>
+                            <property name="select">0</property>
                             <object class="wxPanel" expanded="1">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
@@ -3383,7 +3383,7 @@
                                                     <property name="visited_color"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                         </object>
@@ -3450,7 +3450,7 @@
                                             <property name="wildcard">*.*</property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                         </object>
                                     </object>
                                     <object class="sizeritem" expanded="1">
@@ -3532,7 +3532,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">read_inv</event>
                                                 </object>
                                             </object>
@@ -3606,7 +3606,7 @@
                                                     <property name="validator_variable"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                     <event name="OnButtonClick">read_inv</event>
                                                 </object>
                                             </object>
@@ -3862,7 +3862,7 @@
                                                     <property name="value"></property>
                                                     <property name="window_extra_style"></property>
                                                     <property name="window_name"></property>
-                                                    <property name="window_style"></property>
+                                                    <property name="window_style">wxTAB_TRAVERSAL</property>
                                                 </object>
                                             </object>
                                         </object>
@@ -3937,7 +3937,7 @@
                                             <property name="validator_variable"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_name"></property>
-                                            <property name="window_style"></property>
+                                            <property name="window_style">wxTAB_TRAVERSAL</property>
                                             <event name="OnButtonClick">gen_inv</event>
                                         </object>
                                     </object>

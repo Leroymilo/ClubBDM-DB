@@ -21,16 +21,21 @@ class SeriesWindow ( wx.Frame ):
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
+		self.help_timer = wx.Timer()
+		self.help_timer.SetOwner( self, wx.ID_ANY )
+		global_sizer = wx.BoxSizer( wx.VERTICAL )
+
+		self.global_panel = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL|wx.TRANSPARENT_WINDOW )
 		v_sizer = wx.BoxSizer( wx.VERTICAL )
 
 		h_sizer_1 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText1 = wx.StaticText( self, wx.ID_ANY, u"Nom de la série :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText1 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Nom de la série :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText1.Wrap( -1 )
 
 		h_sizer_1.Add( self.m_staticText1, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.series_name_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.series_name_txt = wx.TextCtrl( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		h_sizer_1.Add( self.series_name_txt, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
@@ -38,12 +43,12 @@ class SeriesWindow ( wx.Frame ):
 
 		h_sizer_2 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText2 = wx.StaticText( self, wx.ID_ANY, u"Code de la série (5 lettres en majuscules) :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText2 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Code de la série (5 lettres en majuscules) :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText2.Wrap( -1 )
 
 		h_sizer_2.Add( self.m_staticText2, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.series_id_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.series_id_txt = wx.TextCtrl( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		h_sizer_2.Add( self.series_id_txt, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
@@ -53,31 +58,31 @@ class SeriesWindow ( wx.Frame ):
 
 		h_sizer_31 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText30 = wx.StaticText( self, wx.ID_ANY, u"Type de livres :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText30 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Type de livres :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText30.Wrap( -1 )
 
 		h_sizer_31.Add( self.m_staticText30, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		book_type_choiceChoices = [ wx.EmptyString, u"bd", u"comics", u"manga", u"roman" ]
-		self.book_type_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_type_choiceChoices, 0 )
+		self.book_type_choice = wx.Choice( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_type_choiceChoices, 0 )
 		self.book_type_choice.SetSelection( 0 )
 		h_sizer_31.Add( self.book_type_choice, 0, wx.ALL, 5 )
 
 
 		h_sizer_3.Add( h_sizer_31, 1, 0, 5 )
 
-		self.m_staticline1 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		self.m_staticline1 = wx.StaticLine( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		h_sizer_3.Add( self.m_staticline1, 0, wx.ALL|wx.EXPAND, 5 )
 
 		h_sizer_32 = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.m_staticText31 = wx.StaticText( self, wx.ID_ANY, u"Catégorie :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText31 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Catégorie :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText31.Wrap( -1 )
 
 		h_sizer_32.Add( self.m_staticText31, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		book_cat_choiceChoices = []
-		self.book_cat_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_cat_choiceChoices, wx.CB_SORT )
+		self.book_cat_choice = wx.Choice( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, book_cat_choiceChoices, wx.CB_SORT )
 		self.book_cat_choice.SetSelection( 0 )
 		h_sizer_32.Add( self.book_cat_choice, 0, wx.ALL, 5 )
 
@@ -91,12 +96,12 @@ class SeriesWindow ( wx.Frame ):
 
 		v_sizer_41 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticText41 = wx.StaticText( self, wx.ID_ANY, u"Auteurs :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText41 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Auteurs :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText41.Wrap( -1 )
 
 		v_sizer_41.Add( self.m_staticText41, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
 
-		self.scroll_auth = wx.ScrolledWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
+		self.scroll_auth = wx.ScrolledWindow( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
 		self.scroll_auth.SetScrollRate( 5, 5 )
 		v_sizer_auth_choices = wx.BoxSizer( wx.VERTICAL )
 
@@ -106,7 +111,7 @@ class SeriesWindow ( wx.Frame ):
 		v_sizer_auth_choices.Fit( self.scroll_auth )
 		v_sizer_41.Add( self.scroll_auth, 1, wx.ALL|wx.EXPAND, 5 )
 
-		self.add_auth_button = wx.Button( self, wx.ID_ANY, u"Nouvel auteur", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.add_auth_button = wx.Button( self.global_panel, wx.ID_ANY, u"Nouvel auteur", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer_41.Add( self.add_auth_button, 0, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -114,12 +119,12 @@ class SeriesWindow ( wx.Frame ):
 
 		v_sizer_42 = wx.BoxSizer( wx.VERTICAL )
 
-		self.m_staticText42 = wx.StaticText( self, wx.ID_ANY, u"Éditeurs :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText42 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Éditeurs :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText42.Wrap( -1 )
 
 		v_sizer_42.Add( self.m_staticText42, 0, wx.ALL|wx.ALIGN_CENTER_HORIZONTAL, 5 )
 
-		self.scroll_edit = wx.ScrolledWindow( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
+		self.scroll_edit = wx.ScrolledWindow( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.VSCROLL )
 		self.scroll_edit.SetScrollRate( 5, 5 )
 		v_sizer_edit_choices = wx.BoxSizer( wx.VERTICAL )
 
@@ -129,7 +134,7 @@ class SeriesWindow ( wx.Frame ):
 		v_sizer_edit_choices.Fit( self.scroll_edit )
 		v_sizer_42.Add( self.scroll_edit, 1, wx.EXPAND |wx.ALL, 5 )
 
-		self.add_edit_button = wx.Button( self, wx.ID_ANY, u"Nouvel éditeur", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.add_edit_button = wx.Button( self.global_panel, wx.ID_ANY, u"Nouvel éditeur", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer_42.Add( self.add_edit_button, 0, wx.ALL|wx.EXPAND, 5 )
 
 
@@ -138,28 +143,32 @@ class SeriesWindow ( wx.Frame ):
 
 		v_sizer.Add( h_sizer_4, 1, wx.EXPAND, 5 )
 
-		self.help_text = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.help_text = wx.StaticText( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.help_text.Wrap( -1 )
 
 		v_sizer.Add( self.help_text, 0, wx.ALL, 5 )
 
-		self.end_button = wx.Button( self, wx.ID_ANY, u"Créer la série", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.end_button = wx.Button( self.global_panel, wx.ID_ANY, u"Créer la série", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer.Add( self.end_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
-		self.SetSizer( v_sizer )
+		self.global_panel.SetSizer( v_sizer )
+		self.global_panel.Layout()
+		v_sizer.Fit( self.global_panel )
+		global_sizer.Add( self.global_panel, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( global_sizer )
 		self.Layout()
-		self.help_timer = wx.Timer()
-		self.help_timer.SetOwner( self, wx.ID_ANY )
 
 		self.Centre( wx.BOTH )
 
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.end_process )
+		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 		self.add_auth_button.Bind( wx.EVT_BUTTON, self.add_auth )
 		self.add_edit_button.Bind( wx.EVT_BUTTON, self.add_edit )
 		self.end_button.Bind( wx.EVT_BUTTON, self.complete )
-		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 
 	def __del__( self ):
 		pass
@@ -169,6 +178,9 @@ class SeriesWindow ( wx.Frame ):
 	def end_process( self, event ):
 		event.Skip()
 
+	def test_timer( self, event ):
+		event.Skip()
+
 	def add_auth( self, event ):
 		event.Skip()
 
@@ -176,9 +188,6 @@ class SeriesWindow ( wx.Frame ):
 		event.Skip()
 
 	def complete( self, event ):
-		event.Skip()
-
-	def test_timer( self, event ):
 		event.Skip()
 
 
