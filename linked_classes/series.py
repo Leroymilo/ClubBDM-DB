@@ -14,17 +14,22 @@ getters = {
 
 #================================================================================================================================================================================
 
-# Sub class containing averything usefull to implement the scrolled windows
-# for authors and editors
+# Slightly modified class 
+
+# Sub class containing averything usefull to implement
+# the scrolled windows for authors and editors
 class ScrolledChoices :
-    def __init__(self, scroll: wx.ScrolledWindow, d: dict) :
-        self.choices: list[wx.Choice] = []
+    def __init__(self, scroll: wx.ScrolledWindow, type_: str, frame: Series) :
+        self.frame: Series = frame
         self.scroll = scroll
         self.sizer: wx.Sizer = scroll.GetSizer()
-        self.dict = d
+        self.choices: list[wx.Choice] = []
+        self.type = type_
+        self.dict = getters[type_]()
         self.to_update = []
+        self.add_choice()
     
-    def add_choice(self, type_: str, frame: Series) :
+    def add_choice(self) :
         # Creating the new choice
         new_choice = wx.Choice(
             self.scroll, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize,
@@ -35,22 +40,24 @@ class ScrolledChoices :
 
         # Setting some way to recognize it as an event's object
         new_choice.SetId(len(self.choices))
-        new_choice.SetName(type_)
+        new_choice.SetName(self.type)
         # Adding it to the sizer and the list of choices
         self.sizer.Add( new_choice, 0, wx.ALL|wx.EXPAND, 5 )
         self.choices.append(new_choice)
+        
+        self.update_choice(choice = new_choice)
 
         # Binding methods
-        new_choice.Bind(wx.EVT_CHOICE, frame.choice_selected)
-        new_choice.Bind(wx.EVT_ENTER_WINDOW, frame.update_choice)
+        new_choice.Bind(wx.EVT_CHOICE, self.choice_selected)
+        new_choice.Bind(wx.EVT_SET_FOCUS, self.test_focus)
     
-    def set_choices(self, strings: list[str], type_: str, frame: Series) :
+    def set_choices(self, strings: list[str]) :
         for i in range(len(strings)) :
-            self.add_choice(type_, frame)
-            self.update_choice(self.choices[i])
+            self.add_choice()
             self.choices[i].SetStringSelection(strings[i])
     
-    def manage_select(self, type_: str, choice: wx.Choice, frame: Series) :
+    def choice_selected(self, event: wx.Event=None) :
+        choice: wx.Choice = event.GetEventObject()
         max_id = len(self.choices) - 1
         self.to_update = [choice.GetId() != i for i in range(len(self.to_update))]
 
@@ -59,13 +66,14 @@ class ScrolledChoices :
             choice.GetId() < max_id :
             
             # Push choices up :
-            for i in range(choice.GetId(), max_id) :
+            for i in range(choice.GetId(), max_id - 1) :
                 new_string = self.choices[i+1].GetStringSelection()
-                self.choices[i].Set(self.choices[i].GetStrings() + [new_string])
+                self.choices[i].Append(new_string)
                 self.choices[i].SetStringSelection(new_string)
             
             # If the last choice is on 0 :
             if self.choices[-1].GetSelection() == 0 :
+                self.choices[-2].SetSelection(0)
                 # Remove the last choice :
                 last_choice = self.choices.pop()
                 self.sizer.Remove(last_choice.GetId())
@@ -74,28 +82,43 @@ class ScrolledChoices :
             
             # Else (only happens if every auth/edit is selected) :
             else :
+                new_string = self.choices[-1].GetStringSelection()
+                self.choices[-2].Append(new_string)
+                self.choices[-2].SetStringSelection(new_string)
                 self.choices[-1].SetSelection(0)
 
         # If a choice gets a non-0 selection :
         elif choice.GetSelection() != 0 :
             # If it's the last one and all the auth/edit are not selected :
             if choice.GetId() == max_id and len(self.choices) < len(self.dict.keys()) :
-                self.add_choice(type_, frame)
+                self.add_choice()
+        
+        self.frame.Layout()
     
-    def update_choice(self, choice: wx.Choice) :
+    def update_choice(self, event: wx.Event=None, choice: wx.Choice=None) :
+        if choice is None :
+            choice: wx.Choice = event.GetEventObject()
+        
         if self.to_update[choice.GetId()] :
             self.to_update[choice.GetId()] = False
 
             selection = choice.GetStringSelection()
             selected = {choice.GetStringSelection() for choice in self.choices}
+            choice.Clear()
             strings = set(self.dict.keys()).difference(selected)
             strings = {"", selection} | strings
             choice.SetItems(list(strings))
             choice.SetStringSelection(selection)
-            # print("choice", choice.GetId(), "updated")
+            print("choice", choice.GetId(), "updated")
+    
+    def test_focus(self, event: wx.Event=None) :
+        choice: wx.Choice = event.GetEventObject()
+        print("choice", choice.GetId(), "focused")
+        self.update_choice(choice=choice)
+        event.Skip()
     
     def get_selection_ids(self) :
-        return [self.dict[choice.GetStringSelection()] for choice in self.choices if choice.GetSelection() != 0]
+        return [self.dict[choice.GetStringSelection()] for choice in self.choices if choice.GetStringSelection() != ""]
 
 #================================================================================================================================================================================
 
@@ -111,11 +134,9 @@ class Series (SeriesWindow) :
         self.timer_tick = 0
 
         self.auth_edit = {
-            "auth" : ScrolledChoices(self.scroll_auth, get_auths()),
-            "edit" : ScrolledChoices(self.scroll_edit, get_edits())
+            "auth" : ScrolledChoices(self.scroll_auth, "auth", self),
+            "edit" : ScrolledChoices(self.scroll_edit, "edit", self)
         }
-        self.auth_edit["auth"].add_choice("auth", self)
-        self.auth_edit["edit"].add_choice("edit", self)
 
         self.is_editor = item_id is not None
 
@@ -133,24 +154,10 @@ class Series (SeriesWindow) :
                 self.help_text.SetLabel(self.default_text)
                 self.book_cat_choice.Disable()
 
-            self.auth_edit["auth"].set_choices(item_data["authors"], "auth", self)
-            self.auth_edit["edit"].set_choices(item_data["editors"], "edit", self)
+            self.auth_edit["auth"].set_choices(item_data["authors"])
+            self.auth_edit["edit"].set_choices(item_data["editors"])
 
             self.end_button.SetLabel("Appliquer la modification")
-
-    def choice_selected(self, event: wx.Event) :
-        choice: wx.Choice = event.GetEventObject()
-        type_: str = choice.GetName()
-
-        self.auth_edit[type_].manage_select(type_, choice, self)
-
-        self.Layout()
-    
-    def update_choice(self, event: wx.Event) :
-        choice: wx.Choice = event.GetEventObject()
-        type_: str = choice.GetName()
-
-        self.auth_edit[type_].update_choice(choice)
     
     def complete(self, event) :
         if self.book_cat_choice.GetSelection() == 0 :
