@@ -2,7 +2,7 @@ from db_init import *
 from db_reset import reset
 
 import pandas as pd
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 import time as t
 
 
@@ -15,7 +15,7 @@ Cols = {
         "condition", "date d'ajout", "commentaire"
     },
     "members": {"nom", "mail", "tel", "statut", "caution", "commentaire"},
-    "loans": {"nom membre", "cotation livre"},
+    "loans": {"nom membre", "cotation livre", "date", "retour"},
     "authors": {"nom"},
     "editors": {"nom"}
 }
@@ -31,14 +31,16 @@ Sheets = {
 }
 
 BDM_Status = {"Membre", "Membre actif", "Membre +", "Membre actif +", "Bureau"}
+today = date.today().strftime("%Y/%m/%d")
 
-def parse_date(date_: str | date | datetime | pd.Timestamp) -> str :
+def parse_date(date_: str | date | datetime | pd.Timestamp,
+        default = today) -> str :
     if type(date_) == pd.Timestamp :
         date_: datetime = date_.date()
     if type(date_) in {date, datetime} :
         return date_.strftime("%Y/%m/%d")
     if (type(date_) == str and date_ == "") or pd.isnull(date_) :
-        return date.today().strftime("%Y/%m/%d")
+        return default
     return date_
 
 def parse_max_loans(line: pd.Series) -> int :
@@ -220,8 +222,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
                 max_loans, loan_length, bail,
                 status_BDM, status_ALIR,
                 comment
-            )
-            VALUES ({"), (".join(
+            ) VALUES ({"), (".join(
                 f'''"{line.nom}", "{line.mail}", "{line.tel}",
                 {parse_max_loans(line)}, 30, {line.caution},
                 "{parse_status(line.statut)}", "Non-Membre",
@@ -231,7 +232,34 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             )})
         ;""")
         print(f"Members took {round(t.time()-t0, 3)}s")
+    t0 = t.time()
 
+    # Loans
+    if data["loans"].shape[0] > 0 :
+        cursor.execute("SELECT member_id, member_name FROM Members;")
+        user_dict = {
+            name: code
+            for code, name in cursor.fetchall()
+        }
+
+        cursor.execute(f"""--sql
+            INSERT OR REPLACE
+            INTO Loans (
+                member_id, book_id,
+                loan_start,
+                loan_return,
+                archived
+            ) VALUES ({"), (".join(
+                f'''{user_dict[line['nom membre']]},
+                "{line['cotation livre']}",
+                "{parse_date(line.date)}",
+                "{parse_date(line.retour, default='')}",
+                {parse_date(line.retour, default=None) is None}'''
+                for _, line in data["loans"].iterrows()
+            )})
+        ;""")
+        print(f"Loans took {round(t.time()-t0, 3)}s")
+    
     db.commit()
 
 
@@ -295,7 +323,9 @@ def read_db() -> dict[str, pd.DataFrame] :
         ;""", db),
         "loans": pd.read_sql_query("""--sql
             SELECT member_name AS `nom membre`,
-                   book_id AS `cotation livre`
+                   book_id AS `cotation livre`,
+                   loan_start AS `date`,
+                   loan_return AS `retour`
             FROM Loans
             JOIN Members
                 USING (member_id)

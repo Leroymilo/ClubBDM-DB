@@ -87,7 +87,7 @@ def reset(db: Connection, db_name: str, cursor: Cursor) :
             member_id INTEGER NOT NULL,
             book_id VARCHAR(12) NOT NULL,
             loan_start DATE NOT NULL,
-            late_return DATE,       -- Date after which the loan is late
+            late_return DATE DEFAULT NULL,       -- Date after which the loan is late
             loan_return DATE DEFAULT NULL,
             archived BOOLEAN DEFAULT FALSE,
             FOREIGN KEY (member_id) REFERENCES Members(member_id)
