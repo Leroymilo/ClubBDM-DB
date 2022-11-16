@@ -82,7 +82,7 @@ class Main(MainWindow) :
         self.replace_button.SetName("replace")
         self.append_button.SetName("append")
 
-    def update_table(self, tab: str, filter_: Union[None, Tuple[str]] = None) :
+    def update_table(self, tab: str, filter_: tuple[str] | None = None) :
         dataView = self.dataViews[tab]
         dataView.DeleteAllItems()
         table = selectors[tab](filter_)
@@ -213,7 +213,7 @@ class Main(MainWindow) :
         
         dlg = LoanEnd(self)
         if dlg.ShowModal() :
-            pass
+            pass    #TODO
     
     def read_inv(self, event: wx.Event) :
         
@@ -236,6 +236,7 @@ class Main(MainWindow) :
         if errcode :
             sheet_name, miss_cols = data
             self.display(f"Colonnes {', '.join(miss_cols)} manquantes dans la feuille {sheet_name}.")
+            return
     
         self.display("Écriture des données...")
 
@@ -256,7 +257,7 @@ class Main(MainWindow) :
             directory += ".xlsx"
         
         try :
-            writer = pd.ExcelWriter(directory)
+            pd.ExcelWriter(directory)
         except OSError :
             self.display("Le nom de fichier à générer est invalide.")
             return
@@ -271,7 +272,7 @@ class Main(MainWindow) :
         self.timer_tick = 0
     
     def test_timer(self, event) :
-        if self.timer_tick == 500 :
+        if self.timer_tick >= 500 :
             self.help_text.SetLabel(self.default_text)
             self.help_timer.Stop()
         else :

@@ -2,7 +2,7 @@ from datetime import timedelta, date
 
 from db_init import *
 
-def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
+def select(filter_: tuple[str] | None = None) -> np.array :
     base_query = """
         SELECT member_name,
             book_id,

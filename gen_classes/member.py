@@ -67,7 +67,7 @@ class MemberWindow ( wx.Frame ):
 
 		h_sizer_3.Add( self.m_staticText31, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		BDM_status_choiceChoices = [ u"Non-membre", u"Membre", u"Membre +", u"Membre actif", u"Membre actif +", u"Membre honorable", u"Bureau" ]
+		BDM_status_choiceChoices = [ u"Non-membre", u"Membre", u"Membre +", u"Membre actif", u"Membre actif +", u"Bureau" ]
 		self.BDM_status_choice = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, BDM_status_choiceChoices, 0 )
 		self.BDM_status_choice.SetSelection( 0 )
 		h_sizer_3.Add( self.BDM_status_choice, 1, wx.ALL, 5 )

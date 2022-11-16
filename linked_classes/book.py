@@ -28,7 +28,7 @@ class Book(BookWindow) :
             self.condition_spin.SetValue(item_data["condition"])
             self.disp_check.SetValue(item_data["available"])
             y, m, d = map(int, item_data["added_on"].split("/"))
-            self.date_picker.SetValue(wx.DateTime(d, m, y))
+            self.date_picker.SetValue(wx.DateTime(d, m-1, y))
             self.com_txt.SetValue(item_data["comment"])
             self.end_button.SetLabel("Appliquer les modifications")
     

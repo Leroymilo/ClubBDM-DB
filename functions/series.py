@@ -1,6 +1,6 @@
 from db_init import *
 
-def select(filter_: Union[None, Tuple[str]] = None) -> np.array :
+def select(filter_: tuple[str] | None = None) -> np.array :
     authors = """
         SELECT series_id, CONCAT('; ', auth_name) AS auths
         FROM Authors
