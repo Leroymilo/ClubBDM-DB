@@ -281,7 +281,7 @@ class MainWindow ( wx.Frame ):
 
 		inv_v_sizer.Add( inv_h_sizer_1, 0, wx.EXPAND, 5 )
 
-		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE )
+		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
 		inv_v_sizer.Add( self.read_file_picker, 0, wx.ALL, 5 )
 
 		inv_h_sizer_2 = wx.BoxSizer( wx.HORIZONTAL )

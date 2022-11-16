@@ -213,7 +213,7 @@ class Main(MainWindow) :
         
         dlg = LoanEnd(self)
         if dlg.ShowModal() :
-            pass
+            pass    #TODO
     
     def read_inv(self, event: wx.Event) :
         
