@@ -21,34 +21,43 @@ class EditorWindow ( wx.Frame ):
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
+		self.help_timer = wx.Timer()
+		self.help_timer.SetOwner( self, wx.ID_ANY )
+		global_sizer = wx.BoxSizer( wx.VERTICAL )
+
+		self.global_panel = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		v_sizer = wx.BoxSizer( wx.VERTICAL )
 
 		h_sizer = wx.BoxSizer( wx.HORIZONTAL )
 
-		self.static_text = wx.StaticText( self, wx.ID_ANY, u"Nom :", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.static_text = wx.StaticText( self.global_panel, wx.ID_ANY, u"Nom :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.static_text.Wrap( -1 )
 
 		h_sizer.Add( self.static_text, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.name_txt = wx.TextCtrl( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.name_txt = wx.TextCtrl( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		h_sizer.Add( self.name_txt, 1, wx.ALL, 5 )
 
 
 		v_sizer.Add( h_sizer, 0, wx.EXPAND, 5 )
 
-		self.help_text = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.help_text = wx.StaticText( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.help_text.Wrap( -1 )
 
 		v_sizer.Add( self.help_text, 0, wx.ALL, 5 )
 
-		self.add_button = wx.Button( self, wx.ID_ANY, u"Ajouter l'éditeur", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.add_button = wx.Button( self.global_panel, wx.ID_ANY, u"Ajouter l'éditeur", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer.Add( self.add_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
 
-		self.SetSizer( v_sizer )
+		self.global_panel.SetSizer( v_sizer )
+		self.global_panel.Layout()
+		v_sizer.Fit( self.global_panel )
+		global_sizer.Add( self.global_panel, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( global_sizer )
 		self.Layout()
-		self.help_timer = wx.Timer()
-		self.help_timer.SetOwner( self, wx.ID_ANY )
 
 		self.Centre( wx.BOTH )
 

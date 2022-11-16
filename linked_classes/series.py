@@ -109,11 +109,11 @@ class ScrolledChoices :
             strings = {"", selection} | strings
             choice.SetItems(list(strings))
             choice.SetStringSelection(selection)
-            print("choice", choice.GetId(), "updated")
+            # print("choice", choice.GetId(), "updated")
     
     def test_focus(self, event: wx.Event=None) :
         choice: wx.Choice = event.GetEventObject()
-        print("choice", choice.GetId(), "focused")
+        # print("choice", choice.GetId(), "focused")
         self.update_choice(choice=choice)
         event.Skip()
     
