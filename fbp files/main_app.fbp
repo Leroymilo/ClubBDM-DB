@@ -2688,7 +2688,7 @@
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxDataViewListCtrl" expanded="0">
+                                        <object class="wxDataViewListCtrl" expanded="1">
                                             <property name="bg"></property>
                                             <property name="context_help"></property>
                                             <property name="context_menu">1</property>
@@ -2746,7 +2746,7 @@
                                             <object class="dataViewListColumn" expanded="0">
                                                 <property name="align">wxALIGN_LEFT</property>
                                                 <property name="ellipsize"></property>
-                                                <property name="flags">wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
+                                                <property name="flags">wxDATAVIEW_COL_HIDDEN|wxDATAVIEW_COL_RESIZABLE|wxDATAVIEW_COL_SORTABLE</property>
                                                 <property name="label">Retour au plus tard</property>
                                                 <property name="mode">wxDATAVIEW_CELL_INERT</property>
                                                 <property name="name">loan_col_4</property>

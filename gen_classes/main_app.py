@@ -225,7 +225,7 @@ class MainWindow ( wx.Frame ):
 		self.loan_col_1 = self.loan_display.AppendTextColumn( u"Utilisateur", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.loan_col_2 = self.loan_display.AppendTextColumn( u"Livre", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.loan_col_3 = self.loan_display.AppendTextColumn( u"Date d'emprunt", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.loan_col_4 = self.loan_display.AppendTextColumn( u"Retour au plus tard", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.loan_col_4 = self.loan_display.AppendTextColumn( u"Retour au plus tard", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.loan_col_5 = self.loan_display.AppendTextColumn( u"Date de retour", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		loan_v_sizer.Add( self.loan_display, 1, wx.ALL|wx.EXPAND, 5 )
 

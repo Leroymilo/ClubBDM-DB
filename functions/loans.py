@@ -60,6 +60,12 @@ def add(member_id: int, book_id: str) :
     ;""")
 
     cursor.execute(f"""--sql
+        UPDATE Members
+        SET last_loan = DATE(), archived = FALSE
+        WHERE member_id = "{member_id}"
+    ;""")
+
+    cursor.execute(f"""--sql
         SELECT loan_length FROM Members
         WHERE member_id = {member_id}
     ;""")
@@ -114,6 +120,33 @@ def edit(item_id: int, member_id: int, book_id: str) :
         UPDATE Loans
         SET member_id = {member_id}, book_id = "{book_id}"
         WHERE loan_id = {item_id}
+    ;""")
+
+    db.commit()
+    return 0
+
+def end(member_name: str, book_id: str) :
+    cursor.execute(f"SELECT member_id FROM Members WHERE member_name = \"{member_name}\"")
+    member_id, = cursor.fetchone()
+
+    cursor.execute("""--sql
+        UPDATE Loans
+        SET loan_return = DATE(), archived = TRUE
+        WHERE member_id = "{member_id}"
+        AND book_id = "{book_id}"
+        AND archived = False
+    ;""")
+
+    cursor.execute(f"""--sql
+        UPDATE Books
+        SET available = TRUE
+        WHERE book_id = "{book_id}"
+    ;""")
+
+    cursor.execute(f"""--sql
+        UPDATE Members
+        SET last_loan = DATE(), archived = FALSE
+        WHERE member_id = "{member_id}"
     ;""")
 
     db.commit()

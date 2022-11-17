@@ -115,7 +115,8 @@ class Main(MainWindow) :
         
         elif tab == "Loans" :
             self.loan_col_5.SetHidden(1 - self.loan_col_5.IsHidden())
-            self.loan_col_4.SetWidth(80)    #The un-hidden column appears out of the window without this
+            self.loan_col_4.SetWidth(80)    #The un-hidden columns appears out of the window without this
+            self.loan_col_3.SetWidth(80)
     
     def run_query(self, event: wx.Event) :
         queries = self.query_text.GetValue().split(';\n')
@@ -206,14 +207,20 @@ class Main(MainWindow) :
             
     def end_loan(self, event) :
         row = self.loan_display.GetSelectedRow()
+        dvlc = self.dataViews["Loans"]
 
         if row == wx.NOT_FOUND :
             self.display("Sélectionnez un emprunt à terminer d'abord.")
             return
+            
+        member_name = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
+        book_id = dvlc.GetValue(dvlc.GetSelectedRow(), 1)
         
         dlg = LoanEnd(self)
         if dlg.ShowModal() :
-            pass    #TODO
+            loans.end(member_name, book_id)
+            self.update_data("Loans")
+            self.update_table("Loans")
     
     def read_inv(self, event: wx.Event) :
         
