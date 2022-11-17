@@ -1,6 +1,6 @@
 from db_init import *
 
-def select(filter_: tuple[str] | None = None) -> np.array :
+def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
     base_query = """
         SELECT member_name,
             mail,
@@ -22,18 +22,26 @@ def select(filter_: tuple[str] | None = None) -> np.array :
         ) USING (member_id)
     """
 
+    if archived :
+        base_query += """
+        WHERE TRUE"""
+    else :
+        base_query += """
+        WHERE Members.archived = FALSE"""
+    
+
     if filter_ is None :
         cursor.execute(base_query)
     
     elif filter_[0] == "Name" :
         cursor.execute(base_query + f"""
-            WHERE member_name LIKE "%{filter_[1]}%"
+            AND member_name LIKE "%{filter_[1]}%"
         """)
     
     elif filter_[0] == "Status" :
         cursor.execute(base_query + f"""
-            WHERE status_BDM LIKE "%{filter_[1]}%"
-            OR status_ALIR LIKE "%{filter_[1]}%"
+            AND (status_BDM LIKE "%{filter_[1]}%"
+            OR status_ALIR LIKE "%{filter_[1]}%")
         """)
     
     return np.asarray(cursor.fetchall())

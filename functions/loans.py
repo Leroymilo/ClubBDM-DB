@@ -2,7 +2,7 @@ from datetime import timedelta, date
 
 from db_init import *
 
-def select(filter_: tuple[str] | None = None) -> np.array :
+def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
     base_query = """
         SELECT member_name,
             book_id,
@@ -10,21 +10,29 @@ def select(filter_: tuple[str] | None = None) -> np.array :
             late_return,
             loan_return
         FROM Loans
-        JOIN Members USING (member_id)
-    """
+        JOIN Members USING (member_id)"""
+
+    if archived :
+        base_query += """
+        WHERE TRUE"""
+    else :
+        base_query += """
+        WHERE Loans.archived = FALSE"""
 
     if filter_ is None :
         cursor.execute(base_query)
     
     elif filter_[0] == "Member" :
         cursor.execute(base_query + f"""
-            WHERE member_name LIKE "%{filter_[1]}%"
+            AND member_name LIKE "%{filter_[1]}%"
         """)
     
     elif filter_[0] == "Book" :
         cursor.execute(base_query + f"""
-            WHERE book_id LIKE "%{filter_[1]}%"
+            AND book_id LIKE "%{filter_[1]}%"
         """)
+    
+
     
     return np.asarray(cursor.fetchall())
 
@@ -129,12 +137,12 @@ def end(member_name: str, book_id: str) :
     cursor.execute(f"SELECT member_id FROM Members WHERE member_name = \"{member_name}\"")
     member_id, = cursor.fetchone()
 
-    cursor.execute("""--sql
+    cursor.execute(f"""--sql
         UPDATE Loans
         SET loan_return = DATE(), archived = TRUE
         WHERE member_id = "{member_id}"
         AND book_id = "{book_id}"
-        AND archived = False
+        AND archived = FALSE
     ;""")
 
     cursor.execute(f"""--sql
@@ -145,7 +153,7 @@ def end(member_name: str, book_id: str) :
 
     cursor.execute(f"""--sql
         UPDATE Members
-        SET last_loan = DATE(), archived = FALSE
+        SET last_loan = STRFTIME('%Y/%m/%d', DATE()), archived = FALSE
         WHERE member_id = "{member_id}"
     ;""")
 

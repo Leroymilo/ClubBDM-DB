@@ -75,6 +75,11 @@ class Main(MainWindow) :
             "Members" : self.member_search_val,
             "Loans" : self.loan_search_val,
         }
+
+        self.archive = {
+            "Members": self.member_archive_toggle,
+            "Loans": self.loan_archive_toggle
+        }
         
         self.notebook.SetSelection(0)
         self.sub_frames = {}
@@ -85,7 +90,12 @@ class Main(MainWindow) :
     def update_table(self, tab: str, filter_: tuple[str] | None = None) :
         dataView = self.dataViews[tab]
         dataView.DeleteAllItems()
-        table = selectors[tab](filter_)
+
+        if tab in {"Members", "Loans"} :
+            table = selectors[tab](filter_, self.archive[tab].GetValue())
+        else :
+            table = selectors[tab](filter_)
+        
         for line in table :
             dataView.AppendItem(list(map(str,line)))
 
@@ -117,6 +127,8 @@ class Main(MainWindow) :
             self.loan_col_5.SetHidden(1 - self.loan_col_5.IsHidden())
             self.loan_col_4.SetWidth(80)    #The un-hidden columns appears out of the window without this
             self.loan_col_3.SetWidth(80)
+        
+        self.update_table(tab)
     
     def run_query(self, event: wx.Event) :
         queries = self.query_text.GetValue().split(';\n')

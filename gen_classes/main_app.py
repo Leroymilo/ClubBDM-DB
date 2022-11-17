@@ -215,8 +215,8 @@ class MainWindow ( wx.Frame ):
 		self.m_staticline43 = wx.StaticLine( self.loans, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
 		loan_top_h_sizer.Add( self.m_staticline43, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.m_checkBox2 = wx.CheckBox( self.loans, wx.ID_ANY, u"Afficher archivés :", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
-		loan_top_h_sizer.Add( self.m_checkBox2, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
+		self.loan_archive_toggle = wx.CheckBox( self.loans, wx.ID_ANY, u"Afficher rendus :", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_RIGHT )
+		loan_top_h_sizer.Add( self.loan_archive_toggle, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 
 		loan_v_sizer.Add( loan_top_h_sizer, 0, 0, 5 )
@@ -357,7 +357,7 @@ class MainWindow ( wx.Frame ):
 		self.loan_add.Bind( wx.EVT_BUTTON, self.add )
 		self.loan_end.Bind( wx.EVT_BUTTON, self.end_loan )
 		self.loan_search_val.Bind( wx.EVT_TEXT_ENTER, self.search_table )
-		self.m_checkBox2.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
+		self.loan_archive_toggle.Bind( wx.EVT_CHECKBOX, self.toggle_archived )
 		self.loan_display.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self.edit, id = wx.ID_ANY )
 		self.run_query_button.Bind( wx.EVT_BUTTON, self.run_query )
 		self.replace_button.Bind( wx.EVT_BUTTON, self.read_inv )
