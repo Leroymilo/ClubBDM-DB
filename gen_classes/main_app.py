@@ -119,7 +119,7 @@ class MainWindow ( wx.Frame ):
 		self.series.SetSizer( series_v_sizer )
 		self.series.Layout()
 		series_v_sizer.Fit( self.series )
-		self.notebook.AddPage( self.series, u"Séries", True )
+		self.notebook.AddPage( self.series, u"Séries", False )
 		self.members = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		member_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -168,7 +168,7 @@ class MainWindow ( wx.Frame ):
 		self.member_col_7 = self.member_display.AppendTextColumn( u"Statut BDM", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.member_col_8 = self.member_display.AppendTextColumn( u"Statut ALIR", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.member_col_9 = self.member_display.AppendTextColumn( u"Dernier emprunt", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
-		self.member_col_10 = self.member_display.AppendTextColumn( u"Archivé", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
+		self.member_col_10 = self.member_display.AppendTextColumn( u"Actif", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_HIDDEN|wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		self.member_col_11 = self.member_display.AppendTextColumn( u"Commentaires", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		member_v_sizer.Add( self.member_display, 1, wx.ALL|wx.EXPAND, 5 )
 
@@ -176,7 +176,7 @@ class MainWindow ( wx.Frame ):
 		self.members.SetSizer( member_v_sizer )
 		self.members.Layout()
 		member_v_sizer.Fit( self.members )
-		self.notebook.AddPage( self.members, u"Membres", False )
+		self.notebook.AddPage( self.members, u"Membres", True )
 		self.loans = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		loan_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -323,7 +323,7 @@ class MainWindow ( wx.Frame ):
 		self.inventories.SetSizer( inv_v_sizer )
 		self.inventories.Layout()
 		inv_v_sizer.Fit( self.inventories )
-		self.notebook.AddPage( self.inventories, u"Inventaire", True )
+		self.notebook.AddPage( self.inventories, u"Inventaire", False )
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 

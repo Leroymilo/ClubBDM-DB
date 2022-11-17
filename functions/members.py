@@ -11,7 +11,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
             IF(status_BDM IS NULL, "", status_BDM),
             IF(status_ALIR IS NULL, "", status_ALIR),
             last_loan,
-            IF(archived, "Oui", "Non"),
+            IF(archived, "Non", "Oui"),
             comment
         FROM Members
         LEFT JOIN (
