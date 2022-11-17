@@ -27,7 +27,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
         WHERE TRUE"""
     else :
         base_query += """
-        WHERE Members.archived = FALSE"""
+        WHERE NOT Members.archived"""
     
 
     if filter_ is None :

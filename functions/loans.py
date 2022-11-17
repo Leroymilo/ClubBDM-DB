@@ -17,7 +17,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
         WHERE TRUE"""
     else :
         base_query += """
-        WHERE Loans.archived = FALSE"""
+        WHERE NOT Loans.archived"""
 
     if filter_ is None :
         cursor.execute(base_query)
@@ -142,7 +142,7 @@ def end(member_name: str, book_id: str) :
         SET loan_return = DATE(), archived = TRUE
         WHERE member_id = "{member_id}"
         AND book_id = "{book_id}"
-        AND archived = FALSE
+        AND NOT archived
     ;""")
 
     cursor.execute(f"""--sql

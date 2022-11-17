@@ -187,6 +187,14 @@ class Main(MainWindow) :
         dvlc = self.dataViews[tab]
 
         if tab == "Loans" :
+            archived = dvlc.GetValue(dvlc.GetSelectedRow(), 4) != "None"
+            # Beware : the 4 is the index aùong VISIBLE columns.
+            # You'll need to change it if you add other columns before this one.
+            # There seem to be no way to get the number of visible columns.
+            
+            if self.loan_archive_toggle.GetValue() and archived :
+                self.display("Vous ne pouvez pas modifier un emprunt déjà rendu.")
+                return
             item_id = (
                 dvlc.GetValue(dvlc.GetSelectedRow(), 0),
                 dvlc.GetValue(dvlc.GetSelectedRow(), 1)
