@@ -34,14 +34,14 @@ BDM_Status = {"Membre", "Membre actif", "Membre +", "Membre actif +", "Bureau"}
 today = date.today().strftime("%Y/%m/%d")
 
 def parse_date(date_: str | date | datetime | pd.Timestamp,
-        default = today) -> str :
+        default = '"' + today + '"') -> str :
     if type(date_) == pd.Timestamp :
         date_: datetime = date_.date()
     if type(date_) in {date, datetime} :
-        return date_.strftime("%Y/%m/%d")
+        return '"' + date_.strftime("%Y/%m/%d") + '"'
     if (type(date_) == str and date_ == "") or pd.isnull(date_) :
         return default
-    return date_
+    return '"' + date_ + '"'
 
 def parse_max_loans(line: pd.Series) -> int :
     if line.statut in {"Membre +", "Membre actif +"} :
@@ -204,7 +204,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
                 str(line.vol).rjust(3, '0') + str(line.dup).rjust(2, '0') +
                 f'''", "{line.nom}", "{line.srs}", {line.vol}, {line.dup},
                 {line.disponible == "Oui"}, {line.condition},
-                "{parse_date(line.date)}",
+                {parse_date(line.date)},
                 "{line.commentaire}"'''
                 for _, line in data["books"].iterrows()
             )})
@@ -252,9 +252,9 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             ) VALUES ({"), (".join(
                 f'''{user_dict[line['nom membre']]},
                 "{line['cotation livre']}",
-                "{parse_date(line.date)}",
-                "{parse_date(line.retour, default='')}",
-                {parse_date(line.retour, default=None) is None}'''
+                {parse_date(line.date)},
+                {parse_date(line.retour, default='NULL')},
+                {not pd.isnull(line.retour)}'''
                 for _, line in data["loans"].iterrows()
             )})
         ;""")
