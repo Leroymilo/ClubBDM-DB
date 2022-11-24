@@ -94,7 +94,8 @@ def reset(db: Connection, db_name: str, cursor: Cursor) :
                 ON DELETE RESTRICT ON UPDATE CASCADE,
             FOREIGN KEY (book_id) REFERENCES Books(book_id)
                 ON DELETE RESTRICT ON UPDATE CASCADE,
-            CONSTRAINT archiving CHECK (archived = (loan_return IS NOT NULL))
+            CONSTRAINT archiving CHECK (archived = (loan_return IS NOT NULL)),
+            CONSTRAINT unique_val UNIQUE (member_id, book_id, loan_start)
         );
     """,
 

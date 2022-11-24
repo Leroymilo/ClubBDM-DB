@@ -77,8 +77,10 @@ def read_xlsx(directory: str) -> dict[str, pd.DataFrame] :
 
 
 def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
+    on_error = "IGNORE"
     if replace :
         reset(db, db_name, cursor)
+        on_error = "REPLACE"
     
     # The idea is that we need to insert all new rows in one query because one query per row is slow as fuck,
     # that's why every query is an unreadable f-string clusterfuck.
@@ -93,7 +95,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     if data["categories"].shape[0] > 0 :
         cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Categories
             VALUES ({"), (".join(
                 f'{line.code}, "{line.désignation}"'
@@ -107,7 +109,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Authors :
     if data["authors"].shape[0] > 0 :
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Authors (auth_name)
             VALUES ({"), (".join(
                 f'"{line.nom}"'
@@ -121,7 +123,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Editors :
     if data["editors"].shape[0] > 0 :
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Editors (edit_name)
             VALUES ({"), (".join(
                 f'"{line.nom}"'
@@ -135,7 +137,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Series :
     if data["series"].shape[0] > 0 :
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Series
             VALUES ({"), (".join(
                 f'"{line.identifiant}", "{line.nom}", "{line.type}", {cat_dict[line.catégorie]}'
@@ -149,7 +151,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             for code, name in cursor.fetchall()
         }
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO `Srs-Auth`
             VALUES ({"), (".join(
                 "), (".join(
@@ -166,7 +168,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             for code, name in cursor.fetchall()
         }
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO `Srs-Edit`
             VALUES ({"), (".join(
                 "), (".join(
@@ -197,7 +199,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         data["books"].fillna(value="", inplace=True)
 
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Books
             VALUES ({"), (".join(
                 '"' + str(srs_cat_dict[line.srs]).rjust(2, '0') + line.srs +
@@ -216,7 +218,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Members
     if data["members"].shape[0] > 0 :
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Members (
                 member_name, mail, tel,
                 max_loans, loan_length, bail,
@@ -243,7 +245,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         }
 
         cursor.execute(f"""--sql
-            INSERT OR REPLACE
+            INSERT OR {on_error}
             INTO Loans (
                 member_id, book_id,
                 loan_start,
