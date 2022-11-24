@@ -69,11 +69,16 @@ class MainWindow ( wx.Frame ):
 		self.book_col_7 = self.book_display.AppendTextColumn( u"Commentaires", wx.dataview.DATAVIEW_CELL_INERT, -1, wx.ALIGN_LEFT, wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE )
 		book_v_sizer.Add( self.book_display, 1, wx.ALL|wx.EXPAND, 5 )
 
+		self.nbr_book = wx.StaticText( self.books, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.nbr_book.Wrap( -1 )
+
+		book_v_sizer.Add( self.nbr_book, 0, wx.ALL, 5 )
+
 
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", False )
+		self.notebook.AddPage( self.books, u"Livres", True )
 		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -176,7 +181,7 @@ class MainWindow ( wx.Frame ):
 		self.members.SetSizer( member_v_sizer )
 		self.members.Layout()
 		member_v_sizer.Fit( self.members )
-		self.notebook.AddPage( self.members, u"Membres", True )
+		self.notebook.AddPage( self.members, u"Membres", False )
 		self.loans = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		loan_v_sizer = wx.BoxSizer( wx.VERTICAL )
 

@@ -96,6 +96,9 @@ class Main(MainWindow) :
         else :
             table = selectors[tab](filter_)
         
+        if tab == "Books" :
+            self.nbr_book.SetLabel(f"Nombre de livres : {len(table)}")
+        
         for line in table :
             dataView.AppendItem(list(map(str,line)))
 
