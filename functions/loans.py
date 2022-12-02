@@ -43,6 +43,7 @@ def get_members() :
         LEFT JOIN (
             SELECT member_id, COUNT(*) as nb_loans
             FROM Loans
+            WHERE NOT archived
             GROUP BY member_id
         ) USING (member_id)
         WHERE nb_loans IS NULL
