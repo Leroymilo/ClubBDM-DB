@@ -205,7 +205,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
                 '"' + str(srs_cat_dict[line.srs]).rjust(2, '0') + line.srs +
                 str(line.vol).rjust(3, '0') + str(line.dup).rjust(2, '0') +
                 f'''", "{line.nom}", "{line.srs}", {line.vol}, {line.dup},
-                {line.disponible == "Oui"}, {line.condition},
+                {line.disponible.lower() == "oui"}, {line.condition},
                 {parse_date(line.date)},
                 "{line.commentaire}"'''
                 for _, line in data["books"].iterrows()
