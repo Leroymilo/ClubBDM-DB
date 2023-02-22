@@ -1,7 +1,7 @@
 ```sql
 CREATE TABLE Categories
 (
-    cat_id INTEGER PRIMARY KEY,    --Auto increment
+    cat_id INTEGER PRIMARY KEY,    -- Auto increment
     cat_name VARCHAR(64) UNIQUE NOT NULL
 );
 
@@ -14,7 +14,7 @@ CREATE TABLE Series
     FOREIGN KEY (book_category) REFERENCES Categories(cat_id)
         ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT blank_name CHECK (series_name != ""),
-    CONSTRAINT id_format CHECK (series_id REGEXP '^[A-Z0-9]{5}$'),
+    CONSTRAINT series_id_format CHECK (series_id REGEXP '^[A-Z0-9]{5}$'),
     CONSTRAINT type_chk CHECK (book_type IN ("bd", "comics", "manga", "roman"))
 );
 
@@ -26,26 +26,26 @@ CREATE TABLE Books
     vol_nb INTEGER NOT NULL,        -- Volume number
     dup_nb INTEGER NOT NULL,        -- Duplicata number
     available BOOLEAN DEFAULT TRUE,
-    condition INTEGER,
-    added_on DATE DEFAULT NULL,
-    comment VARCHAR(1024),
+    `condition` INTEGER,
+    creation_date DATE DEFAULT (CURDATE()),
+    `comment` VARCHAR(1024),
     FOREIGN KEY (series_id) REFERENCES Series(series_id)
         ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT book_unicity UNIQUE (series_id, vol_nb, dup_nb),
-    CONSTRAINT id_format CHECK
+    CONSTRAINT book_id_format CHECK
     (
         book_id REGEXP '^[0-9]{2}[A-Z0-9]{5}[0-9]{5}$'
         AND SUBSTRING(book_id, 3, 5) = series_id
         AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, '0', 3)
         AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, '0', 2)
     ),
-    CONSTRAINT condition_rating CHECK (condition BETWEEN 1 AND 10),
+    CONSTRAINT condition_rating CHECK (`condition` BETWEEN 1 AND 10),
     CONSTRAINT volume_number CHECK (vol_nb > 0)
 );
 
 CREATE TABLE Members
 (
-    member_id INTEGER PRIMARY KEY,    --Auto increment
+    member_id INTEGER PRIMARY KEY,    -- Auto increment
     member_name VARCHAR(256) UNIQUE NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
@@ -56,13 +56,13 @@ CREATE TABLE Members
     status_BDM VARCHAR(64),
     status_ALIR VARCHAR(64),
     archived BOOLEAN DEFAULT FALSE,
-    comment VARCHAR(1024),
+    `comment` VARCHAR(1024),
     CONSTRAINT contact CHECK (mail IS NOT NULL OR tel IS NOT NULL)
 );
 
 CREATE TABLE Loans
 (
-    loan_id INTEGER PRIMARY KEY,    --Auto increment
+    loan_id INTEGER PRIMARY KEY,    -- Auto increment
     member_id INTEGER NOT NULL,
     book_id VARCHAR(12) NOT NULL,
     loan_start DATE NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Loans
 
 CREATE TABLE Authors
 (
-    auth_id INTEGER PRIMARY KEY,    --Auto increment
+    auth_id INTEGER PRIMARY KEY,    -- Auto increment
     auth_name VARCHAR(256) UNIQUE
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE `Srs-Auth`
 
 CREATE TABLE Editors
 (
-    edit_id INTEGER PRIMARY KEY,    --Auto increment
+    edit_id INTEGER PRIMARY KEY,    -- Auto increment
     edit_name VARCHAR(256) UNIQUE
 );
 
