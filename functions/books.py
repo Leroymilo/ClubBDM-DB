@@ -6,15 +6,11 @@ def select(filter_: tuple[str] | None = None) -> np.array :
         SELECT book_id,
             book_name,
             series_name,
-            LPAD(vol_nb, '0', 3),
-            IF(
-                condition IS NULL,
-                '',
-                LPAD(condition, '0', 2) || '/10'
-            ),
+            LPAD(vol_nb, 3, '0'),
+            IF(`condition` IS NULL, '', CONCAT(LPAD(`condition`, 2, '0'), '/10')),
             IF(available, 'Oui', 'Non'),
-            IF(added_on IS NULL, '', added_on),
-            comment
+            IF(creation_date IS NULL, '', creation_date),
+            `comment`
         FROM Books
     """
 
@@ -93,7 +89,7 @@ def add(series_id: str, vol_nb: int, cond: int,
     cursor.execute(f"""--sql
     INSERT INTO Books (
         book_id, book_name, series_id, vol_nb,
-        dup_nb, condition, available, added_on, comment
+        dup_nb, `condition`, available, added_on, comment
     ) Values (
         "{book_id}", "{vol_name}", "{series_id}", {vol_nb},
         {dup_nb}, {cond}, {dispo}, "{date}", "{comment}"
@@ -104,7 +100,7 @@ def add(series_id: str, vol_nb: int, cond: int,
 
 def get_item_data(item_id: str) :
     cursor.execute(f"""--sql
-        SELECT book_name, series_name, vol_nb, condition,
+        SELECT book_name, series_name, vol_nb, `condition`,
             available, added_on, comment
         FROM Books JOIN Series USING (series_id)
         WHERE book_id = "{item_id}"
@@ -126,7 +122,7 @@ def edit(book_id: str, series_id: str, vol_nb: int,
         book_name = "{vol_name}",
         series_id = "{series_id}",
         vol_nb = {vol_nb},
-        condition = {cond},
+        `condition` = {cond},
         available = {dispo},
         added_on = "{date}",
         comment = "{comment}"

@@ -94,8 +94,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Categories :
     if data["categories"].shape[0] > 0 :
         cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO Categories
             VALUES ({"), (".join(
                 f'{line.code}, "{line.désignation}"'
@@ -108,8 +108,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
 
     # Authors :
     if data["authors"].shape[0] > 0 :
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO Authors (auth_name)
             VALUES ({"), (".join(
                 f'"{line.nom}"'
@@ -122,8 +122,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
 
     # Editors :
     if data["editors"].shape[0] > 0 :
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO Editors (edit_name)
             VALUES ({"), (".join(
                 f'"{line.nom}"'
@@ -136,8 +136,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
 
     # Series :
     if data["series"].shape[0] > 0 :
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO Series
             VALUES ({"), (".join(
                 f'"{line.identifiant}", "{line.nom}", "{line.type}", {cat_dict[line.catégorie]}'
@@ -150,8 +150,9 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             name: code
             for code, name in cursor.fetchall()
         }
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        print(*list(auth_dict.items()), sep='\n')
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO `Srs-Auth`
             VALUES ({"), (".join(
                 "), (".join(
@@ -168,7 +169,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             for code, name in cursor.fetchall()
         }
         cursor.execute(f"""--sql
-            INSERT OR {on_error}
+            INSERT {on_error}
             INTO `Srs-Edit`
             VALUES ({"), (".join(
                 "), (".join(
@@ -199,7 +200,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         data["books"].fillna(value="", inplace=True)
 
         cursor.execute(f"""--sql
-            INSERT OR {on_error}
+            INSERT {on_error}
             INTO Books
             VALUES ({"), (".join(
                 '"' + str(srs_cat_dict[line.srs]).rjust(2, '0') + line.srs +
@@ -218,7 +219,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     # Members
     if data["members"].shape[0] > 0 :
         cursor.execute(f"""--sql
-            INSERT OR {on_error}
+            INSERT {on_error}
             INTO Members (
                 member_name, mail, tel,
                 max_loans, loan_length, bail,
@@ -244,8 +245,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             for code, name in cursor.fetchall()
         }
 
-        cursor.execute(f"""--sql
-            INSERT OR {on_error}
+        cursor.execute(f"""-- sql
+            INSERT {on_error}
             INTO Loans (
                 member_id, book_id,
                 loan_start,
@@ -267,20 +268,20 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
-        "categories" : pd.read_sql_query("""--sql
+        "categories" : pd.read_sql_query("""-- sql
             SELECT cat_id AS code,
                    cat_name AS `désignation`
             FROM Categories
         ;""", db),
-        "authors" : pd.read_sql_query("""--sql
+        "authors" : pd.read_sql_query("""-- sql
             SELECT auth_name AS nom
             FROM Authors
         ;""", db),
-        "editors" : pd.read_sql_query("""--sql
+        "editors" : pd.read_sql_query("""-- sql
             SELECT edit_name AS nom
             FROM Editors
         ;""", db),
-        "series" : pd.read_sql_query("""--sql
+        "series" : pd.read_sql_query("""-- sql
             SELECT series_id AS identifiant,
                    series_name AS nom,
                    book_type AS type,
@@ -291,13 +292,13 @@ def read_db() -> dict[str, pd.DataFrame] :
             JOIN Categories
                 ON book_category = cat_id
             NATURAL JOIN (
-                SELECT series_id, CONCAT('; ', auth_name) AS auths
+                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
                 FROM Authors
                 NATURAL JOIN `Srs-Auth`
                 GROUP BY series_id
             )
             NATURAL JOIN (
-                SELECT series_id, CONCAT('; ', edit_name) AS edits
+                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
                 FROM Editors
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id

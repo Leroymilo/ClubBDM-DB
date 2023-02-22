@@ -1,41 +1,12 @@
-from sqlite3 import *
-import re
+import mysql.connector as mysql
 import numpy as np
 
-db_name = "dbBDM"
+db_name = "BDMANGA"
 
-def regexp(expr: str, item: str) :
-    reg = re.compile(expr)
-    return reg.search(item) is not None
-
-def lpad(item, char: str, nb: int) :
-    return str(item).rjust(nb, char)
-
-def if_(condition: bool, if_true, if_false) :
-    if condition :
-        return if_true
-    return if_false
-
-def concat(sep: str, *list_) :
-    return sep.join(map(str, list_))
-
-class ConcatAgg :
-    def __init__(self) :
-        self.values = []
-        self.sep = ""
-    
-    def step(self, sep: str, value) :
-        self.sep = sep
-        self.values.append(str(value))
-    
-    def finalize(self) :
-        return self.sep.join(self.values)
-
-db = connect(db_name + ".sql")
+HOST = "51.77.231.57"
+USER = "admin"
+PASSWORD = "limploseur3000"
+print("Connecting...")
+db = mysql.connect(host=HOST, database=db_name, user=USER, password=PASSWORD)
+print("Connected to:", db.get_server_info())
 cursor = db.cursor()
-cursor.execute("PRAGMA foreign_keys = ON;")
-db.create_function("REGEXP", 2, regexp)
-db.create_function("LPAD", 3, lpad)
-db.create_function("IF", 3, if_)
-db.create_function("CONCATWS", -1, concat)
-db.create_aggregate("CONCAT", 2, ConcatAgg)

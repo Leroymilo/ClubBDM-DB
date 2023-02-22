@@ -2,14 +2,14 @@ from db_init import *
 
 def select(filter_: tuple[str] | None = None) -> np.array :
     authors = """
-        SELECT series_id, CONCAT('; ', auth_name) AS auths
+        SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
         FROM Authors
         NATURAL JOIN `Srs-Auth`
         GROUP BY series_id
     """
 
     editors = """
-        SELECT series_id, CONCAT('; ', edit_name) AS edits
+        SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
         FROM Editors
         NATURAL JOIN `Srs-Edit`
         GROUP BY series_id
@@ -22,14 +22,14 @@ def select(filter_: tuple[str] | None = None) -> np.array :
             cat_name,
             auths,
             edits
-        FROM Series
+        FROM Series AS ser
     """
 
     if filter_ is None :
         cursor.execute(base_query + f"""
-            NATURAL JOIN ({authors})
-            NATURAL JOIN ({editors})
-            JOIN Categories
+            NATURAL JOIN ({authors}) AS auth
+            NATURAL JOIN ({editors}) AS edit
+            JOIN Categories AS cat
                 ON book_category = cat_id
         ;""")
     
@@ -63,7 +63,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
     else :
         if filter_[0] == "Author" :
             authors = f"""
-                SELECT series_id, CONCAT('; ', auth_name) AS auths
+                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
                 FROM (
                     SELECT * FROM Authors
                     WHERE auth_name LIKE '%{filter_[1]}%'
@@ -74,7 +74,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
         
         elif filter_[0] == "Editor" :
             editors = f"""
-                SELECT series_id, CONCAT('; ', edit_name) AS edits
+                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
                 FROM (
                     SELECT * FROM Editors
                     WHERE edit_name LIKE '%{filter_[1]}%'

@@ -11,15 +11,15 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
             IF(status_BDM IS NULL, "", status_BDM),
             IF(status_ALIR IS NULL, "", status_ALIR),
             last_loan,
-            IF(archived, "Non", "Oui"),
+            IF(`archived`, "Non", "Oui"),
             comment
-        FROM Members
+        FROM Members AS mem
         LEFT JOIN (
             SELECT member_id, COUNT(*) AS loan_c
-            FROM Loans
-            WHERE NOT archived
+            FROM Loans AS loa
+            WHERE NOT `archived`
             GROUP BY member_id
-        ) USING (member_id)
+        ) AS fin USING (member_id)
     """
 
     if archived :
@@ -27,7 +27,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
         WHERE TRUE"""
     else :
         base_query += """
-        WHERE NOT Members.archived"""
+        WHERE NOT mem.archived"""
     
 
     if filter_ is None :
@@ -49,7 +49,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
 def add(name: str, mail: str, tel: str, max_loans: int, loan_len: int,
     bail: float, BDM: str, ALIR: str, comment: str) :
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT member_id FROM Members
         WHERE member_name LIKE "{name}"
     ;""")
