@@ -4,3 +4,4 @@ venv/
 *.sql
 *.sql-journal
 *.xlsx
+test*
