@@ -107,15 +107,16 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     t0 = t.time()
 
     # Authors :
-    if data["authors"].shape[0] > 0 :
-        cursor.execute(f"""-- sql
+    query = f"""-- sql
             INSERT {on_error}
             INTO Authors (auth_name)
             VALUES ({"), (".join(
                 f'"{line.nom}"'
                 for _, line in data["authors"].iterrows()
             )})
-        ;""")
+        ;"""
+    if data["authors"].shape[0] > 0 :
+        cursor.execute(query)
 
         print(f"Authors took {round(t.time()-t0, 3)}s")
     t0 = t.time()
@@ -150,7 +151,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             name: code
             for code, name in cursor.fetchall()
         }
-        print(*list(auth_dict.items()), sep='\n')
+        # print(auth_dict)
         cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO `Srs-Auth`
@@ -168,7 +169,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             name: code
             for code, name in cursor.fetchall()
         }
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO `Srs-Edit`
             VALUES ({"), (".join(
@@ -199,7 +200,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
         
         data["books"].fillna(value="", inplace=True)
 
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO Books
             VALUES ({"), (".join(
@@ -218,7 +219,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
 
     # Members
     if data["members"].shape[0] > 0 :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO Members (
                 member_name, mail, tel,

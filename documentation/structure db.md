@@ -1,7 +1,7 @@
 ```sql
 CREATE TABLE Categories
 (
-    cat_id INTEGER PRIMARY KEY,    -- Auto increment
+    cat_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     cat_name VARCHAR(64) UNIQUE NOT NULL
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE Books
 
 CREATE TABLE Members
 (
-    member_id INTEGER PRIMARY KEY,    -- Auto increment
+    member_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     member_name VARCHAR(256) UNIQUE NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
@@ -62,7 +62,7 @@ CREATE TABLE Members
 
 CREATE TABLE Loans
 (
-    loan_id INTEGER PRIMARY KEY,    -- Auto increment
+    loan_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     member_id INTEGER NOT NULL,
     book_id VARCHAR(12) NOT NULL,
     loan_start DATE NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Loans
 
 CREATE TABLE Authors
 (
-    auth_id INTEGER PRIMARY KEY,    -- Auto increment
+    auth_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     auth_name VARCHAR(256) UNIQUE
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE `Srs-Auth`
 
 CREATE TABLE Editors
 (
-    edit_id INTEGER PRIMARY KEY,    -- Auto increment
+    edit_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     edit_name VARCHAR(256) UNIQUE
 );
 
