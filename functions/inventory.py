@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import date, datetime, timedelta
 import time as t
 
+bad_chars = {'"', ';'}
 
 Cols = {
     "categories": {"code", "désignation"},
@@ -81,19 +82,33 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     if replace :
         reset(db, db_name, cursor)
         on_error = "REPLACE"
-    
-    # The idea is that we need to insert all new rows in one query because one query per row is slow as fuck,
-    # that's why every query is an unreadable f-string clusterfuck.
-    # Technically it would be as fast and way more readable to build the query with a for loop and then execute it,
-    # but everything is already done and I can't be bothered to rewrite it all for now.
-    # If you really need help with this function, just contact me. Info in doc.
+
+    logs = []
 
     t0 = t.time()
     print("started writing")
 
     # Categories :
+    cat_dict = {}
+    if not replace :
+        cursor.execute("SELECT ")
+
     if data["categories"].shape[0] > 0 :
-        cat_dict = {line.désignation: line.code for _, line in data["categories"].iterrows()}
+        categories = data["series"]["catégorie"].apply(str.lower).unique()
+
+        values = []
+        for nb, cat in enumerate(categories) :
+            bad = False
+            for char in bad_chars :
+                if char in cat :
+                    logs.append(f"Forbidden character in category {cat} : {char}")
+                    bad = True
+            
+            if bad :
+                continue
+
+            cat_dict[cat] = nb
+            values.append(f"({nb}, \"{cat}\")")
         cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO Categories
