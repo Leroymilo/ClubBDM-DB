@@ -1,12 +1,12 @@
 from db_init import *
 
 def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
-    base_query = """
+    base_query = """-- sql
         SELECT member_name,
             mail,
             tel,
-            IF(loan_c IS NULL, "0", loan_c) || "/" || max_loans,
-            loan_length || " jours",
+            CONCAT(IF(loan_c IS NULL, "0", loan_c), "/", max_loans),
+            CONCAT(loan_length, " jours"),
             bail,
             IF(status_BDM IS NULL, "", status_BDM),
             IF(status_ALIR IS NULL, "", status_ALIR),

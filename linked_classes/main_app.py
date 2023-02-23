@@ -1,3 +1,5 @@
+from traceback import format_exc
+
 import wx
 import wx.dataview
 import pandas as pd
@@ -270,7 +272,11 @@ class Main(MainWindow) :
     
         self.display("Écriture des données...")
 
-        errcode = write_db(data, replace)
+        try :
+            logs = '\n'.join(write_db(data, replace))
+        except :
+            logs = format_exc()
+        self.excel_read_logs.SetValue(logs)
 
         self.display("Données enregistrées!")
 

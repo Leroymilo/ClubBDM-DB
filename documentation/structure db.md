@@ -36,8 +36,8 @@ CREATE TABLE Books
     (
         book_id REGEXP '^[0-9]{2}[A-Z0-9]{5}[0-9]{5}$'
         AND SUBSTRING(book_id, 3, 5) = series_id
-        AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, '0', 3)
-        AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, '0', 2)
+        AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, 3, '0')
+        AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, 2, '0')
     ),
     CONSTRAINT condition_rating CHECK (`condition` BETWEEN 1 AND 10),
     CONSTRAINT volume_number CHECK (vol_nb > 0)
