@@ -89,15 +89,23 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
     print("started writing")
 
     # Categories :
-    cat_dict = {}
+    
     if not replace :
-        cursor.execute("SELECT ")
+        cursor.execute("SELECT cat_id, cat_name FROM Categories;")
+        cat_dict = {name: id_ for id_, name in cursor.fetchall()}
+        start = max(cat_dict.values()) + 1
+    else :
+        cat_dict = {}
+        start = 0
 
     if data["categories"].shape[0] > 0 :
         categories = data["series"]["catégorie"].apply(str.lower).unique()
 
         values = []
-        for nb, cat in enumerate(categories) :
+        for i, cat in enumerate(categories) :
+            if cat in cat_dict :
+                continue
+
             bad = False
             for char in bad_chars :
                 if char in cat :
@@ -107,15 +115,13 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> None :
             if bad :
                 continue
 
-            cat_dict[cat] = nb
-            values.append(f"({nb}, \"{cat}\")")
+            cat_dict[cat] = i+start
+            values.append(f"({i+start}, \"{cat}\")")
+        
         cursor.execute(f"""-- sql
             INSERT {on_error}
             INTO Categories
-            VALUES ({"), (".join(
-                f'{line.code}, "{line.désignation}"'
-                for _, line in data["categories"].iterrows()
-            )})
+            VALUES {", ".join(values)}
         ;""")
 
         print(f"Categories took {round(t.time()-t0, 3)}s")
