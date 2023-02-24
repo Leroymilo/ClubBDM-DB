@@ -93,21 +93,21 @@ def select(filter_: tuple[str] | None = None) -> np.array :
     return np.asarray(cursor.fetchall())
 
 def get_categories() :
-    cursor.execute("""--sql
+    cursor.execute("""-- sql
         SELECT cat_id, cat_name FROM Categories
     ;""")
 
     return {el[1]: el[0] for el in cursor.fetchall()}
 
 def get_auths() :
-    cursor.execute("""--sql
+    cursor.execute("""-- sql
         SELECT auth_id, auth_name FROM Authors
     ;""")
 
     return {el[1]: el[0] for el in cursor.fetchall()}
 
 def get_edits() :
-    cursor.execute("""--sql
+    cursor.execute("""-- sql
         SELECT edit_id, edit_name FROM Editors
     ;""")
 
@@ -116,33 +116,33 @@ def get_edits() :
 def add(id: str, name: str, b_type: str, cat: str,
     auth_ids: list[int], edit_ids: list[int]) :
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT series_id FROM Series
         WHERE series_id = "{id}"
     ;""")
     if cursor.fetchall() != [] :
         return 1
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT series_name FROM Series
         WHERE series_name LIKE "{name}"
     ;""")
     if cursor.fetchall() != [] :
         return 2
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
     INSERT INTO Series VALUES (
         '{id}', "{name}", '{b_type}', {cat}
     )
     ;""")
     
     for auth_id in auth_ids :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT INTO `Srs-Auth` VALUES ('{id}', {auth_id})
         ;""")
     
     for edit_id in edit_ids :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT INTO `Srs-Edit` VALUES ('{id}', {edit_id})
         ;""")
 
@@ -150,7 +150,7 @@ def add(id: str, name: str, b_type: str, cat: str,
     return 0
 
 def get_item_data(series_id: str) :
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT series_name, book_type, cat_name
         FROM Series
         JOIN Categories
@@ -160,7 +160,7 @@ def get_item_data(series_id: str) :
     values = cursor.fetchone()
     keys = ("series_name", "book_type", "book_cat")
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT auth_name
         FROM Authors
         JOIN `Srs-Auth` USING (auth_id)
@@ -168,7 +168,7 @@ def get_item_data(series_id: str) :
     ;""")
     authors = tuple(auth for auth, in cursor.fetchall())
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT edit_name
         FROM Editors
         JOIN `Srs-Edit` USING (edit_id)
@@ -176,7 +176,7 @@ def get_item_data(series_id: str) :
     ;""")
     editors = tuple(edit for edit, in cursor.fetchall())
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT book_id FROM Books
         WHERE series_id = "{series_id}"
     ;""")
@@ -188,7 +188,7 @@ def get_item_data(series_id: str) :
 def edit(id: str, name: str, b_type: str, cat: str,
     auth_ids: list[int], edit_ids: list[int]) :
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT series_name FROM Series
         WHERE series_name LIKE "{name}"
         AND series_id != "{id}"
@@ -196,7 +196,7 @@ def edit(id: str, name: str, b_type: str, cat: str,
     if cursor.fetchall() != [] :
         return 1
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
     UPDATE Series
     SET
         series_name = "{name}",
@@ -205,21 +205,21 @@ def edit(id: str, name: str, b_type: str, cat: str,
     WHERE series_id = "{id}"
     ;""")
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         DELETE FROM `Srs-Auth`
         WHERE series_id = "{id}"
     ;""")
     for auth_id in auth_ids :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT INTO `Srs-Auth` VALUES ('{id}', {auth_id})
         ;""")
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         DELETE FROM `Srs-Edit`
         WHERE series_id = "{id}"
     ;""")
     for edit_id in edit_ids :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             INSERT INTO `Srs-Edit` VALUES ('{id}', {edit_id})
         ;""")
 

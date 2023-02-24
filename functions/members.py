@@ -56,7 +56,7 @@ def add(name: str, mail: str, tel: str, max_loans: int, loan_len: int,
     if cursor.fetchall() != [] :
         return 1
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         INSERT INTO Members (
             member_name, mail, tel,
             max_loans, loan_length, bail,
@@ -74,7 +74,7 @@ def add(name: str, mail: str, tel: str, max_loans: int, loan_len: int,
     return 0
 
 def get_item_data(item_name: str) :
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT member_id, mail, tel, bail,
             status_BDM, status_ALIR, comment
         FROM Members
@@ -88,7 +88,7 @@ def get_item_data(item_name: str) :
 def edit(member_id: int, name: str, mail: str, tel: str, max_loans: int,
     loan_len: int, bail: float, BDM: str, ALIR: str, comment: str) :
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT member_id FROM Members
         WHERE member_name LIKE "{name}"
         AND member_id != {member_id}
@@ -96,7 +96,7 @@ def edit(member_id: int, name: str, mail: str, tel: str, max_loans: int,
     if cursor.fetchall() != [] :
         return 1
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Members
         SET
             member_name = "{name}",

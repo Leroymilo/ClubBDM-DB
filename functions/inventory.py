@@ -408,10 +408,10 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
 
     if not replace :
         cursor.execute("SELECT member_id, member_name FROM Members;")
-        member_ids = {id_: name for id_, name in cursor.fetchall()}
-        nb = max(member_ids.keys()) + 1
+        member_names = {name: id_ for id_, name in cursor.fetchall()}
+        nb = max(member_names.keys()) + 1
     else :
-        member_ids = {}
+        member_names = {}
         nb = 1
 
     if data["members"].shape[0] > 0 :
@@ -430,7 +430,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
             if bad :
                 continue
 
-            if name in member_ids.values() :
+            if name in member_names.keys() :
                 logs.append(f"Un membre du nom de '{name}' existe déjà (ligne {i} ignorée).")
                 continue
             
@@ -464,18 +464,16 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
                 if bad :
                     continue
 
-            print(parse_max_loans(status_BDM, line.caution))
             value = f"({nb}, \"{name}\", \"{mail}\", '{tel}', "
             value += f"{parse_max_loans(status_BDM, line.caution)}, 30, "
             value += f"{line.caution}, '{status_BDM}', 'Non-membre', \"{com}\")"
             values.append(value)
-            member_ids[nb] = name
+            member_names[name] = nb
             nb += 1
 
         if values :
             cursor.execute(f"""-- sql
-                INSERT
-                INTO Members (
+                INSERT INTO Members (
                     member_id, member_name, mail, tel,
                     max_loans, loan_length, bail,
                     status_BDM, status_ALIR,
@@ -492,24 +490,51 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
     if data["loans"].shape[0] > 0 :
         t0 = t.time()
 
-        
+        values = []
 
-        # cursor.execute(f"""-- sql
-        #     INSERT {on_error}
-        #     INTO Loans (
-        #         member_id, book_id,
-        #         loan_start,
-        #         loan_return,
-        #         archived
-        #     ) VALUES ({"), (".join(
-        #         f'''{user_dict[line['nom membre']]},
-        #         "{line['cotation livre']}",
-        #         {parse_date(line.date)},
-        #         {parse_date(line.retour, default='NULL')},
-        #         {not pd.isnull(line.retour)}'''
-        #         for _, line in data["loans"].iterrows()
-        #     )})
-        # ;""")
+        for i, line in data["loans"].iterrows() :
+            mem_name = line["nom membre"]
+            if mem_name not in member_names.keys() :
+                logs.append(f"Le membre '{line['nom membre']}' n'existe pas (ligne {i}).")
+                continue
+            mem_id = member_names[mem_name]
+            
+            book_id = line["cotation livre"][2:]
+            for cat_id in cat_dict.values() :
+                full_book_id = str(cat_id).rjust(2, '0') + book_id
+                if full_book_id in book_ids.keys() :
+                    break
+            else :
+                logs.append(f"Le livre avec l'ID '{book_id}' n'existe pas (ligne {i}).")
+                continue
+
+            date_emp = parse_date(line.date)
+            if date_emp is None :
+                logs.append(f"Format de date d'emprunt non reconnu ligne {i}, bonne chance avec Excel...")
+                continue
+
+            date_retour = parse_date(line.retour, default="NULL")
+            if date_retour is None :
+                logs.append(f"Format de date de retour non reconnu ligne {i}, bonne chance avec Excel...")
+                continue
+            if date_retour != "NULL" :
+                date_retour = '\'' + date_retour + '\''
+
+            arch = (date_retour != "NULL")
+            
+            value = f"({mem_id}, '{full_book_id}', '{date_emp}', {date_retour}, {arch})"
+            values.append(value)
+
+        if values :
+            cursor.execute(f"""-- sql
+                INSERT INTO Loans (
+                    member_id, book_id,
+                    loan_start,
+                    loan_return,
+                    archived
+                ) VALUES {", ".join(values)};
+            """)
+
         print(f"Loans took {round(t.time()-t0, 3)}s")
     
     db.commit()
@@ -521,7 +546,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
-        "series" : pd.read_sql_query("""-- sql
+        "series" : pd.read_sql_query("""
             SELECT series_id AS identifiant,
                    series_name AS nom,
                    book_type AS type,
@@ -543,7 +568,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id
             );""", db),
-        "books" : pd.read_sql_query("""--sql
+        "books" : pd.read_sql_query("""-- sql
             SELECT book_id AS `cotation (sera recalculée)`,
                    book_name AS nom,
                    series_id AS `identifiant série`,
@@ -555,7 +580,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    comment AS commentaire
             FROM Books
         ;""", db),
-        "members": pd.read_sql_query("""--sql
+        "members": pd.read_sql_query("""-- sql
             SELECT member_name AS nom,
                    mail, tel,
                    status_BDM AS statut,
@@ -563,7 +588,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    comment AS commentaire
             FROM Members
         ;""", db),
-        "loans": pd.read_sql_query("""--sql
+        "loans": pd.read_sql_query("""-- sql
             SELECT member_name AS `nom membre`,
                    book_id AS `cotation livre`,
                    loan_start AS `date`,
