@@ -1,11 +1,16 @@
+import wx
+
 from linked_classes.main_app import Main
 from linked_classes.pwd_ask import Pwd
+
 from db_init import *
-import wx
 
 app = wx.App()
 
-secu_lvl = Pwd(None).ShowModal()
+data = {}
+secu_lvl = Pwd(None, data).ShowModal()
+
+db.__init__(data["user"], data["pwd"])
 
 if secu_lvl :
 

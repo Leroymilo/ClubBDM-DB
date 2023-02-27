@@ -65,9 +65,10 @@ logins = {
 levels = {"guest": 1, "inventory": 2, "admin": 3}
 
 class Pwd (PwdDlg) :
-    def __init__(self, parent):
+    def __init__(self, parent, data: dict):
         super().__init__(parent)
         self.image.SetBitmap(Key_Png.GetBitmap())
+        self.data = data
     
     def send_pwd(self, event):
         user_name = self.unm_ctrl.GetValue().strip()
@@ -79,8 +80,13 @@ class Pwd (PwdDlg) :
         salt = hash_[7:29]
         hasher: bcrypt = bcrypt.using(rounds=13, salt=salt)
 
-        if hasher.verify(self.pwd_ctrl.GetValue(), hash_) :
+        pwd = self.pwd_ctrl.GetValue()
+        if hasher.verify(pwd, hash_) :
             self.help_txt.SetLabel("Mot de passe correct.")
+
+            self.data["user"] = user_name
+            self.data["pwd"] = pwd
+
             self.EndModal(levels[user_name])
             return
 
