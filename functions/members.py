@@ -34,14 +34,16 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
         cursor.execute(base_query)
     
     elif filter_[0] == "Name" :
-        cursor.execute(base_query + f"""
+        cursor.execute(base_query + f"""-- sql
             AND member_name LIKE "%{filter_[1]}%"
         """)
     
     elif filter_[0] == "Status" :
-        cursor.execute(base_query + f"""
-            AND (status_BDM LIKE "%{filter_[1]}%"
-            OR status_ALIR LIKE "%{filter_[1]}%")
+        cursor.execute(base_query + f"""-- sql
+            AND (
+                status_BDM LIKE "%{filter_[1]}%"
+                -- OR status_ALIR LIKE "%{filter_[1]}%"
+            )
         """)
     
     return np.asarray(cursor.fetchall())

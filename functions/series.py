@@ -1,21 +1,21 @@
 from db_init import *
 
 def select(filter_: tuple[str] | None = None) -> np.array :
-    authors = """
-        SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
+    authors = """-- sql
+        SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR ', ') AS auths
         FROM Authors
         NATURAL JOIN `Srs-Auth`
         GROUP BY series_id
     """
 
-    editors = """
-        SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
+    editors = """-- sql
+        SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR ', ') AS edits
         FROM Editors
         NATURAL JOIN `Srs-Edit`
         GROUP BY series_id
     """
 
-    base_query = """
+    base_query = """-- sql
         SELECT series_id,
             series_name,
             book_type,
@@ -26,7 +26,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
     """
 
     if filter_ is None :
-        cursor.execute(base_query + f"""
+        cursor.execute(base_query + f"""-- sql
             NATURAL JOIN ({authors}) AS auth
             NATURAL JOIN ({editors}) AS edit
             JOIN Categories AS cat
@@ -34,27 +34,27 @@ def select(filter_: tuple[str] | None = None) -> np.array :
         ;""")
     
     elif filter_[0] == "Name" :
-        cursor.execute(base_query + f"""
-            NATURAL JOIN ({authors})
-            NATURAL JOIN ({editors})
+        cursor.execute(base_query + f"""-- sql
+            NATURAL JOIN ({authors}) AS auth
+            NATURAL JOIN ({editors}) AS edit
             JOIN Categories
                 ON book_category = cat_id
             WHERE series_name LIKE '%{filter_[1]}%'
         ;""")
     
     elif filter_[0] == "Type" :
-        cursor.execute(base_query + f"""
-            NATURAL JOIN ({authors})
-            NATURAL JOIN ({editors})
+        cursor.execute(base_query + f"""-- sql
+            NATURAL JOIN ({authors}) AS auth
+            NATURAL JOIN ({editors}) AS edit
             JOIN Categories
                 ON book_category = cat_id
             WHERE book_type = '{filter_[1].lower().strip()}'
         ;""")
     
     elif filter_[0] == "Category" :
-        cursor.execute(base_query + f"""
-            NATURAL JOIN ({authors})
-            NATURAL JOIN ({editors})
+        cursor.execute(base_query + f"""-- sql
+            NATURAL JOIN ({authors}) AS auth
+            NATURAL JOIN ({editors}) AS edit
             JOIN Categories
                 ON book_category = cat_id
             WHERE cat_name LIKE '%{filter_[1]}%'
@@ -62,30 +62,30 @@ def select(filter_: tuple[str] | None = None) -> np.array :
     
     else :
         if filter_[0] == "Author" :
-            authors = f"""
-                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
+            authors = f"""-- sql
+                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR ', ') AS auths
                 FROM (
                     SELECT * FROM Authors
                     WHERE auth_name LIKE '%{filter_[1]}%'
-                )
+                ) AS a
                 NATURAL JOIN `Srs-Auth`
                 GROUP BY series_id
             """
         
         elif filter_[0] == "Editor" :
-            editors = f"""
-                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
+            editors = f"""-- sql
+                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR ', ') AS edits
                 FROM (
                     SELECT * FROM Editors
                     WHERE edit_name LIKE '%{filter_[1]}%'
-                )
+                ) AS e
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id
             """
 
-        cursor.execute(base_query + f"""
-            NATURAL JOIN ({authors})
-            NATURAL JOIN ({editors})
+        cursor.execute(base_query + f"""-- sql
+            NATURAL JOIN ({authors}) AS auth
+            NATURAL JOIN ({editors}) AS edit
             JOIN Categories
                 ON book_category = cat_id
         ;""")

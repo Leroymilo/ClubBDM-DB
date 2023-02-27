@@ -2,7 +2,7 @@ from msilib.schema import Condition
 from db_init import *
 
 def select(filter_: tuple[str] | None = None) -> np.array :
-    base_query = """
+    base_query = """-- sql
         SELECT book_id,
             book_name,
             series_name,
@@ -15,45 +15,45 @@ def select(filter_: tuple[str] | None = None) -> np.array :
     """
 
     if filter_ is None :
-        cursor.execute(base_query + """
+        cursor.execute(base_query + """-- sql
             NATURAL JOIN Series
         ;""")
     
     elif filter_[0] == "Series" :
-        cursor.execute(base_query + f"""
+        cursor.execute(base_query + f"""-- sql
             NATURAL JOIN (
                 SELECT series_id, series_name
                 FROM Series
                 WHERE series_name LIKE '%{filter_[1]}%'
-            )
+            ) AS s
         ;""")
     
     elif filter_[0] == "Author" :
-        cursor.execute(base_query + f"""
+        cursor.execute(base_query + f"""-- sql
             NATURAL JOIN (
-                SELECT s.series_id, series_name
-                FROM Series AS s
-                NATURAL JOIN `Srs-Auth`
+                SELECT series_id, series_name
+                FROM Series
+                JOIN `Srs-Auth` USING (series_id)
                 NATURAL JOIN (
                     SELECT auth_id
                     FROM Authors
                     WHERE auth_name LIKE '%{filter_[1]}%'
-                )
-            )
+                ) AS a
+            ) AS s
         ;""")
     
     elif filter_[0] == "Editor" :
-        cursor.execute(base_query + f"""
+        cursor.execute(base_query + f"""-- sql
             NATURAL JOIN (
-                SELECT s.series_id, series_name
-                FROM Series AS s
-                NATURAL JOIN `Srs-Edit`
+                SELECT series_id, series_name
+                FROM Series
+                JOIN `Srs-Edit` USING (series_id)
                 NATURAL JOIN (
                     SELECT edit_id
                     FROM Editors
                     WHERE edit_name LIKE '%{filter_[1]}%'
-                )
-            )
+                ) AS e
+            ) AS s
         ;""")
     
     return np.asarray(cursor.fetchall())

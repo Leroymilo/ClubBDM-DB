@@ -546,28 +546,28 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
-        "series" : pd.read_sql_query("""
+        "series" : pd.read_sql_query("""-- sql
             SELECT series_id AS identifiant,
                    series_name AS nom,
                    book_type AS type,
                    cat_name AS catégorie,
                    auths AS auteurs,
                    edits AS éditeurs
-            FROM Series
-            JOIN Categories
+            FROM Series AS ser
+            JOIN Categories AS cat
                 ON book_category = cat_id
             NATURAL JOIN (
-                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
+                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR ', ') AS auths
                 FROM Authors
                 NATURAL JOIN `Srs-Auth`
                 GROUP BY series_id
-            )
+            ) AS auth
             NATURAL JOIN (
-                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
+                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR ', ') AS edits
                 FROM Editors
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id
-            );""", db),
+            ) AS edit;""", db),
         "books" : pd.read_sql_query("""-- sql
             SELECT book_id AS `cotation (sera recalculée)`,
                    book_name AS nom,
@@ -593,8 +593,8 @@ def read_db() -> dict[str, pd.DataFrame] :
                    book_id AS `cotation livre`,
                    loan_start AS `date`,
                    loan_return AS `retour`
-            FROM Loans
-            JOIN Members
+            FROM Loans AS l
+            JOIN Members AS m
                 USING (member_id)
         ;""", db)
     }
