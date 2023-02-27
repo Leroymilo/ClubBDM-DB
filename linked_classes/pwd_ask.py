@@ -1,4 +1,3 @@
-import wx
 from wx.lib.embeddedimage import PyEmbeddedImage
 from passlib.hash import bcrypt
 
@@ -58,9 +57,14 @@ Key_Png = PyEmbeddedImage(
     b'AUoSr1gPNRy7AAAAAElFTkSuQmCC')
 
 # Don't look at that, it's private...
+logins = {
+    "admin": "$2b$13$DEdSvGU2Fg6CFYc6eXg8mOctKZ9q4RFxadmv570d/VmIMISbj9dPK",
+    "inventory": "$2b$13$oLljyQ3sJwpjcQX6EBgP8OGSHrTEDqkyxBEbttIkLF1xBz8u.5URW",
+    "guest": "$2b$13$6JagzJYKXLUa7zs8EoYXK.uLOu2jKjYRfqa1loIwPWEA5Dlhu4NKe"
+}
 salt = "rbekb5pYmaoMZqufrLNnOu"
 hash = "$2b$13$rbekb5pYmaoMZqufrLNnOuScwaz1tOqEAZtpQnLduezlts2EelIhW"
-hasher = bcrypt.using(rounds=13, salt=salt)
+hasher: bcrypt = bcrypt.using(rounds=13, salt=salt)
 
 class Pwd (PwdDlg) :
     def __init__(self, parent):
@@ -68,8 +72,17 @@ class Pwd (PwdDlg) :
         self.image.SetBitmap(Key_Png.GetBitmap())
     
     def send_pwd(self, event):
+        user_name = self.unm_ctrl.GetValue().strip()
+        if user_name not in logins.keys() :
+            self.help_txt.SetLabel("Nom d'utilisateur invalide.")
+            return
+        
+        hash_ = logins[user_name]
+        salt = hash_[7:29]
+        hasher: bcrypt = bcrypt.using(rounds=13, salt=salt)
+
         if hasher.verify(self.pwd_ctrl.GetValue(), hash) :
-            self.help_txt.SetLabel("Mot de passe correct")
+            self.help_txt.SetLabel("Mot de passe correct.")
             self.EndModal(1)
             return
 
