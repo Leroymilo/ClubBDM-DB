@@ -58,13 +58,11 @@ Key_Png = PyEmbeddedImage(
 
 # Don't look at that, it's private...
 logins = {
-    "admin": "$2b$13$DEdSvGU2Fg6CFYc6eXg8mOctKZ9q4RFxadmv570d/VmIMISbj9dPK",
+    "guest": "$2b$13$6JagzJYKXLUa7zs8EoYXK.uLOu2jKjYRfqa1loIwPWEA5Dlhu4NKe",
     "inventory": "$2b$13$oLljyQ3sJwpjcQX6EBgP8OGSHrTEDqkyxBEbttIkLF1xBz8u.5URW",
-    "guest": "$2b$13$6JagzJYKXLUa7zs8EoYXK.uLOu2jKjYRfqa1loIwPWEA5Dlhu4NKe"
+    "admin": "$2b$13$DEdSvGU2Fg6CFYc6eXg8mOctKZ9q4RFxadmv570d/VmIMISbj9dPK"
 }
-salt = "rbekb5pYmaoMZqufrLNnOu"
-hash = "$2b$13$rbekb5pYmaoMZqufrLNnOuScwaz1tOqEAZtpQnLduezlts2EelIhW"
-hasher: bcrypt = bcrypt.using(rounds=13, salt=salt)
+levels = {"guest": 1, "inventory": 2, "admin": 3}
 
 class Pwd (PwdDlg) :
     def __init__(self, parent):
@@ -81,12 +79,12 @@ class Pwd (PwdDlg) :
         salt = hash_[7:29]
         hasher: bcrypt = bcrypt.using(rounds=13, salt=salt)
 
-        if hasher.verify(self.pwd_ctrl.GetValue(), hash) :
+        if hasher.verify(self.pwd_ctrl.GetValue(), hash_) :
             self.help_txt.SetLabel("Mot de passe correct.")
-            self.EndModal(1)
+            self.EndModal(levels[user_name])
             return
 
-        self.help_txt.SetLabel("Mot de passe incorrect")
+        self.help_txt.SetLabel("Mot de passe incorrect.")
         self.pwd_ctrl.Clear()
     
     def Close(self, force=False):

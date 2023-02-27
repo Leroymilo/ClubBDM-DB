@@ -51,7 +51,7 @@ sub_frames = {
 }
 
 class Main(MainWindow) :
-    def __init__(self, parent) :
+    def __init__(self, parent, security_level) :
         backup_db(db_name)
         self.sql_locked = True
         super().__init__(parent)

@@ -5,9 +5,11 @@ import wx
 
 app = wx.App()
 
-if Pwd(None).ShowModal() :
+secu_lvl = Pwd(None).ShowModal()
 
-    frame = Main(None)
+if secu_lvl :
+
+    frame = Main(None, secu_lvl)
     frame.Show()
     # frame.Maximize()
     app.MainLoop()
