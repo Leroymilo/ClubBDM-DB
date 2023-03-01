@@ -5,3 +5,7 @@ venv/
 *.sql-journal
 *.xlsx
 test*
+
+build/
+dist/
+*.spec
