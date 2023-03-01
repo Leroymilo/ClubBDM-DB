@@ -1,4 +1,3 @@
-from msilib.schema import Condition
 from db_init import *
 
 def select(filter_: tuple[str] | None = None) -> np.array :
