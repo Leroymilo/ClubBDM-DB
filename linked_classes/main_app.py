@@ -89,6 +89,30 @@ class Main(MainWindow) :
         self.replace_button.SetName("replace")
         self.append_button.SetName("append")
 
+        self.can_edit = True
+        if security_level == 3 :
+            pass
+        else :
+            self.del_page("Membres")
+            self.del_page("Emprunts")
+            self.del_page("Requêtes SQL")
+            self.replace_button.Disable()
+            self.gen_inv_button.Disable()
+            
+            if security_level != 2 :
+                self.book_add.Disable()
+                self.series_add.Disable()
+                self.del_page("Inventaire")
+                self.can_edit = False
+        self.notebook.SendSizeEvent()
+    
+    def del_page(self, name: str) :
+        for index in range(self.notebook.GetPageCount()):
+            if self.notebook.GetPageText(index) == name:
+                self.notebook.DeletePage(index)
+                notebook_pages.pop(index)
+                return
+
     def update_table(self, tab: str, filter_: tuple[str] | None = None) :
         dataView = self.dataViews[tab]
         dataView.DeleteAllItems()
@@ -188,6 +212,8 @@ class Main(MainWindow) :
         sub_frame.SetFocus()
     
     def edit(self, event: wx.dataview.DataViewEvent) :
+        if not self.can_edit :
+            return
         tab = notebook_pages[self.notebook.GetSelection()]
         dvlc = self.dataViews[tab]
 
