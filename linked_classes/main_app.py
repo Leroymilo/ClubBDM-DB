@@ -1,3 +1,5 @@
+from traceback import format_exc
+
 import wx
 import wx.dataview
 import pandas as pd
@@ -49,7 +51,7 @@ sub_frames = {
 }
 
 class Main(MainWindow) :
-    def __init__(self, parent) :
+    def __init__(self, parent, security_level) :
         backup_db(db_name)
         self.sql_locked = True
         super().__init__(parent)
@@ -86,6 +88,30 @@ class Main(MainWindow) :
         self.update_table(tab = notebook_pages[self.notebook.GetSelection()])
         self.replace_button.SetName("replace")
         self.append_button.SetName("append")
+
+        self.can_edit = True
+        if security_level == 3 :
+            pass
+        else :
+            self.del_page("Membres")
+            self.del_page("Emprunts")
+            self.del_page("Requêtes SQL")
+            self.replace_button.Disable()
+            self.gen_inv_button.Disable()
+            
+            if security_level != 2 :
+                self.book_add.Disable()
+                self.series_add.Disable()
+                self.del_page("Inventaire")
+                self.can_edit = False
+        self.notebook.SendSizeEvent()
+    
+    def del_page(self, name: str) :
+        for index in range(self.notebook.GetPageCount()):
+            if self.notebook.GetPageText(index) == name:
+                self.notebook.DeletePage(index)
+                notebook_pages.pop(index)
+                return
 
     def update_table(self, tab: str, filter_: tuple[str] | None = None) :
         dataView = self.dataViews[tab]
@@ -186,6 +212,8 @@ class Main(MainWindow) :
         sub_frame.SetFocus()
     
     def edit(self, event: wx.dataview.DataViewEvent) :
+        if not self.can_edit :
+            return
         tab = notebook_pages[self.notebook.GetSelection()]
         dvlc = self.dataViews[tab]
 
@@ -270,7 +298,11 @@ class Main(MainWindow) :
     
         self.display("Écriture des données...")
 
-        errcode = write_db(data, replace)
+        try :
+            logs = '\n'.join(write_db(data, replace))
+        except :
+            logs = format_exc()
+        self.excel_read_logs.SetValue(logs)
 
         self.display("Données enregistrées!")
 

@@ -74,20 +74,26 @@ class MemberWindow ( wx.Frame ):
 
 		BDM_status_choiceChoices = [ u"Non-membre", u"Membre", u"Membre +", u"Membre actif", u"Membre actif +", u"Bureau" ]
 		self.BDM_status_choice = wx.Choice( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, BDM_status_choiceChoices, 0 )
-		self.BDM_status_choice.SetSelection( 0 )
+		self.BDM_status_choice.SetSelection( 1 )
 		h_sizer_3.Add( self.BDM_status_choice, 1, wx.ALL, 5 )
 
 		self.m_staticline1 = wx.StaticLine( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_VERTICAL )
+		self.m_staticline1.Hide()
+
 		h_sizer_3.Add( self.m_staticline1, 0, wx.EXPAND |wx.ALL, 5 )
 
 		self.m_staticText32 = wx.StaticText( self.global_panel, wx.ID_ANY, u"Statut ALIR :", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText32.Wrap( -1 )
+
+		self.m_staticText32.Hide()
 
 		h_sizer_3.Add( self.m_staticText32, 0, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
 		ALIR_status_choiceChoices = [ u"Non-membre", u"Membre" ]
 		self.ALIR_status_choice = wx.Choice( self.global_panel, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, ALIR_status_choiceChoices, 0 )
 		self.ALIR_status_choice.SetSelection( 0 )
+		self.ALIR_status_choice.Hide()
+
 		h_sizer_3.Add( self.ALIR_status_choice, 1, wx.ALL, 5 )
 
 
@@ -100,7 +106,7 @@ class MemberWindow ( wx.Frame ):
 
 		h_sizer_4.Add( self.m_staticText41, 1, wx.ALL|wx.ALIGN_CENTER_VERTICAL, 5 )
 
-		self.bail_txt = wx.TextCtrl( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.bail_txt = wx.TextCtrl( self.global_panel, wx.ID_ANY, u"0", wx.DefaultPosition, wx.DefaultSize, wx.TE_RIGHT )
 		h_sizer_4.Add( self.bail_txt, 0, wx.ALL, 5 )
 
 		self.m_staticText42 = wx.StaticText( self.global_panel, wx.ID_ANY, u"€", wx.DefaultPosition, wx.DefaultSize, 0 )

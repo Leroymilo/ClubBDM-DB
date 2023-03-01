@@ -287,6 +287,8 @@ class MainWindow ( wx.Frame ):
 		inv_v_sizer.Add( inv_h_sizer_1, 0, wx.EXPAND, 5 )
 
 		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
+		self.read_file_picker.SetMinSize( wx.Size( 300,-1 ) )
+
 		inv_v_sizer.Add( self.read_file_picker, 0, wx.ALL, 5 )
 
 		inv_h_sizer_2 = wx.BoxSizer( wx.HORIZONTAL )
@@ -299,6 +301,9 @@ class MainWindow ( wx.Frame ):
 
 
 		inv_v_sizer.Add( inv_h_sizer_2, 0, wx.EXPAND, 5 )
+
+		self.excel_read_logs = wx.TextCtrl( self.inventories, wx.ID_ANY, u"Errors will be displayed here.", wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE|wx.TE_READONLY )
+		inv_v_sizer.Add( self.excel_read_logs, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline9 = wx.StaticLine( self.inventories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		inv_v_sizer.Add( self.m_staticline9, 0, wx.EXPAND |wx.ALL, 5 )

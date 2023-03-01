@@ -37,7 +37,7 @@ def select(filter_: tuple[str] | None = None, archived = False) -> np.array :
     return np.asarray(cursor.fetchall())
 
 def get_members() :
-    cursor.execute("""--sql
+    cursor.execute("""-- sql
         SELECT member_id, member_name
         FROM Members
         LEFT JOIN (
@@ -53,7 +53,7 @@ def get_members() :
     return {el[1]: el[0] for el in cursor.fetchall()}
 
 def get_books() :
-    cursor.execute("""--sql
+    cursor.execute("""-- sql
         SELECT book_id
         FROM Books
         WHERE available
@@ -62,19 +62,19 @@ def get_books() :
     return {el for el, in cursor.fetchall()}
 
 def add(member_id: int, book_id: str) :
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Books
         SET available = FALSE
         WHERE book_id = "{book_id}"
     ;""")
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Members
         SET last_loan = DATE(), archived = FALSE
         WHERE member_id = "{member_id}"
     ;""")
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT loan_length FROM Members
         WHERE member_id = {member_id}
     ;""")
@@ -82,7 +82,7 @@ def add(member_id: int, book_id: str) :
     start = date.today()
     end = start + timedelta(days=loan_length)
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         INSERT INTO Loans (
             member_id, book_id, loan_start, late_return
         ) VALUES (
@@ -94,7 +94,7 @@ def add(member_id: int, book_id: str) :
     return 0
 
 def get_item_data(item_id: tuple[str]) :
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT loan_id, member_id, loan_start, late_return
         FROM Loans JOIN Members USING (member_id)
         WHERE member_name = "{item_id[0]}"
@@ -107,25 +107,25 @@ def get_item_data(item_id: tuple[str]) :
     return {keys[i]: values[i] for i in range(4)}
 
 def edit(item_id: int, member_id: int, book_id: str) :
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         SELECT book_id
         FROM Loans WHERE loan_id = {item_id}
     ;""")
     old_book_id, = cursor.fetchone()
 
     if old_book_id != book_id :
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             UPDATE Books
             SET available = TRUE
             WHERE book_id = "{old_book_id}"
         ;""")
-        cursor.execute(f"""--sql
+        cursor.execute(f"""-- sql
             UPDATE Books
             SET available = FALSE
             WHERE book_id = "{book_id}"
         ;""")
     
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Loans
         SET member_id = {member_id}, book_id = "{book_id}"
         WHERE loan_id = {item_id}
@@ -138,7 +138,7 @@ def end(member_name: str, book_id: str) :
     cursor.execute(f"SELECT member_id FROM Members WHERE member_name = \"{member_name}\"")
     member_id, = cursor.fetchone()
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Loans
         SET loan_return = DATE(), archived = TRUE
         WHERE member_id = "{member_id}"
@@ -146,13 +146,13 @@ def end(member_name: str, book_id: str) :
         AND NOT archived
     ;""")
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Books
         SET available = TRUE
         WHERE book_id = "{book_id}"
     ;""")
 
-    cursor.execute(f"""--sql
+    cursor.execute(f"""-- sql
         UPDATE Members
         SET last_loan = STRFTIME('%Y/%m/%d', DATE()), archived = FALSE
         WHERE member_id = "{member_id}"

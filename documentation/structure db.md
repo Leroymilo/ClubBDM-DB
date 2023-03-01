@@ -1,7 +1,7 @@
 ```sql
 CREATE TABLE Categories
 (
-    cat_id INTEGER PRIMARY KEY,    -- Auto increment
+    cat_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     cat_name VARCHAR(64) UNIQUE NOT NULL
 );
 
@@ -36,8 +36,8 @@ CREATE TABLE Books
     (
         book_id REGEXP '^[0-9]{2}[A-Z0-9]{5}[0-9]{5}$'
         AND SUBSTRING(book_id, 3, 5) = series_id
-        AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, '0', 3)
-        AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, '0', 2)
+        AND SUBSTRING(book_id, 8, 3) = LPAD(vol_nb, 3, '0')
+        AND SUBSTRING(book_id, 11, 2) = LPAD(dup_nb, 2, '0')
     ),
     CONSTRAINT condition_rating CHECK (`condition` BETWEEN 1 AND 10),
     CONSTRAINT volume_number CHECK (vol_nb > 0)
@@ -45,7 +45,7 @@ CREATE TABLE Books
 
 CREATE TABLE Members
 (
-    member_id INTEGER PRIMARY KEY,    -- Auto increment
+    member_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     member_name VARCHAR(256) UNIQUE NOT NULL,
     mail VARCHAR(256),
     tel VARCHAR(12),
@@ -62,7 +62,7 @@ CREATE TABLE Members
 
 CREATE TABLE Loans
 (
-    loan_id INTEGER PRIMARY KEY,    -- Auto increment
+    loan_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     member_id INTEGER NOT NULL,
     book_id VARCHAR(12) NOT NULL,
     loan_start DATE NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Loans
 
 CREATE TABLE Authors
 (
-    auth_id INTEGER PRIMARY KEY,    -- Auto increment
+    auth_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     auth_name VARCHAR(256) UNIQUE
 );
 
@@ -96,7 +96,7 @@ CREATE TABLE `Srs-Auth`
 
 CREATE TABLE Editors
 (
-    edit_id INTEGER PRIMARY KEY,    -- Auto increment
+    edit_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     edit_name VARCHAR(256) UNIQUE
 );
 

@@ -5,6 +5,7 @@ import os
 folder = "backups\\"
 
 def backup_db(db_name: str, backup_name: str = None) :
+    return
     if backup_name is None :
         suffix_start = db_name.find("_backup")
         str_date = datetime.today().strftime("%Y%m%d")
