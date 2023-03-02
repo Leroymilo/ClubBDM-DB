@@ -17,6 +17,8 @@ if secu_lvl :
     frame = Main(None, secu_lvl)
     frame.Show()
     # frame.Maximize()
+    print("start main loop")
     app.MainLoop()
+    print("end main loop")
 
 db.close()

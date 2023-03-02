@@ -346,6 +346,7 @@ class MainWindow ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_ACTIVATE, self.on_activate )
+		self.Bind( wx.EVT_CLOSE, self.end_process )
 		self.Bind( wx.EVT_ICONIZE, self.on_iconize )
 		self.notebook.Bind( wx.EVT_NOTEBOOK_PAGE_CHANGED, self.load_display )
 		self.book_add.Bind( wx.EVT_BUTTON, self.add )
@@ -375,6 +376,9 @@ class MainWindow ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def on_activate( self, event ):
+		event.Skip()
+
+	def end_process( self, event ):
 		event.Skip()
 
 	def on_iconize( self, event ):

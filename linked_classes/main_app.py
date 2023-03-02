@@ -226,7 +226,7 @@ class Main(MainWindow) :
             # There seem to be no way to get the number of visible columns.
             
             if self.loan_archive_toggle.GetValue() and archived :
-                self.display("Vous ne pouvez pas modifier un emprunt déjà rendu.")
+                self.display_status("Vous ne pouvez pas modifier un emprunt déjà rendu.")
                 return
             item_id = (
                 dvlc.GetValue(dvlc.GetSelectedRow(), 0),
@@ -263,7 +263,7 @@ class Main(MainWindow) :
         dvlc = self.dataViews["Loans"]
 
         if row == wx.NOT_FOUND :
-            self.display("Sélectionnez un emprunt à terminer d'abord.")
+            self.display_status("Sélectionnez un emprunt à terminer d'abord.")
             return
             
         member_name = dvlc.GetValue(dvlc.GetSelectedRow(), 0)
@@ -281,7 +281,7 @@ class Main(MainWindow) :
         directory = directory.strip()
 
         if directory == "" or not directory.endswith(".xlsx"):
-            self.display("Choisissez un fichier excel valide à importer.")
+            self.display_status("Choisissez un fichier excel valide à importer.")
             return
         
         button: wx.Button = event.GetEventObject()
@@ -289,16 +289,16 @@ class Main(MainWindow) :
         if button.GetName() == "replace" :
             replace = True
         
-        self.display("Lecture de l'excel...")
+        self.display_status("Lecture de l'excel...")
 
         errcode, data = read_xlsx(directory)
 
         if errcode :
             sheet_name, miss_cols = data
-            self.display(f"Colonnes {', '.join(miss_cols)} manquantes dans la feuille {sheet_name}.")
+            self.display_status(f"Colonnes {', '.join(miss_cols)} manquantes dans la feuille {sheet_name}.")
             return
     
-        self.display("Écriture des données...")
+        self.display_status("Écriture des données...")
 
         try :
             logs = '\n'.join(write_db(data, replace))
@@ -306,7 +306,7 @@ class Main(MainWindow) :
             logs = format_exc()
         self.excel_read_logs.SetValue(logs)
 
-        self.display("Données enregistrées!")
+        self.display_status("Données enregistrées!")
 
     def gen_inv(self, event) :
 
@@ -314,7 +314,7 @@ class Main(MainWindow) :
         directory = directory.strip()
 
         if directory == "" :
-            self.display("Donnez un nom au fichier à générer.")
+            self.display_status("Donnez un nom au fichier à générer.")
             return
         
         if not directory.endswith(".xlsx") :
@@ -323,14 +323,14 @@ class Main(MainWindow) :
         try :
             pd.ExcelWriter(directory)
         except OSError :
-            self.display("Le nom de fichier à générer est invalide.")
+            self.display_status("Le nom de fichier à générer est invalide.")
             return
         
-        self.display("Génération de l'inventaire...")
+        self.display_status("Génération de l'inventaire...")
         write_xlsx(directory, read_db())
-        self.display("Inventaire généré!")
+        self.display_status("Inventaire généré!")
 
-    def display(self, text: str) :
+    def display_status(self, text: str) :
         self.status_bar.SetStatusText(text)
         self.help_timer.Start(5000)
     
@@ -340,6 +340,7 @@ class Main(MainWindow) :
 
     def end_process(self, event) :
         self.help_timer.Stop()
+        event.Skip()
     
     def on_activate(self, event):
         for _, sub_frame in self.sub_frames.values() :

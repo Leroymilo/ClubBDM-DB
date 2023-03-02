@@ -17,12 +17,10 @@ import wx.xrc
 class EditorWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un éditeur", pos = wx.DefaultPosition, size = wx.Size( 312,134 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un éditeur", pos = wx.DefaultPosition, size = wx.Size( 300,110 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
-		self.help_timer = wx.Timer()
-		self.help_timer.SetOwner( self, wx.ID_ANY )
 		global_sizer = wx.BoxSizer( wx.VERTICAL )
 
 		self.global_panel = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
@@ -40,11 +38,6 @@ class EditorWindow ( wx.Frame ):
 
 
 		v_sizer.Add( h_sizer, 0, wx.EXPAND, 5 )
-
-		self.help_text = wx.StaticText( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.help_text.Wrap( -1 )
-
-		v_sizer.Add( self.help_text, 0, wx.ALL, 5 )
 
 		self.add_button = wx.Button( self.global_panel, wx.ID_ANY, u"Ajouter l'éditeur", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer.Add( self.add_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )

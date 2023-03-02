@@ -546,7 +546,7 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
 
 def read_db() -> dict[str, pd.DataFrame] :
     data = {
-        "series" : pd.read_sql_query("""-- sql
+        "series" : pd.read_sql_query("""
             SELECT series_id AS identifiant,
                    series_name AS nom,
                    book_type AS type,
@@ -557,13 +557,13 @@ def read_db() -> dict[str, pd.DataFrame] :
             JOIN Categories AS cat
                 ON book_category = cat_id
             NATURAL JOIN (
-                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR ', ') AS auths
+                SELECT series_id, GROUP_CONCAT(auth_name SEPARATOR '; ') AS auths
                 FROM Authors
                 NATURAL JOIN `Srs-Auth`
                 GROUP BY series_id
             ) AS auth
             NATURAL JOIN (
-                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR ', ') AS edits
+                SELECT series_id, GROUP_CONCAT(edit_name SEPARATOR '; ') AS edits
                 FROM Editors
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id

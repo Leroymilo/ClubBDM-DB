@@ -233,18 +233,8 @@ class Series (SeriesWindow) :
         self.auth_edit[type_].to_update = [True for _ in self.auth_edit[type_].choices]
 
     def display(self, text: str) :
-        self.help_text.SetLabel(text)
-        self.help_timer.Start()
-        self.timer_tick = 0
-    
-    def test_timer(self, event) :
-        if self.timer_tick == 500 :
-            self.help_text.SetLabel(self.default_text)
-            self.help_timer.Stop()
-        else :
-            self.timer_tick += 1
+        self.Parent.display_status(text)
 
     def end_process(self, event) :
-        self.help_timer.Stop()
         self.Parent.sub_frames.pop(self.id_)
         self.Destroy()

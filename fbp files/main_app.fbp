@@ -58,6 +58,7 @@
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <property name="xrc_skip_sizer">1</property>
             <event name="OnActivate">on_activate</event>
+            <event name="OnClose">end_process</event>
             <event name="OnIconize">on_iconize</event>
             <object class="wxBoxSizer" expanded="1">
                 <property name="minimum_size"></property>

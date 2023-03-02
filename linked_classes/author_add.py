@@ -26,18 +26,8 @@ class Author (AuthorWindow) :
             self.display("Erreur inconnue")
 
     def display(self, text: str) :
-        self.help_text.SetLabel(text)
-        self.help_timer.Start()
-        self.timer_tick = 0
-    
-    def test_timer(self, event) :
-        if self.timer_tick == 500 :
-            self.help_text.SetLabel("")
-            self.help_timer.Stop()
-        else :
-            self.timer_tick += 1
+        self.Parent.display_status(text)
 
     def end_process(self, event) :
-        self.help_timer.Stop()
         self.Parent.sub_frames.pop(self.id_)
         self.Destroy()

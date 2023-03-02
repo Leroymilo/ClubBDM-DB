@@ -18,12 +18,10 @@ import wx.adv
 class BookWindow ( wx.Frame ):
 
 	def __init__( self, parent ):
-		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 330,308 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Ajouter un livre", pos = wx.DefaultPosition, size = wx.Size( 300,275 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_TOOL_WINDOW|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
 		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
-		self.help_timer = wx.Timer()
-		self.help_timer.SetOwner( self, wx.ID_ANY )
 		global_sizer = wx.BoxSizer( wx.VERTICAL )
 
 		self.global_panel = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL|wx.TRANSPARENT_WINDOW )
@@ -124,11 +122,6 @@ class BookWindow ( wx.Frame ):
 
 		v_sizer.Add( h_sizer_6, 0, wx.EXPAND, 5 )
 
-		self.help_text = wx.StaticText( self.global_panel, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.help_text.Wrap( -1 )
-
-		v_sizer.Add( self.help_text, 0, wx.ALL|wx.EXPAND, 5 )
-
 		self.end_button = wx.Button( self.global_panel, wx.ID_ANY, u"Ajouter livre", wx.DefaultPosition, wx.DefaultSize, 0 )
 		v_sizer.Add( self.end_button, 0, wx.ALL|wx.ALIGN_RIGHT, 5 )
 
@@ -146,7 +139,6 @@ class BookWindow ( wx.Frame ):
 
 		# Connect Events
 		self.Bind( wx.EVT_CLOSE, self.end_process )
-		self.Bind( wx.EVT_TIMER, self.test_timer, id=wx.ID_ANY )
 		self.add_series_button.Bind( wx.EVT_BUTTON, self.add_series )
 		self.end_button.Bind( wx.EVT_BUTTON, self.complete )
 
@@ -156,9 +148,6 @@ class BookWindow ( wx.Frame ):
 
 	# Virtual event handlers, override them in your derived class
 	def end_process( self, event ):
-		event.Skip()
-
-	def test_timer( self, event ):
 		event.Skip()
 
 	def add_series( self, event ):
