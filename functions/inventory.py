@@ -3,7 +3,7 @@ from db_reset import reset
 
 import re
 import pandas as pd
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 import time as t
 
 
