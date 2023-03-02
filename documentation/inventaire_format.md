@@ -5,9 +5,6 @@ Pour avoir un exemple avec au moins les feuilles et les colonnes du fichier exce
 Les guillemets `"` sont interdits das les champs de texte (les apostrophes sont autorisés). Vous pouvez les remplacer par ce charactère : `”`.
 
 ## Structure :
-- Catégories
-    - code
-    - désignation
 - Séries
     - identifiant
     - nom
@@ -35,10 +32,6 @@ Les guillemets `"` sont interdits das les champs de texte (les apostrophes sont 
 - Emprunts (pas pris en compte dans l'import)
     - nom membre
     - cotation livre
-- Auteurs
-    - nom
-- Éditeurs
-    - nom
 
 ## Règles :
 
