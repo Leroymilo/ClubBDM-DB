@@ -45,7 +45,7 @@ def get_members() :
             FROM Loans
             WHERE NOT archived
             GROUP BY member_id
-        ) USING (member_id)
+        ) AS laon_nb USING (member_id)
         WHERE nb_loans IS NULL
         OR max_loans > nb_loans
     ;""")
@@ -70,7 +70,7 @@ def add(member_id: int, book_id: str) :
 
     cursor.execute(f"""-- sql
         UPDATE Members
-        SET last_loan = DATE(), archived = FALSE
+        SET last_loan = CURDATE(), archived = FALSE
         WHERE member_id = "{member_id}"
     ;""")
 
@@ -140,7 +140,7 @@ def end(member_name: str, book_id: str) :
 
     cursor.execute(f"""-- sql
         UPDATE Loans
-        SET loan_return = DATE(), archived = TRUE
+        SET loan_return = CURDATE(), archived = TRUE
         WHERE member_id = "{member_id}"
         AND book_id = "{book_id}"
         AND NOT archived
@@ -154,7 +154,7 @@ def end(member_name: str, book_id: str) :
 
     cursor.execute(f"""-- sql
         UPDATE Members
-        SET last_loan = STRFTIME('%Y/%m/%d', DATE()), archived = FALSE
+        SET last_loan = CURDATE(), archived = FALSE
         WHERE member_id = "{member_id}"
     ;""")
 

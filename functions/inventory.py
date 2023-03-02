@@ -567,7 +567,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                 FROM Editors
                 NATURAL JOIN `Srs-Edit`
                 GROUP BY series_id
-            ) AS edit;""", db),
+            ) AS edit;""", db.db),
         "books" : pd.read_sql_query("""-- sql
             SELECT book_id AS `cotation (sera recalculée)`,
                    book_name AS nom,
@@ -575,11 +575,11 @@ def read_db() -> dict[str, pd.DataFrame] :
                    vol_nb AS `numéro de volume`,
                    dup_nb AS `numéro de duplicata`,
                    IF(available, 'Oui', 'Non') AS `disponible`,
-                   condition,
-                   added_on AS `date d'ajout`,
+                   `condition`,
+                   creation_date AS `date d'ajout`,
                    comment AS commentaire
             FROM Books
-        ;""", db),
+        ;""", db.db),
         "members": pd.read_sql_query("""-- sql
             SELECT member_name AS nom,
                    mail, tel,
@@ -587,7 +587,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    bail AS caution,
                    comment AS commentaire
             FROM Members
-        ;""", db),
+        ;""", db.db),
         "loans": pd.read_sql_query("""-- sql
             SELECT member_name AS `nom membre`,
                    book_id AS `cotation livre`,
@@ -596,7 +596,7 @@ def read_db() -> dict[str, pd.DataFrame] :
             FROM Loans AS l
             JOIN Members AS m
                 USING (member_id)
-        ;""", db)
+        ;""", db.db)
     }
 
     return data
