@@ -22,6 +22,9 @@ class Connector :
     def fetchall(self) :
         return self.cursor.fetchall()
     
+    def fetchone(self) :
+        return self.cursor.fetchone()
+    
     def commit(self) :
         self.db.commit()
     

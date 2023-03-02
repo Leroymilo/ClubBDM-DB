@@ -88,7 +88,7 @@ def add(series_id: str, vol_nb: int, cond: int,
     cursor.execute(f"""-- sql
     INSERT INTO Books (
         book_id, book_name, series_id, vol_nb,
-        dup_nb, `condition`, available, added_on, comment
+        dup_nb, `condition`, available, creation_date, comment
     ) Values (
         "{book_id}", "{vol_name}", "{series_id}", {vol_nb},
         {dup_nb}, {cond}, {dispo}, "{date}", "{comment}"
@@ -100,14 +100,14 @@ def add(series_id: str, vol_nb: int, cond: int,
 def get_item_data(item_id: str) :
     cursor.execute(f"""-- sql
         SELECT book_name, series_name, vol_nb, `condition`,
-            available, added_on, comment
+            available, creation_date, comment
         FROM Books JOIN Series USING (series_id)
         WHERE book_id = "{item_id}"
     ;""")
 
     values = cursor.fetchone()
     keys = ("book_name", "series_name", "vol_nb", "condition",
-    "available", "added_on", "comment")
+    "available", "creation_date", "comment")
     return {keys[i]: values[i] for i in range(7)}
 
 def edit(book_id: str, series_id: str, vol_nb: int,
@@ -123,7 +123,7 @@ def edit(book_id: str, series_id: str, vol_nb: int,
         vol_nb = {vol_nb},
         `condition` = {cond},
         available = {dispo},
-        added_on = "{date}",
+        creation_date = "{date}",
         comment = "{comment}"
     WHERE book_id = "{book_id}"
     ;""")
