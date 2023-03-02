@@ -573,7 +573,7 @@ def read_db() -> dict[str, pd.DataFrame] :
                    book_name AS nom,
                    series_id AS `identifiant série`,
                    vol_nb AS `numéro de volume`,
-                   dup_nb AS `numéro de duplicata`,
+                   dup_nb AS `numéro d'exemplaire`,
                    IF(available, 'Oui', 'Non') AS `disponible`,
                    `condition`,
                    creation_date AS `date d'ajout`,

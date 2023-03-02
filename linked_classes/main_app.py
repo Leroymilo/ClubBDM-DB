@@ -55,7 +55,7 @@ class Main(MainWindow) :
         backup_db(db_name)
         self.sql_locked = True
         super().__init__(parent)
-        self.default_text = self.help_text.GetLabel()
+        self.status_bar: wx.StatusBar
 
         self.dataViews = {
             "Books" : self.book_display,
@@ -91,8 +91,9 @@ class Main(MainWindow) :
 
         self.can_edit = True
         if security_level == 3 :
-            pass
+            self.default_text = "Cliquez sur le nom d'une colonne pour trier le tableau. Double-cliquez sur une ligne pour modifier l'entrée."
         else :
+            self.default_text = "Cliquez sur le nom d'une colonne pour trier le tableau."
             self.del_page("Membres")
             self.del_page("Emprunts")
             self.del_page("Requêtes SQL")
@@ -104,6 +105,7 @@ class Main(MainWindow) :
                 self.series_add.Disable()
                 self.del_page("Inventaire")
                 self.can_edit = False
+        self.status_bar.PushStatusText(self.default_text, field = 0)
         self.notebook.SendSizeEvent()
     
     def del_page(self, name: str) :
@@ -329,16 +331,12 @@ class Main(MainWindow) :
         self.display("Inventaire généré!")
 
     def display(self, text: str) :
-        self.help_text.SetLabel(text)
-        self.help_timer.Start()
-        self.timer_tick = 0
+        self.status_bar.SetStatusText(text)
+        self.help_timer.Start(5000)
     
-    def test_timer(self, event) :
-        if self.timer_tick >= 500 :
-            self.help_text.SetLabel(self.default_text)
-            self.help_timer.Stop()
-        else :
-            self.timer_tick += 1
+    def timer_tick(self, event) :
+        self.status_bar.SetStatusText(self.default_text)
+        self.help_timer.Stop()
 
     def end_process(self, event) :
         self.help_timer.Stop()

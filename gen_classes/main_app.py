@@ -78,7 +78,7 @@ class MainWindow ( wx.Frame ):
 		self.books.SetSizer( book_v_sizer )
 		self.books.Layout()
 		book_v_sizer.Fit( self.books )
-		self.notebook.AddPage( self.books, u"Livres", True )
+		self.notebook.AddPage( self.books, u"Livres", False )
 		self.series = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		series_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -287,8 +287,6 @@ class MainWindow ( wx.Frame ):
 		inv_v_sizer.Add( inv_h_sizer_1, 0, wx.EXPAND, 5 )
 
 		self.read_file_picker = wx.FilePickerCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, u"Choisissez un fichier", u"*.*", wx.DefaultPosition, wx.DefaultSize, wx.FLP_DEFAULT_STYLE|wx.FLP_SMALL )
-		self.read_file_picker.SetMinSize( wx.Size( 300,-1 ) )
-
 		inv_v_sizer.Add( self.read_file_picker, 0, wx.ALL, 5 )
 
 		inv_h_sizer_2 = wx.BoxSizer( wx.HORIZONTAL )
@@ -302,7 +300,7 @@ class MainWindow ( wx.Frame ):
 
 		inv_v_sizer.Add( inv_h_sizer_2, 0, wx.EXPAND, 5 )
 
-		self.excel_read_logs = wx.TextCtrl( self.inventories, wx.ID_ANY, u"Errors will be displayed here.", wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE|wx.TE_READONLY )
+		self.excel_read_logs = wx.TextCtrl( self.inventories, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_READONLY )
 		inv_v_sizer.Add( self.excel_read_logs, 1, wx.ALL|wx.EXPAND, 5 )
 
 		self.m_staticline9 = wx.StaticLine( self.inventories, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
@@ -333,18 +331,14 @@ class MainWindow ( wx.Frame ):
 		self.inventories.SetSizer( inv_v_sizer )
 		self.inventories.Layout()
 		inv_v_sizer.Fit( self.inventories )
-		self.notebook.AddPage( self.inventories, u"Inventaire", False )
+		self.notebook.AddPage( self.inventories, u"Inventaire", True )
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
-
-		self.help_text = wx.StaticText( self, wx.ID_ANY, u"Cliquez sur le nom d'une colonne pour trier le tableau. Double-cliquez sur une ligne pour modifier l'entrée.", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.help_text.Wrap( -1 )
-
-		top_sizer.Add( self.help_text, 0, wx.ALL, 5 )
 
 
 		self.SetSizer( top_sizer )
 		self.Layout()
+		self.status_bar = self.CreateStatusBar( 1, wx.STB_SIZEGRIP, wx.ID_ANY )
 		self.help_timer = wx.Timer()
 		self.help_timer.SetOwner( self, wx.ID_ANY )
 
@@ -373,6 +367,7 @@ class MainWindow ( wx.Frame ):
 		self.replace_button.Bind( wx.EVT_BUTTON, self.read_inv )
 		self.append_button.Bind( wx.EVT_BUTTON, self.read_inv )
 		self.gen_inv_button.Bind( wx.EVT_BUTTON, self.gen_inv )
+		self.Bind( wx.EVT_TIMER, self.timer_tick, id=wx.ID_ANY )
 
 	def __del__( self ):
 		pass
@@ -421,6 +416,9 @@ class MainWindow ( wx.Frame ):
 
 
 	def gen_inv( self, event ):
+		event.Skip()
+
+	def timer_tick( self, event ):
 		event.Skip()
 
 
