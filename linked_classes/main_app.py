@@ -5,7 +5,7 @@ import wx.dataview
 import pandas as pd
 
 from db_init import *
-from backup import backup_db
+from db_reset import backup
 
 from gen_classes.main_app import MainWindow
 
@@ -52,7 +52,7 @@ sub_frames = {
 
 class Main(MainWindow) :
     def __init__(self, parent, security_level) :
-        backup_db(db_name)
+        backup()
         self.sql_locked = True
         super().__init__(parent)
         self.status_bar: wx.StatusBar
@@ -174,7 +174,7 @@ class Main(MainWindow) :
                     continue
             
                 if not backed_up :
-                    backup_db(db_name)
+                    backup()
                     backed_up = True
 
                 pwd_dlg = Pwd(self)
