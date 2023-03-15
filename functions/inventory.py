@@ -114,7 +114,8 @@ def write_db(data: dict[str, pd.DataFrame], replace = False) -> list[str] :
 
     if data["series"].shape[0] > 0 :
         t0 = t.time()
-        categories = data["series"]["catégorie"].apply(str.lower).unique()
+        categories = data["series"]["catégorie"].apply(str.lower).apply(str.strip).unique()
+        categories
 
         values = []
         for i, cat in enumerate(categories) :

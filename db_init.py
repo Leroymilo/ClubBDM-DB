@@ -21,9 +21,9 @@ class Connector :
         try :
             self.cursor.execute(query)
         except mysql.errors.IntegrityError as e :
-            sys.exc_info()
             print("query :")
             print(query)
+            raise e
     
     def fetchall(self) :
         return self.cursor.fetchall()
