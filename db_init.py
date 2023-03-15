@@ -1,5 +1,6 @@
 import mysql.connector as mysql
 import numpy as np
+import sys
 
 db_name = "BDMANGA"
 HOST = "51.77.231.57"
@@ -17,7 +18,12 @@ class Connector :
         self.cursor = self.db.cursor()
     
     def execute(self, query: str) :
-        self.cursor.execute(query)
+        try :
+            self.cursor.execute(query)
+        except mysql.errors.IntegrityError as e :
+            sys.exc_info()
+            print("query :")
+            print(query)
     
     def fetchall(self) :
         return self.cursor.fetchall()
