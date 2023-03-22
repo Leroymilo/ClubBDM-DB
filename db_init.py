@@ -16,6 +16,9 @@ class Connector :
         self.db = mysql.connect(host=HOST, database=db_name, user=user, password=pwd)
         print("Connected to:", self.db.get_server_info())
         self.cursor = self.db.cursor()
+
+        self.cursor.execute("SHOW DATABASES;")
+        print(*self.cursor.fetchall(), sep='\n')
     
     def execute(self, query: str) :
         try :

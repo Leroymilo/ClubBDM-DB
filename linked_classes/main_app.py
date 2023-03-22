@@ -52,7 +52,6 @@ sub_frames = {
 
 class Main(MainWindow) :
     def __init__(self, parent, security_level) :
-        # backup()
         self.sql_locked = True
         super().__init__(parent)
         self.status_bar: wx.StatusBar
@@ -92,6 +91,7 @@ class Main(MainWindow) :
         self.can_edit = True
         if security_level == 3 :
             self.default_text = "Cliquez sur le nom d'une colonne pour trier le tableau. Double-cliquez sur une ligne pour modifier l'entrée."
+            backup(True)
         else :
             self.default_text = "Cliquez sur le nom d'une colonne pour trier le tableau."
             self.del_page("Membres")
@@ -101,6 +101,7 @@ class Main(MainWindow) :
             self.gen_inv_button.Disable()
             
             if security_level != 2 :
+                backup()
                 self.book_add.Disable()
                 self.series_add.Disable()
                 self.del_page("Inventaire")
@@ -164,14 +165,8 @@ class Main(MainWindow) :
     def run_query(self, event: wx.Event) :
         queries = self.query_text.GetValue().split(';')
 
-        backed_up = False
         error = False
-        for query in queries :            
-            if not query.upper().startswith("SELECT") :            
-                if not backed_up :
-                    backup()
-                    backed_up = True
-            
+        for query in queries :
             self.display_status("Requête en cours d'execution...")
             try :
                 res = pd.read_sql(query + ';', db.db)

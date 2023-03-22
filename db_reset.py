@@ -1,5 +1,5 @@
 from db_init import *
-from datetime import date
+from datetime import date, timedelta
 
 table_names = ["Categories", "Series", "Books", "Members", "Loans", "Authors", "Editors", "Srs-Auth", "Srs-Edit"]
 
@@ -134,8 +134,19 @@ CREATE TABLE `Srs-Edit`
 );
 """}
 
-def backup() :
-    backup_name = "BACKUP_" + date.today().strftime("%Y-%m-%d")
+def backup(rm_old=False) :
+
+    if rm_old :
+        cursor.execute("SHOW DATABASES;")
+
+        for db_name, in cursor.fetchall() :
+            if db_name.startswith("BACKUP_BDM_") :
+                Y, m, d = map(int,(db_name[11:15], db_name[16:18], db_name[19:21]))
+                db_date = date(Y,m,d)
+                if date.today() - db_date > timedelta(days=7) :
+                    cursor.execute(f"DROP DATABASE `{db_name}`;")
+
+    backup_name = "BACKUP_BDM_" + date.today().strftime("%Y-%m-%d")
 
     cursor.execute(f"DROP DATABASE IF EXISTS `{backup_name}`;")
     cursor.execute(f"CREATE DATABASE `{backup_name}`;")
