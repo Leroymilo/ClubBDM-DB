@@ -52,7 +52,7 @@ sub_frames = {
 
 class Main(MainWindow) :
     def __init__(self, parent, security_level) :
-        backup()
+        # backup()
         self.sql_locked = True
         super().__init__(parent)
         self.status_bar: wx.StatusBar
@@ -162,41 +162,31 @@ class Main(MainWindow) :
         self.update_table(tab)
     
     def run_query(self, event: wx.Event) :
-        queries = self.query_text.GetValue().split(';\n')
+        queries = self.query_text.GetValue().split(';')
 
         df = pd.DataFrame()
 
-        tried_pwd = False
         backed_up = False
         for query in queries :            
-            if not query.upper().startswith("SELECT") and self.sql_locked :
-                if tried_pwd :
-                    continue
-            
+            if not query.upper().startswith("SELECT") :            
                 if not backed_up :
                     backup()
                     backed_up = True
-
-                pwd_dlg = Pwd(self)
-                if pwd_dlg.ShowModal() == 1 :
-                    self.sql_locked = False
-                else :
-                    continue
             
-            self.help_text.SetLabel("Requête en cours d'execution...")
+            self.display_status("Requête en cours d'execution...")
             try :
-                df = pd.read_sql(query, db)
+                df = pd.read_sql(query + ';', db.db)
             except TypeError :
-                self.help_text.SetLabel("La requête n'a pas de résultat")
+                self.display_status("La requête n'a pas de résultat")
                 db.commit()
             except pd.errors.DatabaseError as er:
-                self.help_text.SetLabel("Erreur dans la requête : {0}".format(er))
+                self.display_status("Erreur dans la requête : {0}".format(er))
         
         self.query_result.ClearColumns()
         self.query_result.DeleteAllItems()
         if df.shape == (0, 0) :
             return
-        self.help_text.SetLabel(f"Dimensions du résultat : {df.shape}")
+        self.display_status(f"Dimensions du résultat : {df.shape}")
         col_names = df.columns
         table = df.to_numpy(dtype=str, na_value="None")
         for col in col_names :
@@ -323,6 +313,7 @@ class Main(MainWindow) :
         try :
             pd.ExcelWriter(directory)
         except OSError :
+            print(format_exc())
             self.display_status("Le nom de fichier à générer est invalide.")
             return
         

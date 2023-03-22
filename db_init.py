@@ -20,7 +20,7 @@ class Connector :
     def execute(self, query: str) :
         try :
             self.cursor.execute(query)
-        except mysql.errors.IntegrityError as e :
+        except Exception as e :
             print("query :")
             print(query)
             raise e
