@@ -164,9 +164,8 @@ class Main(MainWindow) :
     def run_query(self, event: wx.Event) :
         queries = self.query_text.GetValue().split(';')
 
-        df = pd.DataFrame()
-
         backed_up = False
+        error = False
         for query in queries :            
             if not query.upper().startswith("SELECT") :            
                 if not backed_up :
@@ -175,24 +174,38 @@ class Main(MainWindow) :
             
             self.display_status("Requête en cours d'execution...")
             try :
-                df = pd.read_sql(query + ';', db.db)
+                res = pd.read_sql(query + ';', db.db)
             except TypeError :
                 self.display_status("La requête n'a pas de résultat")
+                res = pd.DataFrame()
                 db.commit()
             except pd.errors.DatabaseError as er:
-                self.display_status("Erreur dans la requête : {0}".format(er))
+                error = True
+                res = str(er)
         
-        self.query_result.ClearColumns()
-        self.query_result.DeleteAllItems()
-        if df.shape == (0, 0) :
-            return
-        self.display_status(f"Dimensions du résultat : {df.shape}")
-        col_names = df.columns
-        table = df.to_numpy(dtype=str, na_value="None")
-        for col in col_names :
-            self.query_result.AppendTextColumn(col, flags=wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE)
-        for line in table :
-            self.query_result.AppendItem(list(map(str,line)))
+        if error :
+            self.query_res_table.Hide()
+            self.query_res_text.Show()
+            
+            self.query_res_text.SetValue(res)
+
+        else :
+            self.query_res_text.Hide()
+            self.query_res_table.Show()
+
+            self.query_res_table.ClearColumns()
+            self.query_res_table.DeleteAllItems()
+            if res.shape == (0, 0) :
+                return
+            self.display_status(f"Dimensions du résultat : {res.shape}")
+            col_names = res.columns
+            table = res.to_numpy(dtype=str, na_value="None")
+            for col in col_names :
+                self.query_res_table.AppendTextColumn(col, flags=wx.dataview.DATAVIEW_COL_RESIZABLE|wx.dataview.DATAVIEW_COL_SORTABLE)
+            for line in table :
+                self.query_res_table.AppendItem(list(map(str,line)))
+        
+        self.queries.Layout()
 
     def add(self, event=None, tab: str=None) :
         if tab is None :

@@ -262,14 +262,19 @@ class MainWindow ( wx.Frame ):
 		self.m_staticline5 = wx.StaticLine( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
 		query_v_sizer.Add( self.m_staticline5, 0, wx.EXPAND |wx.ALL, 5 )
 
-		self.query_result = wx.dataview.DataViewListCtrl( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
-		query_v_sizer.Add( self.query_result, 1, wx.ALL|wx.EXPAND, 5 )
+		self.query_res_text = wx.TextCtrl( self.queries, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.HSCROLL|wx.TE_MULTILINE|wx.TE_READONLY )
+		self.query_res_text.Hide()
+
+		query_v_sizer.Add( self.query_res_text, 1, wx.ALL|wx.EXPAND, 5 )
+
+		self.query_res_table = wx.dataview.DataViewListCtrl( self.queries, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.dataview.DV_ROW_LINES|wx.dataview.DV_VERT_RULES )
+		query_v_sizer.Add( self.query_res_table, 1, wx.ALL|wx.EXPAND, 5 )
 
 
 		self.queries.SetSizer( query_v_sizer )
 		self.queries.Layout()
 		query_v_sizer.Fit( self.queries )
-		self.notebook.AddPage( self.queries, u"Requêtes SQL", False )
+		self.notebook.AddPage( self.queries, u"Requêtes SQL", True )
 		self.inventories = wx.Panel( self.notebook, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
 		inv_v_sizer = wx.BoxSizer( wx.VERTICAL )
 
@@ -331,7 +336,7 @@ class MainWindow ( wx.Frame ):
 		self.inventories.SetSizer( inv_v_sizer )
 		self.inventories.Layout()
 		inv_v_sizer.Fit( self.inventories )
-		self.notebook.AddPage( self.inventories, u"Inventaire", True )
+		self.notebook.AddPage( self.inventories, u"Inventaire", False )
 
 		top_sizer.Add( self.notebook, 1, wx.ALL|wx.EXPAND, 5 )
 
