@@ -101,11 +101,14 @@ class Main(MainWindow) :
             self.gen_inv_button.Disable()
             
             if security_level != 2 :
-                backup()
                 self.book_add.Disable()
                 self.series_add.Disable()
                 self.del_page("Inventaire")
                 self.can_edit = False
+            
+            else :
+                backup()
+        
         self.status_bar.PushStatusText(self.default_text, field = 0)
         self.notebook.SendSizeEvent()
     
