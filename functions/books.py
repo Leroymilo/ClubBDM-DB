@@ -23,7 +23,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
             NATURAL JOIN (
                 SELECT series_id, series_name
                 FROM Series
-                WHERE series_name LIKE '%{filter_[1]}%'
+                WHERE series_name LIKE "%{filter_[1]}%"
             ) AS s
         ;""")
     
@@ -36,7 +36,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
                 NATURAL JOIN (
                     SELECT auth_id
                     FROM Authors
-                    WHERE auth_name LIKE '%{filter_[1]}%'
+                    WHERE auth_name LIKE "%{filter_[1]}%"
                 ) AS a
             ) AS s
         ;""")
@@ -50,7 +50,7 @@ def select(filter_: tuple[str] | None = None) -> np.array :
                 NATURAL JOIN (
                     SELECT edit_id
                     FROM Editors
-                    WHERE edit_name LIKE '%{filter_[1]}%'
+                    WHERE edit_name LIKE "%{filter_[1]}%"
                 ) AS e
             ) AS s
         ;""")
